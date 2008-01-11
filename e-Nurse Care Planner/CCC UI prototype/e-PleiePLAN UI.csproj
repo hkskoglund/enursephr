@@ -222,14 +222,11 @@
     <Resource Include="Bilder\old woman.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Bilder\Siving Henning Skoglund e-Pleie logo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Bilder\arrow-down-red_benji_par_01.png" />
     <Resource Include="Bilder\arrow-up-green_benji_par_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Video\Siv.ing. Henning Skoglund.wmv" />
+    <Folder Include="Video\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
