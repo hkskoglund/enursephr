@@ -1,0 +1,109 @@
+﻿<Window x:Class="CCC.UI.WindowCopyright"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Om"  SizeToContent="Height" Width="400" >
+    <!--
+    <StackPanel>
+        <TextBlock HorizontalAlignment="Center" FontSize="15">SABAKLASS - diagnose utforsker</TextBlock>
+        <TextBlock />
+        <TextBlock Text="Laget av" HorizontalAlignment="Center" />
+        <TextBlock />   
+    
+        <TextBlock Text="Sykepleier Henning Knut Skoglund" HorizontalAlignment="Center" />
+        <TextBlock Text="Siv.ing. Henning Skoglund e-Pleie" HorizontalAlignment="Center" />
+
+        <TextBlock Text="November 2007" HorizontalAlignment="Center" />
+        <TextBlock />
+        <TextBlock TextWrapping="Wrap">
+            Den tilbyr utforsking av diagnosene i rammeverket SABAKLASS 2.0N som er den norske
+            overettelsen av Clinical Care Classification.
+        </TextBlock>
+        <TextBlock />
+        <TextBlock Text="Kopibeskyttelse rammeverk" HorizontalAlignment="Center" />
+            <TextBlock />
+        <TextBlock TextWrapping="Wrap">Dr. Virginia K. Saba og
+        de norske oversetterne av rammeverket er sykepleier Kathryn Niemi Moelstad og M.Sc og sykepleier
+        Karl Oyri
+        </TextBlock>
+        
+    </StackPanel>
+    </-->
+    
+        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled" >
+            <FlowDocument Background="{StaticResource BlueTheme}">
+                
+                <FlowDocument.Resources>
+                    <Style x:Key="Title" TargetType="{x:Type Paragraph}">
+
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="FontSize" Value="15 pt" />
+                        <Setter Property="TextAlignment" Value="Center" />
+                    </Style>
+                <Style x:Key="SubTitle" TargetType="{x:Type Paragraph}">
+
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="13 pt" />
+                    <Setter Property="TextAlignment" Value="Center" />
+                </Style>
+
+                <Style x:Key="BodyText" TargetType="{x:Type Paragraph}">
+
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="FontSize" Value="10 pt" />
+                        <Setter Property="TextAlignment" Value="Left" />
+                    </Style>
+                </FlowDocument.Resources>
+                
+                <Paragraph  Style="{StaticResource Title}">
+                    e-PleiePLAN
+                </Paragraph>
+                
+                <Paragraph Style="{StaticResource BodyText}">
+                    Er et program som gir muligheter for å lage pleieplaner. Det 
+                    tilbyr utforsking av diagnoser og intervensjoner for sykepleie basert på SABAKLASS 2.0N (den norske oversettelsen
+                av
+                    <Italic> Clinical Care Classification</Italic>).
+                <LineBreak />
+                <LineBreak/> Undertegnede kan ikke ta ansvar for eventuelle tap av
+                    data som installasjon/kjøring av dette programmet vil kunne medføre siden det er en prototype.
+                    <LineBreak />
+                    <LineBreak />
+               <!--
+                    <Figure 
+            Padding="0,0,0,0" 
+            Margin="5"  
+            HorizontalAnchor="ContentCenter"
+            >
+                        <BlockUIContainer>
+                            <MediaElement x:Name="video2" Source="C:\Documents and Settings\hks\Skrivebord\Siv.ing. Henning Skoglund.wmv" LoadedBehavior="Play" Width ="2cm"/>
+                        </BlockUIContainer>
+                    </Figure>
+                    -->
+                    Laget av sykepleier Henning Knut Skoglund , november - desember 2007
+                   <!-- <Figure 
+            Padding="0,0,0,0" 
+            Margin="5"  
+            HorizontalAnchor="ContentCenter"
+            >
+                        <BlockUIContainer>
+                            <Image Source="Bilder/Siving Henning Skoglund e-Pleie logo.jpg" Width="6cm"/>
+                        </BlockUIContainer>
+                    </Figure> -->
+                </Paragraph>
+                <Paragraph Style="{StaticResource BodyText}">
+                    Tilbakemeldinger kan rettes til e-post: hk-sko@online.no
+                </Paragraph>
+                <Paragraph Style="{StaticResource SubTitle}">
+                    Kopirettigheter til rammeverket
+                </Paragraph>
+                <Paragraph Style="{StaticResource BodyText}">
+                    Dr. Virginia K. Saba
+                    <LineBreak /> Sykepleier Kathryn Niemi Moelstad
+                    <LineBreak />
+                    M.Sc. og sykepleier Karl Oyri
+
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+    
+</Window>

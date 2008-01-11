@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Testing purposes only; copyrighted by NICE !!!!!-->
+<ClinicalGuideline URL="http://www.nice.org.uk/guidance/index.jsp?action=byID&o=10956#documents"
+                   Dateissued="2004-11-01"
+                   ExpectedReviewDate="2008-11-01"
+                   Reference="CG21">
+  
+  <RecommendationContainer Header="Case/risk identification" >
+
+    <Recommendation>
+      <Evidence EvidenceGrade="C">
+        Older people in contact with health care
+        professionals should be asked routinely whether
+        they have fallen in the past year and asked about
+        the frequency, context and characteristics of the
+        fall/s.
+      </Evidence>
+    </Recommendation>
+
+    <Recommendation>
+      <Evidence EvidenceGrade="C">
+        Older people reporting a fall or considered at risk
+        of falling should be observed for balance and gait
+        deficits and considered for their ability to benefit
+        from interventions to improve strength and
+        balance.
+      </Evidence>
+    </Recommendation>
+  </RecommendationContainer>
+
+  <RecommendationContainer Header="Multifactorial falls risk assessment" >
+    <Recommendation>
+      <Evidence EvidenceGrade="C">
+        Older people who present for medical attention
+        because of a fall, or report recurrent falls in the past
+        year, or demonstrate abnormalities of gait and/or
+        balance should be offered a multifactorial falls risk
+        assessment.This assessment should be performed
+        by a health care professional with appropriate skills
+        and experience, normally in the setting of a
+        specialist falls service. This assessment should be
+        part of an individualised,multifactorial
+        intervention.
+      </Evidence>
+    </Recommendation>
+    <Recommendation>
+      <Evidence EvidenceGrade="C">
+        Multifactorial assessment may include the
+        following:
+        <List>
+          <ListItem>
+            identification of falls history
+          </ListItem>
+        </List>
+      </Evidence>
+
+    </Recommendation>
+  </RecommendationContainer>
+
+
+  <RecommendationContainer Header="Multifactorial interventions" >
+    <Recommendation>
+      <Evidence EvidenceGrade="A">
+        All older people with recurrent falls or assessed as
+        being at increased risk of falling should be
+        considered for an individualised multifactorial
+        intervention.
+      </Evidence>
+      <Evidence EvidenceGrade="A">
+        In successful multifactorial intervention
+        programmes the following specific components are
+        common – against a background of the general
+        diagnosis and management of causes and
+        recognised risk factors:
+        <List Header="Header">
+          <ListItem>strength and balance training</ListItem>
+        </List>
+      </Evidence>
+
+
+
+    </Recommendation>
+    <Recommendation>
+      <Evidence EvidenceGrade="A">
+        Following treatment for an injurious fall, older
+        people should be offered a multidisciplinary
+        assessment to identify and address future risk and
+        individualised intervention aimed at promoting
+        independence and improving physical and
+        psychological function.
+      </Evidence>
+    </Recommendation>
+
+  </RecommendationContainer>
+
+  <RecommendationContainer Header="Strength and balance training" >
+    <Recommendation >
+      <Evidence EvidenceGrade="A" EvidenceUrl="">
+        Strength and balance training is recommended.
+        Those most likely to benefit are older communitydwelling
+        people with a history of recurrent falls
+        and/or balance and gait deficit.A musclestrengthening
+        and balance programme should be
+        offered. This should be individually prescribed and
+        monitored by an appropriately trained
+        professional.
+      </Evidence>
+    </Recommendation>
+  </RecommendationContainer>
+
+
+</ClinicalGuideline>

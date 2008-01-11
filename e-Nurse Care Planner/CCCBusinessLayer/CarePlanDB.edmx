@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:ReverseEngineer />
+    <edmx:Diagrams ><Diagram Name="CarePlanDB"><EntityTypeShape EntityType="CCC.BusinessLayer.Annot" PointX="3" PointY="1.125" Width="1.5" Height="1.427958984375" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.CarePlan" PointX="0.75" PointY="2.375" Width="1.5" Height="2.0853483072916665" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.Diagnosi" PointX="3" PointY="3.25" Width="1.5" Height="2.5783902994791656" IsExpanded="true" /><AssociationConnector Association="CCC.BusinessLayer.FK_Annotation_CarePlan" ManuallyRouted="false"><ConnectorPoint PointX="2.15625" PointY="2.375" /><ConnectorPoint PointX="2.15625" PointY="1.93620799609375" /><ConnectorPoint PointX="3" PointY="1.93620799609375" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Diagnosis_CarePlan" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="3.8551741536458333" /><ConnectorPoint PointX="3" PointY="3.8551741536458333" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+  <edmx:Runtime>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CCC.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="PleieplanEntitiesv2">
+          <EntitySet Name="Annotation" EntityType="CCC.BusinessLayer.Annot" />
+          <EntitySet Name="CarePlan" EntityType="CCC.BusinessLayer.CarePlan" />
+          <EntitySet Name="Diagnosis" EntityType="CCC.BusinessLayer.Diagnosi" />
+          <AssociationSet Name="FK_Annotation_CarePlan" Association="CCC.BusinessLayer.FK_Annotation_CarePlan">
+            <End Role="CarePlan" EntitySet="CarePlan" />
+            <End Role="Annotation" EntitySet="Annotation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diagnosis_CarePlan" Association="CCC.BusinessLayer.FK_Diagnosis_CarePlan">
+            <End Role="CarePlan" EntitySet="CarePlan" />
+            <End Role="Diagnosis" EntitySet="Diagnosis" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Annot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="2147483647" Unicode="false" />
+          <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_Annotation_CarePlan" FromRole="Annotation" ToRole="CarePlan" />
+        </EntityType>
+        <EntityType Name="CarePlan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" />
+          <Property Name="Description" Type="String" MaxLength="255" />
+          <Property Name="PatientId" Type="Int32" />
+          <Property Name="TemplateCategoryID" Type="Int16" />
+          <NavigationProperty Name="Annotation" Relationship="CCC.BusinessLayer.FK_Annotation_CarePlan" FromRole="CarePlan" ToRole="Annotation" />
+          <NavigationProperty Name="Diagnosis" Relationship="CCC.BusinessLayer.FK_Diagnosis_CarePlan" FromRole="CarePlan" ToRole="Diagnosis" />
+        </EntityType>
+        <EntityType Name="Diagnosi"><Documentation><Summary>Diagnoses</Summary></Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="cccId" Type="Int32" />
+          <Property Name="Focus" Type="String" MaxLength="255" />
+          <Property Name="Judgement" Type="String" MaxLength="100" />
+          <Property Name="ReasonForDiagnosis" Type="String" MaxLength="500" />
+          <Property Name="CreationDate" Type="DateTime" />
+          <Property Name="CreatorEmployeeId" Type="Int32" />
+          <Property Name="LastUpdateDate" Type="DateTime" />
+          <Property Name="UpdateEmployeeId" Type="Int32" />
+          <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_Diagnosis_CarePlan" FromRole="Diagnosis" ToRole="CarePlan" />
+        </EntityType>
+        <Association Name="FK_Annotation_CarePlan">
+          <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="1" />
+          <End Role="Annotation" Type="CCC.BusinessLayer.Annot" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Diagnosis_CarePlan">
+          <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="1" />
+          <End Role="Diagnosis" Type="CCC.BusinessLayer.Diagnosi" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CCC.BusinessLayer.Store" Alias="Self" ProviderManifestToken="09.00.3042" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl"><EntityContainer Name="dbo"><EntitySet Name="Annotation" EntityType="CCC.BusinessLayer.Store.Annotation" /><EntitySet Name="CarePlan" EntityType="CCC.BusinessLayer.Store.CarePlan" /><EntitySet Name="Diagnosis" EntityType="CCC.BusinessLayer.Store.Diagnosis" /><EntitySet Name="vwDiagnosis" EntityType="CCC.BusinessLayer.Store.vwDiagnosis"><DefiningQuery>SELECT 
+      [vwDiagnosis].[DiagnosisID] AS [DiagnosisID], 
+      [vwDiagnosis].[ComponentCode] AS [ComponentCode], 
+      [vwDiagnosis].[MajorCode] AS [MajorCode], 
+      [vwDiagnosis].[MinorCode] AS [MinorCode], 
+      [vwDiagnosis].[Concept] AS [Concept], 
+      [vwDiagnosis].[Definition] AS [Definition], 
+      [vwDiagnosis].[Code] AS [Code], 
+      [vwDiagnosis].[Pattern] AS [Pattern], 
+      [vwDiagnosis].[Component] AS [Component], 
+      [vwDiagnosis].[ComponentDefinition] AS [ComponentDefinition], 
+      [vwDiagnosis].[Id] AS [Id], 
+      [vwDiagnosis].[careplanId] AS [careplanId], 
+      [vwDiagnosis].[cccId] AS [cccId], 
+      [vwDiagnosis].[Focus] AS [Focus], 
+      [vwDiagnosis].[Judgement] AS [Judgement], 
+      [vwDiagnosis].[ReasonForDiagnosis] AS [ReasonForDiagnosis], 
+      [vwDiagnosis].[CreationDate] AS [CreationDate], 
+      [vwDiagnosis].[CreatorEmployeeId] AS [CreatorEmployeeId], 
+      [vwDiagnosis].[LastUpdateDate] AS [LastUpdateDate], 
+      [vwDiagnosis].[UpdateEmployeeId] AS [UpdateEmployeeId]
+      FROM [dbo].[vwDiagnosis] AS [vwDiagnosis]</DefiningQuery></EntitySet><AssociationSet Name="FK_Annotation_CarePlan" Association="CCC.BusinessLayer.Store.FK_Annotation_CarePlan"><End Role="CarePlan" EntitySet="CarePlan" /><End Role="Annotation" EntitySet="Annotation" /></AssociationSet><AssociationSet Name="FK_Diagnosis_CarePlan" Association="CCC.BusinessLayer.Store.FK_Diagnosis_CarePlan"><End Role="CarePlan" EntitySet="CarePlan" /><End Role="Diagnosis" EntitySet="Diagnosis" /></AssociationSet></EntityContainer><EntityType Name="Annotation"><Key><PropertyRef Name="Id" /></Key><Property Name="Id" Type="uniqueidentifier" Nullable="false" /><Property Name="CarePlanId" Type="int" Nullable="false" /><Property Name="Data" Type="varchar(max)" /></EntityType><EntityType Name="CarePlan"><Key><PropertyRef Name="Id" /></Key><Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" /><Property Name="Name" Type="nvarchar" MaxLength="50" /><Property Name="Description" Type="nvarchar" MaxLength="255" /><Property Name="PatientId" Type="int" /><Property Name="TemplateCategoryID" Type="smallint" /></EntityType><EntityType Name="Diagnosis"><Key><PropertyRef Name="Id" /></Key><Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" /><Property Name="careplanId" Type="int" Nullable="false" /><Property Name="cccId" Type="int" /><Property Name="Focus" Type="nvarchar" MaxLength="255" /><Property Name="Judgement" Type="nvarchar" MaxLength="100" /><Property Name="ReasonForDiagnosis" Type="nvarchar" MaxLength="500" /><Property Name="CreationDate" Type="datetime" /><Property Name="CreatorEmployeeId" Type="int" /><Property Name="LastUpdateDate" Type="datetime" /><Property Name="UpdateEmployeeId" Type="int" /></EntityType><!--Errors Found During Generation:
+      warning 6002: The table/view 'C:\PROGRAMFILER\MICROSOFT SQL SERVER\MSSQL.1\MSSQL\DATA\PLEIEPLAN.MDF.dbo.vwDiagnosis' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      --><EntityType Name="vwDiagnosis"><Key><PropertyRef Name="DiagnosisID" /><PropertyRef Name="ComponentCode" /><PropertyRef Name="MajorCode" /><PropertyRef Name="Concept" /><PropertyRef Name="Code" /><PropertyRef Name="Id" /><PropertyRef Name="careplanId" /></Key><Property Name="DiagnosisID" Type="int" Nullable="false" /><Property Name="ComponentCode" Type="nchar" Nullable="false" MaxLength="1" /><Property Name="MajorCode" Type="numeric" Nullable="false" Precision="2" /><Property Name="MinorCode" Type="smallint" /><Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="80" /><Property Name="Definition" Type="nvarchar" MaxLength="255" /><Property Name="Code" Type="nchar" Nullable="false" MaxLength="1" /><Property Name="Pattern" Type="nvarchar" MaxLength="50" /><Property Name="Component" Type="nvarchar" MaxLength="50" /><Property Name="ComponentDefinition" Type="nvarchar" MaxLength="255" /><Property Name="Id" Type="int" Nullable="false" /><Property Name="careplanId" Type="int" Nullable="false" /><Property Name="cccId" Type="int" /><Property Name="Focus" Type="nvarchar" MaxLength="255" /><Property Name="Judgement" Type="nvarchar" MaxLength="100" /><Property Name="ReasonForDiagnosis" Type="nvarchar" MaxLength="500" /><Property Name="CreationDate" Type="datetime" /><Property Name="CreatorEmployeeId" Type="int" /><Property Name="LastUpdateDate" Type="datetime" /><Property Name="UpdateEmployeeId" Type="int" /></EntityType><Association Name="FK_Annotation_CarePlan"><End Role="CarePlan" Type="CCC.BusinessLayer.Store.CarePlan" Multiplicity="1" /><End Role="Annotation" Type="CCC.BusinessLayer.Store.Annotation" Multiplicity="*" /><ReferentialConstraint><Principal Role="CarePlan"><PropertyRef Name="Id" /></Principal><Dependent Role="Annotation"><PropertyRef Name="CarePlanId" /></Dependent></ReferentialConstraint></Association><Association Name="FK_Diagnosis_CarePlan"><End Role="CarePlan" Type="CCC.BusinessLayer.Store.CarePlan" Multiplicity="1" /><End Role="Diagnosis" Type="CCC.BusinessLayer.Store.Diagnosis" Multiplicity="*" /><ReferentialConstraint><Principal Role="CarePlan"><PropertyRef Name="Id" /></Principal><Dependent Role="Diagnosis"><PropertyRef Name="careplanId" /></Dependent></ReferentialConstraint></Association><Function Name="spGetDiagnosesForCareplan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo"><Parameter Name="p1" Type="int" Mode="In" /></Function></Schema></edmx:StorageModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="dbo" CdmEntityContainer="PleieplanEntitiesv2">
+          <EntitySetMapping Name="Annotation">
+            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Annot)">
+              <MappingFragment StoreEntitySet="Annotation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarePlan">
+            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CarePlan)">
+              <MappingFragment StoreEntitySet="CarePlan">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="TemplateCategoryID" ColumnName="TemplateCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diagnosis">
+            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Diagnosi)">
+              <MappingFragment StoreEntitySet="Diagnosis">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="cccId" ColumnName="cccId" />
+                <ScalarProperty Name="Focus" ColumnName="Focus" />
+                <ScalarProperty Name="Judgement" ColumnName="Judgement" />
+                <ScalarProperty Name="ReasonForDiagnosis" ColumnName="ReasonForDiagnosis" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreatorEmployeeId" ColumnName="CreatorEmployeeId" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="UpdateEmployeeId" ColumnName="UpdateEmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Annotation_CarePlan" TypeName="CCC.BusinessLayer.FK_Annotation_CarePlan" StoreEntitySet="Annotation">
+            <EndProperty Name="CarePlan">
+              <ScalarProperty Name="Id" ColumnName="CarePlanId" />
+            </EndProperty>
+            <EndProperty Name="Annotation">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Diagnosis_CarePlan" TypeName="CCC.BusinessLayer.FK_Diagnosis_CarePlan" StoreEntitySet="Diagnosis">
+            <EndProperty Name="CarePlan">
+              <ScalarProperty Name="Id" ColumnName="careplanId" />
+            </EndProperty>
+            <EndProperty Name="Diagnosis">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+</edmx:Edmx>

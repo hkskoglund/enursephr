@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CCC.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+  <EntityContainer Name="PleieplanEntitiesv2">
+    <EntitySet Name="Annotation" EntityType="CCC.BusinessLayer.Annot" />
+    <EntitySet Name="CarePlan" EntityType="CCC.BusinessLayer.CarePlan" />
+    <EntitySet Name="Diagnosis" EntityType="CCC.BusinessLayer.Diagnosi" />
+    <AssociationSet Name="FK_Annotation_CarePlan" Association="CCC.BusinessLayer.FK_Annotation_CarePlan">
+      <End Role="CarePlan" EntitySet="CarePlan" />
+      <End Role="Annotation" EntitySet="Annotation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Diagnosis_CarePlan" Association="CCC.BusinessLayer.FK_Diagnosis_CarePlan">
+      <End Role="CarePlan" EntitySet="CarePlan" />
+      <End Role="Diagnosis" EntitySet="Diagnosis" />
+    </AssociationSet>
+    <EntitySet Name="vwDiagnosisSet" EntityType="CCC.BusinessLayer.vwDiagnosis" />
+    <FunctionImport Name="GetDiagnosesForCareplan" EntitySet="vwDiagnosisSet" ReturnType="Collection(Self.vwDiagnosis)">
+      <Parameter Name="p1" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="Annot">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="Data" Type="String" MaxLength="2147483647" Unicode="false" />
+    <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_Annotation_CarePlan" FromRole="Annotation" ToRole="CarePlan" />
+  </EntityType>
+  <EntityType Name="CarePlan">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" />
+    <Property Name="Description" Type="String" MaxLength="255" />
+    <Property Name="PatientId" Type="Int32" />
+    <Property Name="TemplateCategoryID" Type="Int16" />
+    <NavigationProperty Name="Annotation" Relationship="CCC.BusinessLayer.FK_Annotation_CarePlan" FromRole="CarePlan" ToRole="Annotation" />
+    <NavigationProperty Name="Diagnosis" Relationship="CCC.BusinessLayer.FK_Diagnosis_CarePlan" FromRole="CarePlan" ToRole="Diagnosis" />
+  </EntityType>
+  <EntityType Name="Diagnosi">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="cccId" Type="Int32" />
+    <Property Name="Focus" Type="String" MaxLength="255" />
+    <Property Name="Judgement" Type="String" MaxLength="100" />
+    <Property Name="ReasonForDiagnosis" Type="String" MaxLength="500" />
+    <Property Name="CreationDate" Type="DateTime" />
+    <Property Name="CreatorEmployeeId" Type="Int32" />
+    <Property Name="LastUpdateDate" Type="DateTime" />
+    <Property Name="UpdateEmployeeId" Type="Int32" />
+    <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_Diagnosis_CarePlan" FromRole="Diagnosis" ToRole="CarePlan" />
+  </EntityType>
+  <Association Name="FK_Annotation_CarePlan">
+    <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="1" />
+    <End Role="Annotation" Type="CCC.BusinessLayer.Annot" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Diagnosis_CarePlan">
+    <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="1" />
+    <End Role="Diagnosis" Type="CCC.BusinessLayer.Diagnosi" Multiplicity="*" />
+  </Association>
+  <EntityType Name="vwDiagnosis">
+    <Key>
+      <PropertyRef Name="DiagnosisID" />
+      <PropertyRef Name="ComponentCode" />
+      <PropertyRef Name="MajorCode" />
+      <PropertyRef Name="Concept" />
+      <PropertyRef Name="Code" />
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="careplanId" />
+    </Key>
+    <Property Name="DiagnosisID" Type="Int32" Nullable="false" />
+    <Property Name="ComponentCode" Type="String" Nullable="false" MaxLength="1" FixedLength="true" />
+    <Property Name="MajorCode" Type="Decimal" Nullable="false" Precision="2" Scale="0" />
+    <Property Name="MinorCode" Type="Int16" Nullable="true" />
+    <Property Name="Concept" Type="String" Nullable="false" MaxLength="80" />
+    <Property Name="Definition" Type="String" Nullable="true" MaxLength="255" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="1" FixedLength="true" />
+    <Property Name="Pattern" Type="String" Nullable="true" MaxLength="50" />
+    <Property Name="Component" Type="String" Nullable="true" MaxLength="50" />
+    <Property Name="ComponentDefinition" Type="String" Nullable="true" MaxLength="255" />
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="careplanId" Type="Int32" Nullable="false" />
+    <Property Name="cccId" Type="Int32" Nullable="true" />
+    <Property Name="Focus" Type="String" Nullable="true" MaxLength="255" />
+    <Property Name="Judgement" Type="String" Nullable="true" MaxLength="100" />
+    <Property Name="ReasonForDiagnosis" Type="String" Nullable="true" MaxLength="500" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="true" />
+    <Property Name="CreatorEmployeeId" Type="Int32" Nullable="true" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="true" />
+    <Property Name="UpdateEmployeeId" Type="Int32" Nullable="true" />
+  </EntityType>
+</Schema>
