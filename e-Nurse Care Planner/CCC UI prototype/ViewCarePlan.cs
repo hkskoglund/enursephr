@@ -52,7 +52,7 @@ namespace CCC.UI
             }
         }
        
-        public ViewCarePlan(int careplanid, CCCDataContext DB)
+        public ViewCarePlan(int careplanid, CCCFrameworkEntities DB)
             : base(careplanid, DB)
         {
           //E this._cvDiagnoses = new ListCollectionView(this.Diagnoses);

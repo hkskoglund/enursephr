@@ -26,8 +26,10 @@ namespace CCC.BusinessLayer
         private int _id;
 
         
-        public myCarePlan(int id, CCCDataContext CCCDB)
-        {
+//E        public myCarePlan(int id, CCCDataContext CCCDB)
+        public myCarePlan(int id, CCCFrameworkEntities CCCDB)
+   
+    {
         
            
             _id = id;
@@ -55,11 +57,11 @@ namespace CCC.BusinessLayer
             updateExtendedData(CCCDB);
         }
 
-            public void updateExtendedData(CCCDataContext CCCDB)
+            public void updateExtendedData(CCCFrameworkEntities CCCDB)
             {
             foreach (Diagnosi d in _diagnoses)
             {
-                Nursing_Diagnosi ndiag =   CCCDB.Nursing_Diagnosis.Single(nd => nd.DiagnosisID ==  d.cccId);
+                Nursing_Diagnosi ndiag =   CCCDB.Nursing_Diagnosis.First(nd => nd.DiagnosisID ==  d.cccId);
                 d.Concept = ndiag.Concept;
                 d.ComponentName = ndiag.Care_component.Component;
                 if (d.CreationDate != null)

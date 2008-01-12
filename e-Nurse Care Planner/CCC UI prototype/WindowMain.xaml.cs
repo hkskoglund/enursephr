@@ -307,7 +307,7 @@ namespace CCC.UI
                     return;
 
                 Care_component cc = lb.SelectedItem as Care_component;
-                FilterCode = cc.Code;
+                FilterCode = cc.Code.ToCharArray()[0];
 
                 App.cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnoses);
                 App.cccFrameWork.cvDiagnoses.Refresh();
@@ -330,13 +330,15 @@ namespace CCC.UI
 
                 if (nd == null)
                     return false;
-
-                int result = nd.ComponentCode.CompareTo(FilterCode);
+                
+               
+                int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
 
                 if (result == 0) return true;
 
                 return false;
 
+                
             }
 
             private bool FilterOutInterventions(object item)
@@ -349,13 +351,13 @@ namespace CCC.UI
                 if (nd == null)
                     return false;
 
-                int result = nd.ComponentCode.CompareTo(FilterCode);
+                int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
 
                 if (result == 0) return true;
 
                 return false;
 
-            }
+                }
 
             private void lbNursingDiagnosis_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {

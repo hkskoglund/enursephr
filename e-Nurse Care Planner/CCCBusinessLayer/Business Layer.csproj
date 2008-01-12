@@ -99,14 +99,9 @@
       <DependentUpon>CarePlanTemplateDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="CCC.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CCC.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="CCC1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>CCC.edmx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="CCCFramework.cs" />
     <Compile Include="ExtendedDiagnosis.cs" />
@@ -127,17 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CCC.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>CCC.designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CCC.dbml.layout">
-      <DependentUpon>CCC.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -174,7 +158,6 @@
     <EmbeddedResource Include="bin\Debug\CarePlanDB.csdl" />
     <EmbeddedResource Include="bin\Debug\CarePlanDB.msl" />
     <EmbeddedResource Include="bin\Debug\CarePlanDB.ssdl" />
-    <None Include="App.Config" />
     <None Include="CarePlanTemplateDB.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>CarePlanTemplateDB.designer.cs</LastGenOutput>
@@ -183,9 +166,17 @@
     <None Include="CarePlanTemplateDB.dbml.layout">
       <DependentUpon>CarePlanTemplateDB.dbml</DependentUpon>
     </None>
+    <None Include="CCC.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>CCC.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CCC.dbml.layout">
+      <DependentUpon>CCC.dbml</DependentUpon>
+    </None>
     <EntityDeploy Include="CCC.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CCC1.Designer.cs</LastGenOutput>
+      <LastGenOutput>CCC.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
