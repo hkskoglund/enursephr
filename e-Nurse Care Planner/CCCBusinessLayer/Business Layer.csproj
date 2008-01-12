@@ -178,11 +178,6 @@
       <DependentUpon>CarePlanTemplateDB.dbml</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ClinicalGuideline.xml" />
-    <Content Include="ClinicalGuidelineFlowDocument.xslt" />
-    <Content Include="XPathTesting.xml" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

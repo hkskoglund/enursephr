@@ -1,4 +1,4 @@
-﻿<!-- Language changes are marked with LANGUAGE attrib -->
+﻿<!-- Language changes are marked with LANGUAGE attrib --> 
     <Window x:Class="CCC.UI.WindowMain"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -652,12 +652,19 @@ Ticks="0, 1, 2, 3,4"/>
                                      <!--       <TextBlock Margin="2" FontSize ="7" HorizontalAlignment="Left">Kunnskap støtte fra SABAKLASS 2.0N</TextBlock>
                                          -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
-                                                <Label HorizontalAlignment="Left">Søk :</Label>
+                                                <!-- LANGAUGE attrib change
+                                                Norwegian : Søk
+                                                English : Search -->
+                                                <Label HorizontalAlignment="Left">Search :</Label>
                                                 <TextBox Width="100" Name="tbSearch" TextChanged="tbSearch_TextChanged"  />
                                             </StackPanel>
 
                                             <StackPanel>
-                                                <Label Name="lblNoMatchCareComponent" Visibility="Collapsed">Ingen komponenter funnet!</Label>
+                                                <!-- LANGAUGE attrib change 
+    Norwegian: "Ingen omsorgs komponenter funnet!"
+    English : "No care components found!"
+    -->
+                                                <Label Name="lblNoMatchCareComponent" Visibility="Collapsed">No care components found!</Label>
                                                 <StackPanel Name="spCareComponent">
                                                     <!--
                                     <ContentControl x:Name="ccCareComponent" 

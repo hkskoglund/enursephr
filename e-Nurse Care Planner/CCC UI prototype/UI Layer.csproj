@@ -104,7 +104,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ImageShow.xaml">
+    <Page Include="WindowImageShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,8 +138,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageShow.xaml.cs">
-      <DependentUpon>ImageShow.xaml</DependentUpon>
+    <Compile Include="WindowImageShow.xaml.cs">
+      <DependentUpon>WindowImageShow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="myAnnotationService.cs" />
