@@ -1,4 +1,5 @@
-﻿<Window x:Class="CCC.UI.WindowMain"
+﻿<!-- Language changes are marked with LANGUAGE attrib -->
+    <Window x:Class="CCC.UI.WindowMain"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
@@ -6,7 +7,7 @@
     xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
     xmlns:dc="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.DateControls;assembly=WPFSamplesLib"
     xmlns:ann="clr-namespace:System.Windows.Annotations;assembly=PresentationFramework"
-    Title="e-PleiePLAN"   Loaded="Window_Loaded"  SizeToContent="Height" Closing="Window_Closing" 
+    Title="e-Nurse Care Planner"   Loaded="Window_Loaded"  SizeToContent="Height" Closing="Window_Closing" 
          >
     <Window.Resources>
         <!--
@@ -146,10 +147,14 @@
                 <TextBlock Text="{Binding Path=Definition}" Width="200" TextWrapping="Wrap" HorizontalAlignment="Left" />
 -->
 
-                <TextBlock FontWeight="Bold" Text="Begrunnelse" />
+                <!-- LANGAUGE attrib change-->
+                                                                                    
+                <TextBlock FontWeight="Bold" Text="Reason" />
                 <TextBox Text="{Binding Path=ReasonForDiagnosis}" Width="200" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
-                <TextBlock FontWeight="Bold" Text="Opprettet dato" />
+                <!-- LANGAUGE attrib change-->
+                                                                                    
+                <TextBlock FontWeight="Bold" Text="Created date" />
                 <TextBlock Text="{Binding Path=CreationDateString}" Width="200"  HorizontalAlignment="Left" />
 
                 <!--
@@ -213,10 +218,12 @@
 
 
 -->
-
+<!-- LANGAUGE attrib change-->
+                       
                 <Button x:Name="btnStoreNursingDiagnosisDetails" Width="50"
                         HorizontalAlignment="Left" 
-                        Click="btnStoreNursingDiagnosisDetails_Click">Lagre</Button>
+                                                                                     
+                        Click="btnStoreNursingDiagnosisDetails_Click">Store</Button>
             </StackPanel>
         </DataTemplate>
 
@@ -236,7 +243,9 @@
                    <DockPanel >
             
             <Menu DockPanel.Dock="Left">
-                <MenuItem Header="Om"  Click="MenuItemOm_Click"/>
+                <!-- LANGAUGE attrib change-->
+                                                                                    
+                <MenuItem Header="About"  Click="MenuItemOm_Click"/>
             </Menu>
             
         <!--    <Image DockPanel.Dock="Right" Source="Bilder/Siving Henning Skoglund e-Pleie logo.jpg" Width="6cm" HorizontalAlignment="Right" />
@@ -269,7 +278,8 @@
     -->
         <TabControl Background="{StaticResource BlueTheme}">
             
-            <TabItem Header="Kartlegging">
+            <!-- LANGUAGE attrib change-->
+            <TabItem Header="Assesment">
                 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -281,7 +291,8 @@
                     <!-- Knappe-panel -->
 
                     <StackPanel Grid.Column="0">
-                        <Button x:Name="prettyCarePlanPrint" Click="prettyCarePlanPrint_Click">Skriv ut</Button>
+                        <!-- LANGUAGE attrib change-->
+                        <Button x:Name="prettyCarePlanPrint" Click="prettyCarePlanPrint_Click">Print</Button>
                     </StackPanel>
 
                     <FlowDocumentReader x:Name="fdReaderPrettyCarePlan" Grid.Column="1" Margin="5" IsPrintEnabled="True"
@@ -314,11 +325,12 @@
                     <ScrollViewer MaxHeight="600" Grid.Column="2" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" >
                         <StackPanel   >
                             
-                           <!-- Mal bibliotek-->
+                           <!-- Care plan template library-->
                             <Expander x:Name="exCarePlanTemplate" Background="{StaticResource BlueTheme}" 
                                       IsExpanded="True" >
                                 <Expander.Header>
-                                    <TextBlock Text="Mal bibliotek" FontWeight="Bold" FontSize="15" />
+                                    <!-- LANGAUGE attribute change-->
+                                    <TextBlock Text="Template library" FontWeight="Bold" FontSize="15" />
                                 </Expander.Header>
 
 
@@ -361,7 +373,8 @@
                             <Expander x:Name="exCarePlan" Background="{StaticResource BlueTheme}" 
                                       IsExpanded="True" >
                                 <Expander.Header>
-                                    <TextBlock Text="Pleieplan" FontWeight="Bold" FontSize="15" />
+                                    <!-- LANGAUGE attrib change-->
+                                    <TextBlock Text="Care Plan" FontWeight="Bold" FontSize="15" />
                                 </Expander.Header>
 
                                 <StackPanel>
@@ -370,13 +383,17 @@
                                     <StackPanel Margin="0,0,5,0">
 
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox x:Name="rbGroupByComponents" ToolTip="Grupperer diagnosene etter omsorgs-område" IsChecked="True" Checked ="rbGroupByComponents_Checked" Unchecked="rbGroupByComponents_Unchecked"  >
-                                                Område
+                                            <!-- LANGAUGE attrib change-->
+                                                                                    
+                                            <CheckBox x:Name="rbGroupByComponents" ToolTip="Group diagnoses by care component" IsChecked="True" Checked ="rbGroupByComponents_Checked" Unchecked="rbGroupByComponents_Unchecked"  >
+                                                Care component
                                             </CheckBox>
                                             <!--<CheckBox x:Name="cbMoreDiagnosisInformation" Margin="5,0,0,0" Checked="cbMoreDiagnosisInformation_Checked" Unchecked="cbMoreDiagnosisInformation_Unchecked">
                                             Informasjon
                                             </CheckBox>-->
-                                            <CheckBox x:Name="cbGroupByTime" ToolTip="Grupperer diagnosene etter tid da de ble opprettet" Margin ="5,0,0,0" Checked ="cbGroupByTime_Checked" Unchecked="cbGroupByTime_Unchecked" Content="Tid" />
+                                            <!-- LANGAUGE attrib change-->
+                                                                                    
+                                            <CheckBox x:Name="cbGroupByTime" ToolTip="Group diagnoses by creation time" Margin ="5,0,0,0" Checked ="cbGroupByTime_Checked" Unchecked="cbGroupByTime_Unchecked" Content="Time" />
                                         </StackPanel>
 
 
@@ -444,11 +461,12 @@
                                         </ListBox>
 
 
-                                        <!-- Detaljer om diagnosen -->
+                                        <!-- Diagnosis detail -->
 
                                         <Expander x:Name="exNursingDiagnosisDetail" Background="{StaticResource BlueTheme}">
                                             <Expander.Header>
-                                                <TextBlock Text="Diagnose" FontWeight="Bold" FontSize="15" />
+                                                <!-- LANGAUGE attrib change-->
+                                                <TextBlock Text="Diagnosis" FontWeight="Bold" FontSize="15" />
                                             </Expander.Header>
                                             <StackPanel>
 
@@ -539,11 +557,13 @@
                                                                         <Image.ToolTip>
                                                                             <StackPanel>
                                                                                 <StackPanel Orientation="Horizontal">
-                                                                                    <TextBlock Text="Tatt: "/>
+                                                                                    <!-- LANGAUGE attrib change-->
+                                                                                    <TextBlock Text="Date taken: "/>
                                                                                     <TextBlock Text="{Binding Path=DateTaken}" />
                                                                                 </StackPanel>
                                                                                 <StackPanel Orientation="Horizontal">
-                                                                                    <TextBlock Text="Med: "/>
+                                                                                    <!-- LANGAUGE attrib change-->
+                                                                                    <TextBlock Text="With: "/>
                                                                                     <TextBlock Text="{Binding Path=Camera}" />
                                                                                 </StackPanel>
                                                                             </StackPanel>
@@ -618,13 +638,16 @@ Ticks="0, 1, 2, 3,4"/>
                                   Background="{StaticResource BlueTheme}">
 
                                 <Expander.Header>
-                                    <TextBlock Text="Omsorgskunnskap" FontWeight="Bold" FontSize="15" />
+                                    <!-- LANGAUGE attrib change-->
+                                                                                    
+                                    <TextBlock Text="Care knowledge" FontWeight="Bold" FontSize="15" />
                                 </Expander.Header>
 
-                                <!-- RAMMEVERK -->
-
+                              
                                 <StackPanel>
-                                    <Expander Header="Rammeverk : SABAKLASS 2.0N" IsExpanded="False">
+                                    <!-- LANGAUGE attrib change-->
+                                                                                    
+                                    <Expander Header="Framework : SABAKLASS 2.0N" IsExpanded="False">
                                         <StackPanel>
                                      <!--       <TextBlock Margin="2" FontSize ="7" HorizontalAlignment="Left">Kunnskap støtte fra SABAKLASS 2.0N</TextBlock>
                                          -->
@@ -682,10 +705,14 @@ Ticks="0, 1, 2, 3,4"/>
                                         </StackPanel>
                                     </Expander>
 
-                                    <!-- DIAGNOSER -->
-                                    <Expander Header="Diagnoser" IsExpanded="True" Background="{StaticResource BlueTheme}">
+                                    <!-- Diagnoses -->
+                                    <!-- LANGAUGE attrib change-->
+                                                                                    
+                                    <Expander Header="Diagnoses" IsExpanded="True" Background="{StaticResource BlueTheme}">
                                         <StackPanel>
-                                            <Label Name="lblNoMatchNursingDiagnoses" Visibility="Collapsed">Ingen diagnoser funnet!</Label>
+                                            <!-- LANGAUGE attrib change-->
+                                                                                    
+                                            <Label Name="lblNoMatchNursingDiagnoses" Visibility="Collapsed">No diagnoses found!</Label>
                                             <StackPanel Name="spNursingDiagnoses">
                                                 
                                         
@@ -730,10 +757,13 @@ Ticks="0, 1, 2, 3,4"/>
                                     </Expander>
 
 
-                                    <!-- INTERVENSJONER -->
-                                    <Expander Header="Intervensjoner">
+                                    <!-- LANGAUGE attrib change-->
+                                                                                    
+                                    <Expander Header="Interventions">
                                         <StackPanel>
-                                            <Label Name="lblNoMatchNursingInterventions" Visibility="Collapsed">Ingen intervensjoner funnet!</Label>
+                                         <!-- LANGAUGE attrib change-->
+                                                                                    
+                                            <Label Name="lblNoMatchNursingInterventions" Visibility="Collapsed">No interventions found!</Label>
                                             <StackPanel Name="spNursingInterventions">
 
                                                 <ListBox x:Name = "lbNursingInterventions"  
@@ -778,7 +808,9 @@ Ticks="0, 1, 2, 3,4"/>
                             <Expander x:Name="exStickyNotes" Background="{StaticResource BlueTheme}" 
                                       IsExpanded="True" >
                                 <Expander.Header>
-                                    <TextBlock Text="Klistrelapper" FontWeight="Bold" FontSize="15" />
+                                    <!-- LANGAUGE attrib change-->
+                                                                                    
+                                    <TextBlock Text="Stickynotes" FontWeight="Bold" FontSize="15" />
                                 </Expander.Header>
 
                                 <StackPanel>

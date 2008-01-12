@@ -73,54 +73,100 @@ namespace CCC.UI
             
             MenuItem ctxmiCopy = new MenuItem();
             ctxmiCopy.Command = ApplicationCommands.Copy;
-            ctxmiCopy.Header = "Kopier";
+            /* LANGUAGE attrib
+                                Norwegian : "Kopier"
+                                English : "Copy"
+                                */ 
+                               
+            ctxmiCopy.Header = "Copy";
             ctx.Items.Add(ctxmiCopy);
 
             MenuItem ctxmiSelectAll = new MenuItem();
             ctxmiSelectAll.Command = ApplicationCommands.SelectAll;
-            ctxmiSelectAll.Header = "Velg alt";
+            /* LANGUAGE attrib
+                                Norwegian : "Velg alt"
+                                English : "Select all"
+                                */ 
+                               
+            ctxmiSelectAll.Header = "Select all";
             ctx.Items.Add(ctxmiSelectAll);
 
             ctx.Items.Add(new Separator());
 
             MenuItem ctxmiInkStickyNote = new MenuItem();
             ctxmiInkStickyNote.Command = System.Windows.Annotations.AnnotationService.CreateInkStickyNoteCommand;
-            ctxmiInkStickyNote.Header = "Ny blekk beskjed";
+            /* LANGUAGE attrib
+                                Norwegian : "Ny blekk beskjed"
+                                English : "New ink message"
+                                */ 
+                               
+            ctxmiInkStickyNote.Header = "New ink message";
             ctx.Items.Add(ctxmiInkStickyNote);
 
             MenuItem ctxmiTextStickyNote = new MenuItem();
             ctxmiTextStickyNote.Command = System.Windows.Annotations.AnnotationService.CreateTextStickyNoteCommand;
-            ctxmiTextStickyNote.Header = "Ny tekst beskjed";
+            /* LANGUAGE attrib
+                                Norwegian : "Ny tekst beskjed"
+                                English : "New text message"
+                                */ 
+                               
+            ctxmiTextStickyNote.Header = "New text message";
             ctx.Items.Add(ctxmiTextStickyNote);
 
             MenuItem ctxmiHighlight = new MenuItem();
             ctxmiHighlight.Command = System.Windows.Annotations.AnnotationService.CreateHighlightCommand;
-            ctxmiHighlight.Header = "Ny markering";
+            /* LANGUAGE attrib
+                                Norwegian : "Ny markering"
+                                English : "New highlight"
+                                */ 
+                               
+            ctxmiHighlight.Header = "New highlight";
             ctx.Items.Add(ctxmiHighlight);
 
             ctx.Items.Add(new Separator());
 
             MenuItem ctxmiClearHighlight = new MenuItem();
             ctxmiClearHighlight.Command = System.Windows.Annotations.AnnotationService.ClearHighlightsCommand;
-            ctxmiClearHighlight.Header = "Slett markeringer";
+            /* LANGUAGE attrib
+                                Norwegian : "Slett markeringer"
+                                English : "Delete highlights"
+                                */ 
+                               
+            ctxmiClearHighlight.Header = "Delete highlights";
             ctx.Items.Add(ctxmiClearHighlight);
 
             MenuItem ctxmiDeleteStickyNotes = new MenuItem();
             ctxmiDeleteStickyNotes.Command = System.Windows.Annotations.AnnotationService.DeleteStickyNotesCommand;
-            ctxmiDeleteStickyNotes.Header = "Slett tekst og blekk beskjeder";
+            /* LANGUAGE attrib
+                                Norwegian : "Slett tekst og blekk beskjeder"
+                                English : "Delete text and ink messages"
+                                */ 
+                               
+            ctxmiDeleteStickyNotes.Header = "Delete text and ink messages";
             ctx.Items.Add(ctxmiDeleteStickyNotes);
 
 
             MenuItem ctxmiDeleteAnnotations = new MenuItem();
             ctxmiDeleteAnnotations.Command = System.Windows.Annotations.AnnotationService.DeleteAnnotationsCommand;
-            ctxmiDeleteAnnotations.Header = "Slett alle annoteringer";
+            /* LANGUAGE attrib
+                                Norwegian : "Slett alle annotasjoner"
+                                English : "Delete all annotations"
+                                */ 
+                               
+            ctxmiDeleteAnnotations.Header = "Delete all annotations";
             ctx.Items.Add(ctxmiDeleteAnnotations);
 
 
             Paragraph pheading = new Paragraph();
             pheading.FontSize = 22;
             pheading.TextAlignment = TextAlignment.Center;
-            pheading.Inlines.Add(new Bold(new Run("PleiePlan")));
+
+            /* LANGUAGE attrib
+                                Norwegian : "Pleieplan"
+                                English : "Care plan"
+                                */ 
+                               
+            pheading.Inlines.Add(new Bold(new Run("Care plan")));
             _fdPrettyCarePlan.Blocks.Add(pheading);
         
         
@@ -162,13 +208,23 @@ namespace CCC.UI
             Paragraph pheading = new Paragraph();
             pheading.FontSize = 22;
             pheading.TextAlignment = TextAlignment.Center;
-            pheading.Inlines.Add(new Bold(new Run("PleiePlan")));
+            /* LANGUAGE attrib
+                                Norwegian : "Pleieplan"
+                                English : "Care plan"
+                                */ 
+                               
+            pheading.Inlines.Add(new Bold(new Run("Care plan")));
             this.fdPrettyCarePlan.Blocks.Add(pheading);
 
             
             Paragraph p = new Paragraph();
 
-            p.Inlines.Add(new Bold(new Run("Brukeren har :")));
+            /* LANGUAGE attrib
+                                Norwegian : "Brukeren har"
+                                English : "Patient have"
+                                */ 
+                               
+            p.Inlines.Add(new Bold(new Run("Patient have")));
             this.fdPrettyCarePlan.Blocks.Add(p);
 
             string previousComponentName = null;

@@ -124,7 +124,8 @@ namespace CCC.UI
 
                 annotationservice = new myAnnotationService(fdReaderPrettyCarePlan, App.carePlan, lbAnnotations,timer, myInk);
 
-                tbUserName.Text = "Innlogget som : " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
+                /* LANGUAGE attrib change */
+                tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
 
 
                 lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
@@ -640,7 +641,14 @@ namespace CCC.UI
 
                     if (info == null)
                     {
-                        MessageBox.Show("Fant ikke anker (tekstområde) informasjon. Ankeret ligger trolig utenfor nåværende pleieplan etter at informasjon er blitt fjernet.", "Annotasjon anker feil");
+                        /* LANGAUGE attrib change 
+                         Norwegian: "Fant ikke anker (tekstområde) informasjon. Ankeret ligger trolig utenfor nåværende pleieplan etter at informasjon er blitt fjernet.", "Annotasjon anker feil"
+                         English : "Did not find the anchor (textarea) information. It us probably outside the current care plan after information was removed", "Annotation anchor error"
+                                                    
+                         */
+
+                        MessageBox.Show("Did not find the anchor (textarea) information. It us probably outside the current care plan after information was removed", "Annotation anchor error");
+                            
                         return;
                     }
                     TextAnchor resolvedAnchor = info.ResolvedAnchor as TextAnchor;
@@ -668,7 +676,11 @@ namespace CCC.UI
 
                     //E tbUserName.Text = "Setter inn :"+ cset.Inserts.Count()+" Sletter : "+cset.Deletes.Count()+" Oppdaterer : "+cset.Updates.Count();
 
-                    tbUserName.Text = "Setter inn :" + added + " Sletter : " + deleted + " Oppdaterer : " + updated;
+                    /* LANGUAGE attrib change 
+                     Norwegian :"Setter inn :" + added + " Sletter : " + deleted + " Oppdaterer : " + updated;
+                     English : "Inserts :" + added + " Deletes : " + deleted + " Updates : " + updated;
+                     */
+                    tbUserName.Text = "Inserts :" + added + " Deletes : " + deleted + " Updates : " + updated;
 
                     //E  App.carePlan.DB.SubmitChanges(ConflictMode.ContinueOnConflict);
                     App.carePlan.DB.SaveChanges();
@@ -787,7 +799,7 @@ namespace CCC.UI
                         myimg.Img = img;
 
                         myimg.FileName = filename;
-                        myimg.Description = "Beskrivelse";
+                        myimg.Description = "Description";
                         myimg.Meta = imgmeta;
                         
                         if (imgmeta != null)
@@ -795,17 +807,28 @@ namespace CCC.UI
                             if (imgmeta.DateTaken != null)
                                 myimg.DateTaken = imgmeta.DateTaken;
                             else
-                                myimg.DateTaken = "Ukjent dato";
+                                /* LANGUAGE attrib
+                                 Norwegian : "Ukjent dato"
+                                 English : "Unknown date"
+                                 */ 
+                                myimg.DateTaken = "Unknown date";
 
                             if (imgmeta.CameraModel != null && imgmeta.CameraManufacturer != null)
                                 myimg.Camera = imgmeta.CameraManufacturer + " " + imgmeta.CameraModel;
                             else
-                                myimg.Camera = "Ukjent kamera";
+                                /* LANGUAGE attrib
+                                Norwegian : "Ukjent kamera"
+                                English : "Unknown camera"
+                                */ 
+                               
+                                myimg.Camera = "Unknown camera";
                         }
                         else
                         {
-                            myimg.DateTaken = "Ukjent dato";
-                            myimg.Camera = "Ukjent kamera";
+                            /* LANGUAGE attrib */
+                               
+                            myimg.DateTaken = "Unknow date";
+                            myimg.Camera = "Unknown camera";
                         }
                        //BitmapMetadataBlob b = new BitmapMetadataBlob(myimg.Meta.ToArray<Byte>());
                         

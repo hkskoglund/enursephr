@@ -1,7 +1,11 @@
-﻿<Window x:Class="CCC.UI.WindowCopyright"
+﻿<!-- LANGAUGE attrib change 
+    Norwegian: "Om"
+    English : "About"
+    -->
+    <Window x:Class="CCC.UI.WindowCopyright"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Om"  SizeToContent="Height" Width="400" >
+    Title="About"  SizeToContent="Height" Width="400" >
     <!--
     <StackPanel>
         <TextBlock HorizontalAlignment="Center" FontSize="15">SABAKLASS - diagnose utforsker</TextBlock>
@@ -55,20 +59,15 @@
                 </FlowDocument.Resources>
                 
                 <Paragraph  Style="{StaticResource Title}">
-                    e-PleiePLAN
+                    e-Nurse Care Planner
                 </Paragraph>
                 
                 <Paragraph Style="{StaticResource BodyText}">
-                    Er et program som gir muligheter for å lage pleieplaner. Det 
-                    tilbyr utforsking av diagnoser og intervensjoner for sykepleie basert på SABAKLASS 2.0N (den norske oversettelsen
-                av
-                    <Italic> Clinical Care Classification</Italic>).
+                    A program which make it possible to create care plans. It offers exploration
+                    of diagnoses and interventions in the nurse classification system; <Italic> Clinical Care Classification 2.0</Italic>
                 <LineBreak />
-                <LineBreak/> Undertegnede kan ikke ta ansvar for eventuelle tap av
-                    data som installasjon/kjøring av dette programmet vil kunne medføre siden det er en prototype.
-                    <LineBreak />
-                    <LineBreak />
-               <!--
+                <LineBreak />
+                <!--
                     <Figure 
             Padding="0,0,0,0" 
             Margin="5"  
@@ -79,7 +78,8 @@
                         </BlockUIContainer>
                     </Figure>
                     -->
-                    Laget av sykepleier Henning Knut Skoglund , november - desember 2007
+                    Project initiated by nurse Henning Knut Skoglund , november 2007,
+                    available on CodePlex from january 2008
                    <!-- <Figure 
             Padding="0,0,0,0" 
             Margin="5"  
@@ -90,17 +90,17 @@
                         </BlockUIContainer>
                     </Figure> -->
                 </Paragraph>
-                <Paragraph Style="{StaticResource BodyText}">
+                <!--<Paragraph Style="{StaticResource BodyText}">
                     Tilbakemeldinger kan rettes til e-post: hk-sko@online.no
-                </Paragraph>
+                </Paragraph>-->
                 <Paragraph Style="{StaticResource SubTitle}">
-                    Kopirettigheter til rammeverket
+                    Copyright notice of CCC framework
                 </Paragraph>
                 <Paragraph Style="{StaticResource BodyText}">
                     Dr. Virginia K. Saba
-                    <LineBreak /> Sykepleier Kathryn Niemi Moelstad
+                    <LineBreak /> Nurse Kathryn Niemi Moelstad
                     <LineBreak />
-                    M.Sc. og sykepleier Karl Oyri
+                    M.Sc. og Nurse Karl Oyri
 
                 </Paragraph>
             </FlowDocument>

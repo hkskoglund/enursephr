@@ -1,7 +1,8 @@
-﻿<Window x:Class="CCC.UI.ImageShow"
+﻿<!-- LANGAUGE attrib change-->
+    <Window x:Class="CCC.UI.ImageShow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="e-PleiePLAN - Bilde" SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
+    Title="e-Nurse Care Plan - Image" SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
     <!--
 -->
     <StackPanel >

@@ -188,9 +188,9 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CCCBusinessLayer\e-PleiePLAN Business.csproj">
+    <ProjectReference Include="..\CCCBusinessLayer\Business Layer.csproj">
       <Project>{081A088E-EC70-4679-8DBA-124FB6C5788F}</Project>
-      <Name>e-PleiePLAN Business</Name>
+      <Name>Business Layer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
