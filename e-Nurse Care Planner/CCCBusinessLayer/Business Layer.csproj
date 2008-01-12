@@ -103,6 +103,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CCC.dbml</DependentUpon>
     </Compile>
+    <Compile Include="CCC1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CCC.edmx</DependentUpon>
+    </Compile>
     <Compile Include="CCCFramework.cs" />
     <Compile Include="ExtendedDiagnosis.cs" />
     <Compile Include="myImage.cs" />
@@ -169,6 +174,7 @@
     <EmbeddedResource Include="bin\Debug\CarePlanDB.csdl" />
     <EmbeddedResource Include="bin\Debug\CarePlanDB.msl" />
     <EmbeddedResource Include="bin\Debug\CarePlanDB.ssdl" />
+    <None Include="App.Config" />
     <None Include="CarePlanTemplateDB.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>CarePlanTemplateDB.designer.cs</LastGenOutput>
@@ -177,6 +183,10 @@
     <None Include="CarePlanTemplateDB.dbml.layout">
       <DependentUpon>CarePlanTemplateDB.dbml</DependentUpon>
     </None>
+    <EntityDeploy Include="CCC.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CCC1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
