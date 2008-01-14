@@ -14,22 +14,22 @@ namespace CCC.UI
         private ListCollectionView _cvDiagnoses;
         private ListCollectionView _cvInterventions;
 
-        public ViewCCCFrameWork()
-            : base()
+        public ViewCCCFrameWork(string languageName)
+            : base(languageName)
         {
-            this._cvComponents = new ListCollectionView(this.Components);
-            this._cvDiagnoses = new ListCollectionView(this.Diagnoses);
-            this._cvInterventions = new ListCollectionView(this.Inteventions);
+            this.cvComponents = new ListCollectionView(this.Components);
+            this.cvDiagnoses = new ListCollectionView(this.Diagnoses);
+            this.cvInterventions = new ListCollectionView(this.Inteventions);
 
-            this._cvComponents.GroupDescriptions.Add(new PropertyGroupDescription("Pattern"));
-            this._cvComponents.SortDescriptions.Add(new SortDescription("Component", ListSortDirection.Ascending));
-            this._cvComponents.Refresh();
+            this.cvComponents.GroupDescriptions.Add(new PropertyGroupDescription("Pattern"));
+            this.cvComponents.SortDescriptions.Add(new SortDescription("Component", ListSortDirection.Ascending));
+            this.cvComponents.Refresh();
 
-            this._cvDiagnoses.SortDescriptions.Add(new SortDescription("MajorCode", ListSortDirection.Ascending));
-            this._cvDiagnoses.SortDescriptions.Add(new SortDescription("MinorCode", ListSortDirection.Ascending));
+            this.cvDiagnoses.SortDescriptions.Add(new SortDescription("MajorCode", ListSortDirection.Ascending));
+            this.cvDiagnoses.SortDescriptions.Add(new SortDescription("MinorCode", ListSortDirection.Ascending));
 
-            this._cvInterventions.SortDescriptions.Add(new SortDescription("MajorCode", ListSortDirection.Ascending));
-            this._cvInterventions.SortDescriptions.Add(new SortDescription("MinorCode", ListSortDirection.Ascending));
+            this.cvInterventions.SortDescriptions.Add(new SortDescription("MajorCode", ListSortDirection.Ascending));
+            this.cvInterventions.SortDescriptions.Add(new SortDescription("MinorCode", ListSortDirection.Ascending));
 
         }
 

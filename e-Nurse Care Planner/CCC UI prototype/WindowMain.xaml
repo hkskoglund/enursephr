@@ -646,8 +646,20 @@ Ticks="0, 1, 2, 3,4"/>
                               
                                 <StackPanel>
                                     <!-- LANGAUGE attrib change-->
-                                                                                    
-                                    <Expander Header="Framework : SABAKLASS 2.0N" IsExpanded="False">
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                      <TextBlock x:Name="tbFrameworkName" Text="{Binding Path=Name}" />
+                                      
+                                        <TextBlock Margin="5,0,0,0" x:Name="tbFrameworkVersion" Text="{Binding Path=Version}" />
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="by " />
+                                        <TextBlock x:Name="tbFrameworkAuthors" Text="{Binding Path=Authors}"/>
+                                         <TextBlock Text=" (copyright)" />
+                                     </StackPanel>
+                                   
+                                    <Expander Header="Care components" IsExpanded="False">
                                         <StackPanel>
                                      <!--       <TextBlock Margin="2" FontSize ="7" HorizontalAlignment="Left">Kunnskap støtte fra SABAKLASS 2.0N</TextBlock>
                                          -->

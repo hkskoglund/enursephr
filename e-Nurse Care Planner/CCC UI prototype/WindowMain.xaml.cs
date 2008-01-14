@@ -110,6 +110,13 @@ namespace CCC.UI
 
             private void Window_Loaded(object sender, RoutedEventArgs e)
             {
+                // LANGAUGE attrib
+                // Norwegian : av
+                // English : by
+
+                tbFrameworkAuthors.DataContext = App.cccFrameWork;
+                tbFrameworkName.DataContext = App.cccFrameWork;
+                tbFrameworkVersion.DataContext = App.cccFrameWork;
 
                 fdReaderPrettyCarePlan.Document = App.carePlan.fdPrettyCarePlan;
 
@@ -133,24 +140,37 @@ namespace CCC.UI
                 lbCareComponent.GroupStyle.Add(new GroupStyle());
                 lbCareComponent.ItemsSource = App.cccFrameWork.cvComponents;
                 lbCareComponent.SelectedIndex = 1; // Default to selfcare
-
+                
                
                 // Setup careplan templates sub-UI
 
-                CarePlanTemplateDBDataContext templateDB = new CarePlanTemplateDBDataContext();
+                //E CarePlanTemplateDBDataContext templateDB = new CarePlanTemplateDBDataContext();
 
-                ListCollectionView cvCarePlanTemplate = new ListCollectionView(templateDB.TemplateCarePlans.ToList());
+                //CareplanTemplateEntities templateDB = null;
+                //try
+                //{
+                //    templateDB = new CareplanTemplateEntities();
+                //}
+                //catch (Exception ex)
+                //{
+                //}
 
-                cvCarePlanTemplate.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
-                cvCarePlanTemplate.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
+// ERROR                List<TemplateCarePlan> careplanTemplateList = templateDB.TemplateCarePlan.ToList();
 
-                lbCarePlanTemplates.ItemsSource = cvCarePlanTemplate;
+                //List<TemplateCarePlan> careplanTemplateList = null;
+
+                //ListCollectionView cvCarePlanTemplate = new ListCollectionView(careplanTemplateList);
+
+                //cvCarePlanTemplate.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
+                //cvCarePlanTemplate.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
+
+                //lbCarePlanTemplates.ItemsSource = cvCarePlanTemplate;
 
 
-                // Test entity framework
+                //// Test entity framework
 
-                lcollviewDiagnosisEntities = new ListCollectionView(App.carePlan.DB.Diagnosis.ToList());
-                lbCarePlanDiagnosesEntities.ItemsSource = lcollviewDiagnosisEntities;
+                //lcollviewDiagnosisEntities = new ListCollectionView(App.carePlan.DB.Diagnosis.ToList());
+                //lbCarePlanDiagnosesEntities.ItemsSource = lcollviewDiagnosisEntities;
                
 
                 

@@ -61,9 +61,12 @@ namespace CCC.BusinessLayer
             {
             foreach (Diagnosi d in _diagnoses)
             {
-                Nursing_Diagnosi ndiag =   CCCDB.Nursing_Diagnosis.First(nd => nd.DiagnosisID ==  d.cccId);
+                // TEMPORARY TEST SOLUTION FOR LANGUAGAGE......
+                //Nursing_Diagnosi ndiag =   CCCDB.Nursing_Diagnosis.First(nd => nd.DiagnosisID ==  d.cccId);
+                Nursing_Diagnosi ndiag = CCCDB.Nursing_Diagnosis.Where(diag => diag.Language_Name == "nb-NO").First(nd => nd.DiagnosisID == d.cccId);
                 d.Concept = ndiag.Concept;
-                d.ComponentName = ndiag.Care_component.Component;
+                //E d.ComponentName = ndiag.Care_component.Component;
+                d.ComponentName = " To be found.....";
                 if (d.CreationDate != null)
                     d.CreationDateString = d.CreationDate.Value.ToLongDateString();
                 else d.CreationDateString = null;

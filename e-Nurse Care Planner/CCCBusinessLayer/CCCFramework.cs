@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 
 namespace CCC.BusinessLayer
 {
 
-    public class CCC_Framework
+    public class CCC_Framework : INotifyPropertyChanged 
     {
         private List<CarePattern> _patterns;
         private List<Care_component> _components;
@@ -18,30 +19,37 @@ namespace CCC.BusinessLayer
 
        //Estatic private CCCDataContext _db;
         static private CCCFrameworkEntities _db;
-       public CCC_Framework()
+
+
+        // Copyright information
+
+        private string _name;
+        private string _version;
+        private string _authors;
+
+       public CCC_Framework(string languageName)
         {
 
-            //E_db = new CCCDataContext();
            
            _db = new CCCFrameworkEntities();
 
-           // _db = new CCCDataContext(Properties.Settings.Default.CCCConnectionString);
-
-            //BUG???_db.ObjectTrackingEnabled = false;
-
-            // Read from framework database and fill up lists
-
-           
-            this._patterns = _db.CarePattern.ToList();
-            this._components = _db.Care_component.ToList();
-            this._diagnoses = _db.Nursing_Diagnosis.ToList();
-            this._interventions = _db.Nursing_Intervention.ToList();
-            // NOT implemented yet this._outcomes = _db.ExpectedOutcomes.ToList();
-
-            // Does not work in Visual Studio 2008 Beta 2???? db.ObjectTrackingEnabled = false; // Only want read access to framework, tip from Mike Taulty blog video
-
+           loadFramework(languageName);  
+         
  }
-      //E  public CCCDataContext DB
+       public void loadFramework(string languageName)
+       {
+           this.Name = _db.CopyrightSet.Where(c => c.Language_Name == languageName).First().Name;
+           this.Authors = _db.CopyrightSet.Where(c => c.Language_Name == languageName).First().Authors;
+           this.Version = _db.CopyrightSet.Where(c => c.Language_Name == languageName).First().Version;
+
+
+           this._patterns = _db.CarePattern.Where(p => p.Language_Name == languageName).ToList();
+           this._components = _db.Care_component.Where(p => p.Language_Name == languageName).ToList();
+           this._diagnoses = _db.Nursing_Diagnosis.Where(p => p.Language_Name == languageName).ToList();
+           this._interventions = _db.Nursing_Intervention.Where(p => p.Language_Name == languageName).ToList();
+           
+       }
+
     public CCCFrameworkEntities DB    
     {
             get { return _db; }
@@ -73,7 +81,44 @@ namespace CCC.BusinessLayer
         //    get { return this._outcomes; }
         //}
 
-       
 
+        public string Name
+        {
+            get { return this._name; }
+            set
+            {
+                this._name = value;
+                OnPropertyChanged("Name");
+            }
+                
+        }
+
+        public string Version
+        {
+            get { return this._version; }
+            set
+            {
+                this._version = value;
+                OnPropertyChanged("Version");
+            }
+        }
+
+        public string Authors
+        {
+            get { return this._authors; }
+            set
+            {
+                this._authors = value;
+                OnPropertyChanged("Authors");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected void OnPropertyChanged(string propertyName)        
+        { 
+            if (this.PropertyChanged != null)
+                  PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }     
     }
 }

@@ -22,28 +22,5 @@ namespace CCC.BusinessLayer.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=CCC;Integrated Security=True;Pooling=Fal" +
-            "se")]
-        public string CCCConnectionString {
-            get {
-                return ((string)(this["CCCConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=\"C:\\Programfiler\\Microsoft SQL Server\\M" +
-            "SSQL.1\\MSSQL\\Data\\Pleieplan.mdf\";Integrated Security=True;Connect Timeout=30;Use" +
-            "r Instance=True")]
-        public string PleieplanConnectionString {
-            get {
-                return ((string)(this["PleieplanConnectionString"]));
-            }
-        }
     }
 }

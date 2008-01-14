@@ -16,7 +16,7 @@ namespace CCC.UI
     public partial class App : Application
     {
      
-       public static ViewCCCFrameWork cccFrameWork = new ViewCCCFrameWork();
+       public static ViewCCCFrameWork cccFrameWork = new ViewCCCFrameWork("nb-No");
 
        public static ViewCarePlan carePlan = new ViewCarePlan(1, cccFrameWork.DB);
 
