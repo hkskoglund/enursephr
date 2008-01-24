@@ -110,14 +110,20 @@ namespace CCC.UI
 
             private void Window_Loaded(object sender, RoutedEventArgs e)
             {
+
+                
+                App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
+
+                App.carePlan = new ViewCarePlan(1, App.cccFrameWork.DB);
+                
+                
+                
+                
                 // LANGAUGE attrib
                 // Norwegian : av
                 // English : by
 
-                tbFrameworkAuthors.DataContext = App.cccFrameWork;
-                tbFrameworkName.DataContext = App.cccFrameWork;
-                tbFrameworkVersion.DataContext = App.cccFrameWork;
-
+              
                 fdReaderPrettyCarePlan.Document = App.carePlan.fdPrettyCarePlan;
 
                 lcoll.SortDescriptions.Add(new SortDescription("DateTaken", ListSortDirection.Ascending));
@@ -135,12 +141,7 @@ namespace CCC.UI
                 tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
 
 
-                lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
-              
-                lbCareComponent.GroupStyle.Add(new GroupStyle());
-                lbCareComponent.ItemsSource = App.cccFrameWork.cvComponents;
-                lbCareComponent.SelectedIndex = 1; // Default to selfcare
-                
+                refreshCCCFramework();                
                
                 // Setup careplan templates sub-UI
 
@@ -192,7 +193,35 @@ namespace CCC.UI
 
             }
 
-          
+
+            public void refreshCCCFramework()
+            {
+
+                cbLanguage.ItemsSource = App.cccFrameWork.FrameworkActual;
+                if (App.cccFrameWork.FrameworkActual != null)
+                    cbLanguage.ToolTip = "Last language integrity check was run on " +
+                        App.cccFrameWork.FrameworkActual[0].Date.ToString();
+                for (int i = 0; i < App.cccFrameWork.FrameworkActual.Count; i++)
+                {
+                    if (App.cccFrameWork.FrameworkActual[i].Language_Name == Properties.Settings.Default.LanguageName)
+                    {
+                        cbLanguage.SelectedItem = App.cccFrameWork.FrameworkActual[i];
+                        break;
+                    }
+                }
+
+                tbFrameworkAuthors.DataContext = App.cccFrameWork;
+                tbFrameworkName.DataContext = App.cccFrameWork;
+                tbFrameworkVersion.DataContext = App.cccFrameWork;
+
+                //lbCareComponent.GroupStyle.Add(new GroupStyle());
+                lbCareComponent.ItemsSource = App.cccFrameWork.cvComponents;
+                lbCareComponent.SelectedIndex = 1; // Default to selfcare
+
+                lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
+
+            }
+
             private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
             {
                 TextBox tb = sender as TextBox;
@@ -262,7 +291,7 @@ namespace CCC.UI
             private bool FilterOutDiagnosesSearch(object item)
             { // Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                Nursing_Diagnosi nd = item as Nursing_Diagnosi;
+                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
 
                 if (nd == null)
                     return false;
@@ -345,7 +374,7 @@ namespace CCC.UI
             private bool FilterOutDiagnoses(object item)
             { // Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                Nursing_Diagnosi nd = item as Nursing_Diagnosi;
+                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
 
 
                 if (nd == null)
@@ -392,7 +421,7 @@ namespace CCC.UI
             {
 
                 ListBox lb = sender as ListBox;
-                Nursing_Diagnosi nursingDiagnosis = lb.SelectedItem as Nursing_Diagnosi;
+                Nursing_Diagnosis nursingDiagnosis = lb.SelectedItem as Nursing_Diagnosis;
 
                 // Create new Diagnosis object
 
@@ -409,7 +438,7 @@ namespace CCC.UI
 
                 diag.CarePlan = App.carePlan.DB.CarePlan.First(c => c.Id == 1);
                //E diag.CarePlan.Id = 1;
-                diag.cccId = nursingDiagnosis.DiagnosisID;
+                diag.cccId = nursingDiagnosis.Id;
                 diag.Concept = nursingDiagnosis.Concept;
                 diag.ComponentName = nursingDiagnosis.Care_component.Component;
                 diag.CreationDate = DateTime.Now;
@@ -511,7 +540,8 @@ namespace CCC.UI
 
                 if (cbGroupByTime != null)
                 cbGroupByTime.IsChecked = false;
-                App.carePlan.GroupByComponentName = true;
+                if (App.carePlan != null)
+                  App.carePlan.GroupByComponentName = true;
                 //App.carePlan.cvDiagnoses.GroupDescriptions.Clear();
                 //App.carePlan.cvDiagnoses.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
                 //App.carePlan.cvDiagnoses.SortDescriptions.Add(new SortDescription("ComponentName", ListSortDirection.Descending));
@@ -903,6 +933,33 @@ namespace CCC.UI
             private void lbImage_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
             {
                 e.Handled = true; // Necessary to not unselect item, tip taken from the web
+            }
+
+            private void MenuItemLanguageIntegrity_Click(object sender, RoutedEventArgs e)
+            {
+                WindowLangShallowAnalysis winLangShallowAnalysis = new WindowLangShallowAnalysis();
+                winLangShallowAnalysis.ShowDialog();
+                App.cccFrameWork.loadFrameworkAnalysis();
+                refreshCCCFramework();
+            }
+
+            private void cbLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                FrameworkActual selItem = (FrameworkActual)(sender as ComboBox).SelectedItem;
+                if (selItem != null)
+                   {
+                       if (selItem.Language_Name != Properties.Settings.Default.LanguageName)
+                       {
+                           Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
+                           Properties.Settings.Default.Save();
+
+                           App.cccFrameWork.DB.Dispose();
+                           App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
+                           refreshCCCFramework();
+                       }
+
+                    }
+
             }
 
         }

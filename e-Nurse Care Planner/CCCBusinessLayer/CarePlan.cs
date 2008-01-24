@@ -63,7 +63,7 @@ namespace CCC.BusinessLayer
             {
                 // TEMPORARY TEST SOLUTION FOR LANGUAGAGE......
                 //Nursing_Diagnosi ndiag =   CCCDB.Nursing_Diagnosis.First(nd => nd.DiagnosisID ==  d.cccId);
-                Nursing_Diagnosi ndiag = CCCDB.Nursing_Diagnosis.Where(diag => diag.Language_Name == "nb-NO").First(nd => nd.DiagnosisID == d.cccId);
+                Nursing_Diagnosis ndiag = CCCDB.Nursing_DiagnosisSet.Where(diag => diag.Language_Name == "nb-NO").First(nd => nd.Id == d.cccId);
                 d.Concept = ndiag.Concept;
                 //E d.ComponentName = ndiag.Care_component.Component;
                 d.ComponentName = " To be found.....";

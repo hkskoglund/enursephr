@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CCC.BusinessLayer.ActionType" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABAAKAkgBAGAAAAAggAAAAAAAAUAgAAAAAAAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Annot" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEEAAAAAAQAAABAAAAAAABAAAABAAAAAECAAUAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Care_component" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAQCAggBAGQEAAAggIAAQAAQAEAgCAABAgACAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.CarePattern" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAgBAGAAAAAggAAAQAAQAAAACAAAAAACAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.CarePlan" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACIAACAQEgABAFAAAAoAQABAAAQAAEAQQQAAAUAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.CareplanTemplateEntities" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAIAAAAAAAAIAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.CCC_Framework" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgABoQACAAAAIIAAIAAAAAQCgQDCEAAAAAgAAAAEABA=</HashCode>
+      <FileName>CCCFramework.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CCC.BusinessLayer.CCCFrameworkEntities" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IACIIQAACAQAEYAAIAAAAEAAAAEBICAAIiKBAAAIKAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Copyright" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACIACAAgAAAAAAIAgAIQQAEABAQAAAAAAQAAAiAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Diagnosi" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wCBCUgEAAIAEWAAiBAgQAAAZhAIwEJABkAA0EQgUABU=</HashCode>
+      <FileName>ExtendedDiagnosis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Framework" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAwEACAAAAKACIBIACACQQQMEAEEGAEgABAAAAgAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.FrameworkActual" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAFAIADAAkBAQDCBIAgVAAIAkAMQACBJFIA0CIggIQQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.langFramework">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoIABAAAQIAEAIBIAoAAAQAAgAAwAAAIoAgEAMAwIQI=</HashCode>
+      <FileName>LanguageFramework.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.myCarePlan" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADgAAAAAAAAAABAARAAAAAAAAAEAAAAIAQAAAAABA=</HashCode>
+      <FileName>CarePlan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.myImage" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAQAAAgAAQEAAAAAAAAAAAAAIABAAAAAiBQAAg=</HashCode>
+      <FileName>myImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Nursing_Diagnosi" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CECQAACCQgDAGAACAAgggAAAAoEEKBAAxQAAEAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.Nursing_Intervention" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CECQAACCQgBAGAACAAggAAAAAIEECBABRQAAEAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.OutcomeType" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAggBAGAAAQAggAAAEAAIAEAgAAAAAAAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.PleieplanEntitiesv2" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAMABAAIAAAhAAAIAAgAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC.BusinessLayer.TemplateCarePlan" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACEgAAAAAAAAIAQAABAARAAEAAQAAABACAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

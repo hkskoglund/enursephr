@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CCC.BusinessLayer.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CCC.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="CCCConnectionString" Type="(Connection string)" Scope="Application">
@@ -17,6 +17,12 @@
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename="C:\Programfiler\Microsoft SQL Server\MSSQL.1\MSSQL\Data\Pleieplan.mdf";Integrated Security=True;Connect Timeout=30;User Instance=True</Value>
+    </Setting>
+    <Setting Name="Version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2.0</Value>
+    </Setting>
+    <Setting Name="LanguageName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">nb-NO</Value>
     </Setting>
   </Settings>
 </SettingsFile>

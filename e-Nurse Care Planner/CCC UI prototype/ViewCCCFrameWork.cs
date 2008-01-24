@@ -5,6 +5,7 @@ using System.Text;
 using CCC.BusinessLayer;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace CCC.UI
 {
@@ -31,7 +32,12 @@ namespace CCC.UI
             this.cvInterventions.SortDescriptions.Add(new SortDescription("MajorCode", ListSortDirection.Ascending));
             this.cvInterventions.SortDescriptions.Add(new SortDescription("MinorCode", ListSortDirection.Ascending));
 
+            this.cvComponents.Refresh();
+            this.cvDiagnoses.Refresh();
+            this.cvInterventions.Refresh();
         }
+
+       
 
         public ListCollectionView cvComponents
         {

@@ -8,6 +8,7 @@ using CCC.BusinessLayer;
 using System.Threading;
 using System.IO;
 
+
 namespace CCC.UI
 {
     /// <summary>
@@ -16,16 +17,15 @@ namespace CCC.UI
     public partial class App : Application
     {
      
-       public static ViewCCCFrameWork cccFrameWork = new ViewCCCFrameWork("nb-No");
+       public static ViewCCCFrameWork cccFrameWork; //= new ViewCCCFrameWork();
 
-       public static ViewCarePlan carePlan = new ViewCarePlan(1, cccFrameWork.DB);
+       public static ViewCarePlan carePlan; // = new ViewCarePlan(1, cccFrameWork.DB);
 
-       
-
+      
         void AppStartup(object sender, StartupEventArgs args)
         {
 
-            WindowMain mainWindow = new WindowMain ();
+            WindowMain mainWindow = new WindowMain();
 
              mainWindow.Show();
            

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CCC.UI</RootNamespace>
-    <AssemblyName>e-PleiePLAN</AssemblyName>
+    <AssemblyName>e-Nurse Care Planner</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -21,6 +21,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <PublishUrl>\\Henning_pc\Recorded TV\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -37,10 +41,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -104,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="WindowDatabaseError.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WindowImageShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +119,10 @@
     <Page Include="WindowConcurrencyException.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowLangShallowAnalysis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +146,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LanguageAnalysis.cs" />
+    <Compile Include="WindowDatabaseError.xaml.cs">
+      <DependentUpon>WindowDatabaseError.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowImageShow.xaml.cs">
       <DependentUpon>WindowImageShow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -171,7 +183,11 @@
     <Compile Include="WindowCopyright.xaml.cs">
       <DependentUpon>WindowCopyright.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowLangShallowAnalysis.xaml.cs">
+      <DependentUpon>WindowLangShallowAnalysis.xaml</DependentUpon>
+    </Compile>
     <None Include="App.Config" />
+    <None Include="UI.cd" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -216,14 +232,29 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Bilder\old man.jpg" />
+    <Resource Include="Images\old man.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Bilder\old woman.jpg" />
+    <Resource Include="Images\old woman.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Bilder\arrow-down-red_benji_par_01.png" />
-    <Resource Include="Bilder\arrow-up-green_benji_par_01.png" />
+    <Resource Include="Images\arrow-down-red_benji_par_01.png" />
+    <Resource Include="Images\arrow-up-green_benji_par_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\nb-NO.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\en-US.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\ko-KR.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ERROR.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Video\" />

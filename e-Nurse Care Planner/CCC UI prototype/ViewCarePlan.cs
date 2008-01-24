@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CCC.BusinessLayer;
+
 using System.Windows.Data;
 using System.Threading;
 using System.ComponentModel;
@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CCC.BusinessLayer;
 
 namespace CCC.UI
 {
@@ -224,7 +225,7 @@ namespace CCC.UI
                                 English : "Patient have"
                                 */ 
                                
-            p.Inlines.Add(new Bold(new Run("Patient have")));
+            p.Inlines.Add(new Bold(new Run("Patient has")));
             this.fdPrettyCarePlan.Blocks.Add(p);
 
             string previousComponentName = null;
