@@ -58,11 +58,7 @@ namespace CCC.UI
 
                 //Keep grouping and sorting please...
 
-                System.Collections.ObjectModel.ObservableCollection<GroupDescription> 
-                    gruppering = App.carePlan.cvDiagnoses.GroupDescriptions;
-                
-                SortDescriptionCollection 
-                    sortering = App.carePlan.cvDiagnoses.SortDescriptions;
+                bool previousgroupByComponentName = App.carePlan.GroupByComponentName;
               
                 int careplanid = App.carePlan.Id;
                 App.carePlan.DB.Dispose();
@@ -89,18 +85,12 @@ namespace CCC.UI
                   
                 //EApp.carePlan.cvDiagnoses = new ListCollectionView(App.carePlan.Diagnoses);
                 App.carePlan.cvDiagnoses = new ListCollectionView(App.carePlan._diagnoses);
-
-                foreach (GroupDescription g in gruppering)
-                  App.carePlan.cvDiagnoses.GroupDescriptions.Add(g);
-                
-                foreach (SortDescription s in sortering)
-                    App.carePlan.cvDiagnoses.SortDescriptions.Add(s);
-               
+                App.carePlan.GroupByComponentName = previousgroupByComponentName;
                 App.carePlan.cvDiagnoses.Refresh();
                 lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
                 
 
-                 App.carePlan.PrettyCarePlan_Update();
+                 App.carePlan.PrettyCarePlan_Update(lcoll);
 
                  annotationservice.stopAnnotationService();
                  annotationservice.startAnnotationService(fdReaderPrettyCarePlan, lbAnnotations, App.carePlan);
@@ -108,16 +98,41 @@ namespace CCC.UI
 
                 }
 
+            private void showDatabaseError(Exception ex)
+            {
+
+                WindowDatabaseError wDatabaseError = new WindowDatabaseError();
+              //  wDatabaseError.tbDatabaseError.Text = "Cannot access database server : " + conn.DataSource;
+                wDatabaseError.tbDatabaseErrorDetail.Text = ex.Source + ": " + ex.Message + "\n";
+                if (ex.InnerException != null)
+                    wDatabaseError.tbDatabaseErrorDetail.Text += ex.InnerException.Source + ": " + ex.InnerException.Message + "\n";
+                wDatabaseError.tbDatabaseErrorDetail.Text += ex.StackTrace;
+
+                wDatabaseError.ShowDialog();
+
+            }
+
             private void Window_Loaded(object sender, RoutedEventArgs e)
             {
 
-                
-                App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
+                // Load CCC Framework 
+
+                try
+                {
+                    App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
+                }
+                catch (Exception exception)
+                {
+                    showDatabaseError(exception);
+                    App.Current.Shutdown();
+                  
+                }
+
+
+                // Load a test care plan
 
                 App.carePlan = new ViewCarePlan(1, App.cccFrameWork.DB);
-                
-                
-                
+                 
                 
                 // LANGAUGE attrib
                 // Norwegian : av
@@ -189,11 +204,11 @@ namespace CCC.UI
 
 
                 
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
 
             }
 
-
+           
             public void refreshCCCFramework()
             {
 
@@ -477,7 +492,7 @@ namespace CCC.UI
                 lbCarePlanDiagnoses.ItemsSource = cvcarePlanDiagnoses; */
                 lbCarePlanDiagnoses.Visibility = Visibility.Visible;
 
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
 
 
             }
@@ -491,7 +506,7 @@ namespace CCC.UI
                 if (App.carePlan.DB.Diagnosis.Count() == 0)
                     lbCarePlanDiagnoses.Visibility = Visibility.Collapsed;
 
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
 
 
             }
@@ -539,31 +554,29 @@ namespace CCC.UI
             {
 
                 if (cbGroupByTime != null)
-                cbGroupByTime.IsChecked = false;
+                  cbGroupByTime.IsChecked = false;
+
                 if (App.carePlan != null)
-                  App.carePlan.GroupByComponentName = true;
-                //App.carePlan.cvDiagnoses.GroupDescriptions.Clear();
-                //App.carePlan.cvDiagnoses.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
-                //App.carePlan.cvDiagnoses.SortDescriptions.Add(new SortDescription("ComponentName", ListSortDirection.Descending));
-                //App.carePlan.cvDiagnoses.Refresh();
+                {
+                    App.carePlan.GroupByComponentName = true;
 
-                /*
-                cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
-                cvcarePlanInterventions.Refresh(); */
-                //App.carePlan.PrettyCarePlan_Update();
 
+                    /*
+                    cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
+                    cvcarePlanInterventions.Refresh(); */
+                    App.carePlan.PrettyCarePlan_Update(lcoll);
+                }
 
             }
 
             private void rbGroupByComponents_Unchecked(object sender, RoutedEventArgs e)
             {
                 App.carePlan.GroupByComponentName = false;
-                ////App.carePlan.cvDiagnoses.GroupDescriptions.Clear();
-                ////App.carePlan.cvDiagnoses.Refresh();
                 /////*
                 //cvcarePlanInterventions.GroupDescriptions.Clear();
                 //cvcarePlanInterventions.Refresh(); */
-                //App.carePlan.PrettyCarePlan_Update();
+            
+                App.carePlan.PrettyCarePlan_Update(lcoll);
 
             }
 
@@ -582,7 +595,7 @@ namespace CCC.UI
                 if (App.carePlan.DB.Diagnosis.Count() == 0)
                     lbCarePlanDiagnoses.Visibility = Visibility.Collapsed;
 
-                //App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
 
             }
 
@@ -634,7 +647,7 @@ namespace CCC.UI
                 //ccNursingDiagnosisChange.Visibility = Visibility.Collapsed;
                 // lbCarePlanDiagnoses.Visibility = Visibility.Visible;
                 App.carePlan.cvDiagnoses.Refresh();
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
                 timer.Start(); // Stopped in change diagnosis dialog
             }
 
@@ -815,7 +828,7 @@ namespace CCC.UI
                 /*
                 cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
                 cvcarePlanInterventions.Refresh(); */
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
             }
 
             private void cbGroupByTime_Unchecked(object sender, RoutedEventArgs e)
@@ -879,7 +892,7 @@ namespace CCC.UI
                         {
                             /* LANGUAGE attrib */
                                
-                            myimg.DateTaken = "Unknow date";
+                            myimg.DateTaken = "Unknown date";
                             myimg.Camera = "Unknown camera";
                         }
                        //BitmapMetadataBlob b = new BitmapMetadataBlob(myimg.Meta.ToArray<Byte>());
@@ -890,10 +903,11 @@ namespace CCC.UI
                         coll.Add(myimg);
 
 
-                    }
+                    } // For each
+
                     e.Handled = true;
                     lcoll.Refresh();
-                    App.carePlan.PrettyCarePlan_Update();
+                    App.carePlan.PrettyCarePlan_Update(lcoll);
                 }
 
                
@@ -915,7 +929,7 @@ namespace CCC.UI
                 foreach (myImage img in lbImage.SelectedItems)
                     coll.Remove(img);
                 lcoll.Refresh();
-                App.carePlan.PrettyCarePlan_Update();
+                App.carePlan.PrettyCarePlan_Update(lcoll);
             }
 
 
@@ -937,10 +951,17 @@ namespace CCC.UI
 
             private void MenuItemLanguageIntegrity_Click(object sender, RoutedEventArgs e)
             {
-                WindowLangShallowAnalysis winLangShallowAnalysis = new WindowLangShallowAnalysis();
-                winLangShallowAnalysis.ShowDialog();
-                App.cccFrameWork.loadFrameworkAnalysis();
-                refreshCCCFramework();
+                try
+                {
+                    WindowMultiLanguageIntegrity  winMultiLangIntegrity = new WindowMultiLanguageIntegrity();
+                    winMultiLangIntegrity.ShowDialog();
+                    App.cccFrameWork.loadFrameworkAnalysis();
+                    refreshCCCFramework();
+                }
+                catch (Exception exception)
+                {
+                    showDatabaseError(exception);
+                }
             }
 
             private void cbLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)

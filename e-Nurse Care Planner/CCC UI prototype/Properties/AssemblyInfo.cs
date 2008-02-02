@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("e-PleiePLAN")]
+[assembly: AssemblyTitle("e-Nurse Care Planner")]
 [assembly: AssemblyDescription("Care planning and CCC framework browsing")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Siv.ing. Henning Skoglund e-Pleie")]
-[assembly: AssemblyProduct("e-PleiePLAN")]
-[assembly: AssemblyCopyright("Copyright ©  2007 Siv.ing. Henning Skoglund e-Pleie")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("e-Nurse Care Planner")]
+[assembly: AssemblyCopyright("Copyright ©  2007 Henning Knut Skoglund")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

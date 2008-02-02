@@ -1,0 +1,278 @@
+﻿<Window x:Class="CCC.UI.WindowMultiLanguageIntegrity"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Framework multi-language integrity" SizeToContent="WidthAndHeight"  Loaded="Window_Loaded" ResizeMode="CanMinimize">
+    <Window.Resources>
+        
+        <DataTemplate x:Key="BigCodeTemplate">
+        <StackPanel Orientation="Horizontal">
+            <!--<CheckBox IsChecked="{Binding Path=Verified}" IsEnabled="False"></CheckBox>-->
+            <TextBlock Margin="5,0,0,0" Text="{Binding Path=ComponentCode}"></TextBlock>
+            <TextBlock Margin="5,0,0,0" Text="{Binding Path=MajorCode}"></TextBlock>
+            <TextBlock Margin="5,0,0,0" Text="{Binding Path=MinorCode}"></TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CodeTemplate">
+        <StackPanel Orientation="Horizontal">
+            <!--<CheckBox IsChecked="{Binding Path=Verified}" IsEnabled="False"></CheckBox>-->
+            <TextBlock Margin="5,0,0,0" Text="{Binding Path=Code}"></TextBlock>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FrameworkElementTemplate" >
+        <StackPanel Orientation="Horizontal">
+            <Image x:Name="imgStatus" Source="Images/ERROR.png" Height="22"/>
+            <TextBlock Margin="5,0,0,0" Text="{Binding Path=FrameworkElement}" VerticalAlignment="Center" />
+            </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=MissingListCount}"  Value="0">
+                <Setter  Property="Source" TargetName="imgStatus" Value="Images/OK.png"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    </Window.Resources>
+
+    <StackPanel x:Name="spCCCMultiLanguageIntegrity">
+        <StackPanel >
+            <!--<StackPanel Orientation="Horizontal">
+            <TextBlock>CCC framework version: </TextBlock>
+            <TextBlock x:Name="tbVersion" Text="{Binding Path=Version}" />
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Expected number of care patterns: </TextBlock>
+            <TextBlock x:Name="tbCarePattern" Text="{Binding Path=ExpectedNumberOfCarePatterns}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Expected number of care components: </TextBlock>
+            <TextBlock x:Name="tbCareComponent" Text="{Binding Path=ExpectedNumberOfCareComponents}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Expected number of diagnoses: </TextBlock>
+            <TextBlock x:Name="tbDiagnose" Text="{Binding Path=ExpectedNumberOfDiagnoses}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Expected number of interventions: </TextBlock>
+            <TextBlock x:Name="tbIntervention" Text="{Binding Path=ExpectedNumberOfInterventions}" />
+        </StackPanel>-->
+
+
+            <ListView x:Name ="lvLanguageShallow" SelectionChanged="lvLanguageShallow_SelectionChanged"    >
+
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment"  Value="Center" />
+
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+
+                <ListView.View>
+
+                    <GridView x:Name="gvView" AllowsColumnReorder="False" ColumnHeaderToolTip="{Binding Path=ExpectedInfo}">
+
+                        <GridViewColumn x:Name="gvcLanguage" Header="Language"
+                      Width="90" >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image x:Name="imgFlag" Height="22" ToolTip="{Binding Path=MetaInfo}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=LanguageName}" Value="nb-NO">
+                                            <Setter Property="Source" Value="Flags/nb-No.gif" TargetName="imgFlag" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=LanguageName}" Value="en-US">
+                                            <Setter Property="Source" Value="Flags/en-US.gif" TargetName="imgFlag" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=LanguageName}" Value="ko-KR">
+                                            <Setter Property="Source" Value="Flags/ko-KR.gif" TargetName="imgFlag" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="gvcCarePattern" Width="100" Header="Care Pattern" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=CarePatternsShallow}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=CarePatternsAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=CarePatternsAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="gvcCareComponent" Width="120" Header="Care Component">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=CareComponentsShallow}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=CareComponentsAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=CareComponentsAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+
+
+                        <GridViewColumn x:Name="gvcDiagnosis" Width="100" Header="Diagnoses">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=NursingDiagnosesShallow}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=DiagnosesAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=DiagnosesAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+                        <GridViewColumn x:Name="gvcIntervention" Width="120" Header="Interventions">
+                            <GridViewColumn.CellTemplate>
+
+                                <DataTemplate>
+
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=NursingInterventionsShallow}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=InterventionsAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=InterventionsAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="gvcOutcomeTypes" Width="120" Header="Outcomes">
+                            <GridViewColumn.CellTemplate>
+
+                                <DataTemplate>
+
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=OutcomeTypesShallow}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=OutcomeTypesAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=OutcomeTypesAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="gvcActionTypes" Width="120" Header="Actions">
+                            <GridViewColumn.CellTemplate>
+
+                                <DataTemplate>
+
+                                    <Image x:Name="imgStatus" Height="22" ToolTip="{Binding Path=ActionTypesShallow}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=ActionTypesAsExpected}" Value="True">
+                                            <Setter Property="Source" Value="Images/OK.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=ActionTypesAsExpected}" Value="False">
+                                            <Setter Property="Source" Value="Images/ERROR.png" TargetName="imgStatus" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+                    </GridView>
+
+                </ListView.View>
+            </ListView>
+
+
+        </StackPanel>
+
+        <StackPanel x:Name="spDLA" Visibility="Collapsed" >
+
+            <StackPanel Orientation="Horizontal" Margin="5,0,5,0" >
+                <StackPanel x:Name="spDLFrameworkElement" Visibility="Collapsed">
+                    <TextBlock Text="Framework Element" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" />
+                    <ListBox x:Name="lbFramework"
+                     ItemTemplate="{StaticResource FrameworkElementTemplate}"
+                     SelectionChanged="lbFramework_SelectionChanged" />
+                </StackPanel>
+
+                <StackPanel x:Name="spDLMissingCodes" Margin="5,0,0,0" Visibility="Collapsed">
+                    <TextBlock HorizontalAlignment="Center" Text="Missing codes" FontSize="12" FontWeight="Bold" />
+                    <ListBox x:Name="lbDLMissingCodes" MaxHeight="150" />
+                </StackPanel>
+
+                <StackPanel x:Name="spDLSummary" Visibility="Collapsed">
+                    <TextBlock Text="Summary" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Path=MetaInfo}"/>
+                </StackPanel>
+
+            </StackPanel>
+            
+             <StatusBar x:Name="sbActivity" >
+                    <StatusBarItem>
+                        <TextBlock x:Name="tbActivity" Text="{Binding Path=Activity}" />
+            </StatusBarItem>
+                    <StatusBarItem>
+                        <Grid Width="100" Height="20">
+                            <ProgressBar x:Name="pbBackground"   />
+                            <!--<Viewbox>
+                        <TextBlock>
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Text" Value="Analyzing..." />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Value, ElementName=pbBackground}" Value="100">
+                <Setter Property="Text" Value="Complete" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+
+      </TextBlock>
+                </Viewbox>-->
+
+                        </Grid>
+                    </StatusBarItem>
+
+                </StatusBar>
+
+           
+        </StackPanel>
+    </StackPanel>
+</Window>

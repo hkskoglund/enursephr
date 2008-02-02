@@ -93,7 +93,7 @@
                 <!--<Paragraph Style="{StaticResource BodyText}">
                     Tilbakemeldinger kan rettes til e-post: hk-sko@online.no
                 </Paragraph>-->
-                <Paragraph Style="{StaticResource SubTitle}">
+                <!--<Paragraph Style="{StaticResource SubTitle}">
                     Copyright notice of CCC framework
                 </Paragraph>
                 <Paragraph Style="{StaticResource BodyText}">
@@ -102,7 +102,7 @@
                     <LineBreak />
                     M.Sc. og Nurse Karl Oyri
 
-                </Paragraph>
+                </Paragraph>-->
             </FlowDocument>
         </FlowDocumentScrollViewer>
     

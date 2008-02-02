@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CCCFrameworkModel.Store" Alias="Self" ProviderManifestToken="09.00.3042" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+<Schema Namespace="CCC.BusinessLayer.Store" Alias="Self" ProviderManifestToken="09.00.3042" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
   <EntityContainer Name="dbo">
-    <EntitySet Name="ActionType" EntityType="CCCFrameworkModel.Store.ActionType" />
-    <EntitySet Name="Care component" EntityType="CCCFrameworkModel.Store.Care component" />
-    <EntitySet Name="CarePattern" EntityType="CCCFrameworkModel.Store.CarePattern" />
-    <EntitySet Name="Copyright" EntityType="CCCFrameworkModel.Store.Copyright" />
-    <EntitySet Name="Framework" EntityType="CCCFrameworkModel.Store.Framework" />
-    <EntitySet Name="FrameworkActual" EntityType="CCCFrameworkModel.Store.FrameworkActual" />
-    <EntitySet Name="Nursing Diagnosis" EntityType="CCCFrameworkModel.Store.Nursing Diagnosis" />
-    <EntitySet Name="Nursing Intervention" EntityType="CCCFrameworkModel.Store.Nursing Intervention" />
-    <EntitySet Name="OutcomeType" EntityType="CCCFrameworkModel.Store.OutcomeType" />
-    <AssociationSet Name="FK_Care component_CarePattern" Association="CCCFrameworkModel.Store.FK_Care component_CarePattern">
+    <EntitySet Name="ActionType" EntityType="CCC.BusinessLayer.Store.ActionType" />
+    <EntitySet Name="Care component" EntityType="CCC.BusinessLayer.Store.Care component" />
+    <EntitySet Name="CarePattern" EntityType="CCC.BusinessLayer.Store.CarePattern" />
+    <EntitySet Name="Copyright" EntityType="CCC.BusinessLayer.Store.Copyright" />
+    <EntitySet Name="Framework" EntityType="CCC.BusinessLayer.Store.Framework" />
+    <EntitySet Name="FrameworkActual" EntityType="CCC.BusinessLayer.Store.FrameworkActual" />
+    <EntitySet Name="Nursing Diagnosis" EntityType="CCC.BusinessLayer.Store.Nursing Diagnosis" />
+    <EntitySet Name="Nursing Intervention" EntityType="CCC.BusinessLayer.Store.Nursing Intervention" />
+    <EntitySet Name="OutcomeType" EntityType="CCC.BusinessLayer.Store.OutcomeType" />
+    <AssociationSet Name="FK_Care component_CarePattern" Association="CCC.BusinessLayer.Store.FK_Care component_CarePattern">
       <End Role="CarePattern" EntitySet="CarePattern" />
       <End Role="Care component" EntitySet="Care component" />
     </AssociationSet>
-    <AssociationSet Name="FK_Nursing Diagnosis_Care component" Association="CCCFrameworkModel.Store.FK_Nursing Diagnosis_Care component">
+    <AssociationSet Name="FK_Nursing Diagnosis_Care component" Association="CCC.BusinessLayer.Store.FK_Nursing Diagnosis_Care component">
       <End Role="Care component" EntitySet="Care component" />
       <End Role="Nursing Diagnosis" EntitySet="Nursing Diagnosis" />
     </AssociationSet>
-    <AssociationSet Name="FK_Nursing Intervention_Care component" Association="CCCFrameworkModel.Store.FK_Nursing Intervention_Care component">
+    <AssociationSet Name="FK_Nursing Intervention_Care component" Association="CCC.BusinessLayer.Store.FK_Nursing Intervention_Care component">
       <End Role="Care component" EntitySet="Care component" />
       <End Role="Nursing Intervention" EntitySet="Nursing Intervention" />
     </AssociationSet>
@@ -29,6 +29,7 @@
       <PropertyRef Name="Code" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" MaxLength="10" />
     <Property Name="Code" Type="smallint" Nullable="false" />
     <Property Name="ActionType" Type="nvarchar" MaxLength="50" />
     <Property Name="Definition" Type="nvarchar" MaxLength="100" />
@@ -36,10 +37,12 @@
   <EntityType Name="Care component">
     <Key>
       <PropertyRef Name="Language Name" />
+      <PropertyRef Name="Version" />
       <PropertyRef Name="Code" />
       <PropertyRef Name="PatternId" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="Code" Type="char" Nullable="false" MaxLength="1" />
     <Property Name="PatternId" Type="smallint" Nullable="false" />
     <Property Name="Pattern" Type="nvarchar" Nullable="false" MaxLength="50" />
@@ -49,9 +52,11 @@
   <EntityType Name="CarePattern">
     <Key>
       <PropertyRef Name="Language Name" />
+      <PropertyRef Name="Version" />
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="Id" Type="smallint" Nullable="false" />
     <Property Name="Pattern" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Definition" Type="nvarchar" MaxLength="255" />
@@ -97,11 +102,13 @@
   <EntityType Name="Nursing Diagnosis">
     <Key>
       <PropertyRef Name="Language Name" />
+      <PropertyRef Name="Version" />
       <PropertyRef Name="Id" />
       <PropertyRef Name="PatternId" />
       <PropertyRef Name="ComponentCode" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="PatternId" Type="smallint" Nullable="false" />
     <Property Name="ComponentCode" Type="char" Nullable="false" MaxLength="1" />
@@ -113,11 +120,13 @@
   <EntityType Name="Nursing Intervention">
     <Key>
       <PropertyRef Name="Language Name" />
+      <PropertyRef Name="Version" />
       <PropertyRef Name="ComponentCode" />
       <PropertyRef Name="Id" />
       <PropertyRef Name="PatternId" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="ComponentCode" Type="char" Nullable="false" MaxLength="1" />
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="PatternId" Type="smallint" Nullable="false" />
@@ -132,51 +141,58 @@
       <PropertyRef Name="Code" />
     </Key>
     <Property Name="Language Name" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="Version" Type="nvarchar" MaxLength="10" />
     <Property Name="Code" Type="smallint" Nullable="false" />
     <Property Name="Outcome" Type="nvarchar" MaxLength="30" />
     <Property Name="Definition" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <Association Name="FK_Care component_CarePattern">
-    <End Role="CarePattern" Type="CCCFrameworkModel.Store.CarePattern" Multiplicity="1" />
-    <End Role="Care component" Type="CCCFrameworkModel.Store.Care component" Multiplicity="*" />
+    <End Role="CarePattern" Type="CCC.BusinessLayer.Store.CarePattern" Multiplicity="1" />
+    <End Role="Care component" Type="CCC.BusinessLayer.Store.Care component" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="CarePattern">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Care component">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="PatternId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Nursing Diagnosis_Care component">
-    <End Role="Care component" Type="CCCFrameworkModel.Store.Care component" Multiplicity="1" />
-    <End Role="Nursing Diagnosis" Type="CCCFrameworkModel.Store.Nursing Diagnosis" Multiplicity="*" />
+    <End Role="Care component" Type="CCC.BusinessLayer.Store.Care component" Multiplicity="1" />
+    <End Role="Nursing Diagnosis" Type="CCC.BusinessLayer.Store.Nursing Diagnosis" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Care component">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="Code" />
         <PropertyRef Name="PatternId" />
       </Principal>
       <Dependent Role="Nursing Diagnosis">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="ComponentCode" />
         <PropertyRef Name="PatternId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Nursing Intervention_Care component">
-    <End Role="Care component" Type="CCCFrameworkModel.Store.Care component" Multiplicity="1" />
-    <End Role="Nursing Intervention" Type="CCCFrameworkModel.Store.Nursing Intervention" Multiplicity="*" />
+    <End Role="Care component" Type="CCC.BusinessLayer.Store.Care component" Multiplicity="1" />
+    <End Role="Nursing Intervention" Type="CCC.BusinessLayer.Store.Nursing Intervention" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Care component">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="Code" />
         <PropertyRef Name="PatternId" />
       </Principal>
       <Dependent Role="Nursing Intervention">
         <PropertyRef Name="Language Name" />
+        <PropertyRef Name="Version" />
         <PropertyRef Name="ComponentCode" />
         <PropertyRef Name="PatternId" />
       </Dependent>

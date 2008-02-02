@@ -49,7 +49,7 @@ namespace CCC.UI
 
                 this._groupByComponentName = value;  
                 this._cvDiagnoses.Refresh();
-                this.PrettyCarePlan_Update();
+             //TESTING MUST FIX THIS   this.PrettyCarePlan_Update();
             }
         }
        
@@ -63,7 +63,7 @@ namespace CCC.UI
           
             this._cvDiagnoses = new ListCollectionView(this._diagnoses);
             
-            //   this.GroupByComponentName = true;
+            this.GroupByComponentName = true;
 
 
             _fdPrettyCarePlan = new FlowDocument();
@@ -190,7 +190,8 @@ namespace CCC.UI
         {
             this._fdPrettyCarePlan.Blocks.Remove(diag);
         }
-        public void PrettyCarePlan_Update()
+
+        public void PrettyCarePlan_Update(ListCollectionView lcoll)
         {
            
             if (this.fdPrettyCarePlan != null)
@@ -231,8 +232,6 @@ namespace CCC.UI
             string previousComponentName = null;
             string previousDate = null;
 
-          
-           
             foreach (Diagnosi d in this.cvDiagnoses)
             {
 
@@ -355,8 +354,8 @@ namespace CCC.UI
                 //    App.carePlan.fdPrettyCarePlan.Blocks.Add(pr);
                 //}
 
-
-                /*
+                // Show images if diagnose is skin-related
+                
                 Paragraph prImages = new Paragraph();
 
 
@@ -365,6 +364,7 @@ namespace CCC.UI
                 blui.Child = spallImg;
                 // spallImg.Orientation = Orientation.Horizontal;
 
+                lcoll.Refresh();
 
                 foreach (myImage img in lcoll)
                 {
@@ -390,6 +390,7 @@ namespace CCC.UI
                     //    prImages.Inlines.Add(f);   
                     //
 
+                   
                     TextBlock tbMeta = new TextBlock(new Run(img.DateTaken));
                     tbMeta.HorizontalAlignment = HorizontalAlignment.Left;
                     tbMeta.FontSize = 9;
@@ -410,7 +411,7 @@ namespace CCC.UI
                 {
 
                     this.fdPrettyCarePlan.Blocks.Add(blui);
-                } */
+                } 
 
                 /*
                 if (d.OutcomeEvalDate.Year != 1)
