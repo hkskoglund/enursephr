@@ -1,0 +1,1233 @@
+﻿<!-- 
+Copyright (c) 2008 Henning Knut Skoglund
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!-- DateControls : Copyright (C) Kevin Moore 2007 j832.com, MIT Licence -->
+
+<!-- Language changes are marked with LANGUAGE attrib --> 
+<Window x:Class="CCC.UI.WindowMain"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+    xmlns:dc="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.DateControls;assembly=J832.Wpf.BagOTricksLib"
+    xmlns:ann="clr-namespace:System.Windows.Annotations;assembly=PresentationFramework"
+    xmlns:ui="clr-namespace:CCC.UI"
+    Title="e-Nurse Care Planner"   
+    Loaded="Window_Loaded" 
+    SizeToContent="Height" Closing="Window_Closing" 
+    WindowStyle="SingleBorderWindow" Height="423.383" Width="1108"
+    x:Name="wndMain" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" >
+    <Window.Resources>
+        <ui:DateTimeConverter x:Key="DateTimeConverter" />
+		<ui:TitleConverter x:Key="TitleConverter" />
+		<ui:RemoveParentesisOutcomeConceptConverter x:Key="RemoveParentesisOutcomeConceptConverter" />
+		<ui:UpperCaseConverter x:Key="UpperCaseConverter" />
+
+
+		<!-- Based on http://adoguy.com/2007/04/17/Changing_the_Selected_Style_of_ListBox_s_in_XAML.aspx, accessed 20 march 08-->
+		<Style x:Key="GreenItemContainer"  TargetType="{x:Type ListBoxItem}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ListBoxItem}">
+						<Border 
+                    CornerRadius="8"
+                    BorderThickness="3"
+                    x:Name="IconBorder"
+                    Margin="8,4,8,4" >
+							<ContentPresenter />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsSelected" Value="true">
+								<Setter TargetName="IconBorder" Property="BitmapEffect">
+									<Setter.Value>
+										<OuterGlowBitmapEffect GlowColor="Green"  GlowSize="5" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+
+
+		<DataTemplate x:Key="CareComponentHeader">
+			<TextBlock Text="{dat:Binding Path=Name, Converter={StaticResource UpperCaseConverter}}" 
+			FontSize="13"
+			 FontWeight="UltraBold" 
+			 HorizontalAlignment="Center" 
+			 Foreground="{StaticResource CareComponentColor}"
+			 />
+        </DataTemplate>
+
+		<DataTemplate x:Key="TagDisplay">
+
+
+			<!--<Grid>
+                     <Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+                     </Grid.ColumnDefinitions>-->
+			<Border Grid.Column="0" CornerRadius="5" BorderThickness="1" BorderBrush="CadetBlue" Width="240" 
+                         Margin="2,2,2,2" HorizontalAlignment="Center" Background="White"
+                        Padding="5">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition  />
+						<RowDefinition  />
+
+					</Grid.RowDefinitions>
+
+					<StackPanel Grid.Row="0"  >
+
+						<StackPanel Orientation="Horizontal">
+							<StackPanel x:Name="spActionTypeModifier" Orientation="Horizontal" Visibility="Collapsed">
+								<TextBlock Text="{dat:Binding Path=ActionT.SingleConcept}" Foreground="{StaticResource InterventionColor}" Margin="0,0,5,0" VerticalAlignment="Center" />
+									        <!--<TextBlock x:Name="tbDelimiter" Text=" - " Foreground="Blue"/>-->
+		                    </StackPanel>
+							<TextBlock  x:Name="tbTagConcept"
+												  Text="{dat:Binding Path=Concept}" 
+												  ToolTip="{dat:Binding Path=Definition}"
+												  FontWeight="UltraBold" 
+												  TextWrapping="Wrap"
+												 />
+									   </StackPanel>
+
+						<StackPanel x:Name="spOutcomeQualifier" Orientation="Horizontal" >
+							<TextBlock Text="will " />
+									         <TextBlock x:Name="tbLatestOutcomeModifier" 
+									      Text="{Binding Path=LatestOutcomeModifier, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" 
+									      Foreground="{StaticResource DiagnosisColor}" Margin="0,0,5,0" 
+									      />
+									         <Image  x:Name="imgLatestOutcome" Height="15" />
+									   </StackPanel>
+
+					</StackPanel>
+
+					<TextBox Grid.Row="1" 
+					  x:Name="tbTagComment" 
+					  Text="{dat:Binding Path=Comment, UpdateSourceTrigger=PropertyChanged}" 
+                                  
+                                  FontStyle="Italic"
+                                  TextWrapping="Wrap" 
+                                  HorizontalAlignment="Left"
+                                  TextChanged="tbTagComment_TextChanged"
+                                  Width="220"
+                                    />
+
+
+				</Grid>
+			</Border>
+			<!--</Grid>-->
+
+
+			<DataTemplate.Triggers>
+				<DataTrigger Binding="{dat:Binding Path=LatestOutcome}" Value="1">
+					<Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Improved.png" />
+				</DataTrigger>
+				<DataTrigger Binding="{dat:Binding Path=LatestOutcome}" Value="2">
+					<Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Stabilized.png" />
+				</DataTrigger>
+				<DataTrigger Binding="{dat:Binding Path=LatestOutcome}" Value="3">
+					<Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Worsened.png" />
+				</DataTrigger>
+
+				<DataTrigger Binding="{dat:Binding Path=TaxonomyType}" Value="CCC/NursingDiagnosis">
+					<Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource DiagnosisColor}" />
+				</DataTrigger>
+
+				<DataTrigger Binding="{dat:Binding Path=TaxonomyType}" Value="CCC/NursingIntervention">
+					<Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource InterventionColor}" />
+					<Setter Property="Visibility" TargetName="spActionTypeModifier" Value="Visible" />
+				</DataTrigger>
+
+				<!--<DataTrigger Binding="{dat:Binding Path=ActionT.SingleConcept}" Value="{x:Null}">
+							<Setter Property="Visibility" TargetName="tbDelimiter" Value="Collapsed" />
+                       </DataTrigger>-->
+
+				<DataTrigger Binding="{dat:Binding Path=LatestOutcomeModifier}" Value="{x:Null}">
+					<Setter Property="Visibility" TargetName="spOutcomeQualifier" Value="Collapsed" />
+				</DataTrigger>
+
+				<DataTrigger Binding="{dat:Binding Path=TaxonomyType}" Value="CCC/CareComponent">
+					<Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource CareComponentColor}" />
+				</DataTrigger>
+			</DataTemplate.Triggers>
+
+		</DataTemplate>
+
+
+		<!--
+        <ObjectDataProvider ObjectType="business:AllCareComponents"   x:Key="all" />
+        
+        <CollectionViewSource Source="{Binding Source={StaticResource all}, Path=CareComponents}" x:Key="cvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Component"/>
+            </CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.GroupDescriptions>
+                <dat:PropertyGroupDescription PropertyName="Pattern"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+-->
+        
+
+        <DataTemplate x:Key="detailsCareComponent">
+            <StackPanel>
+                
+                 
+                <TextBlock Text="{dat:Binding Path=Definition}"  />
+            </StackPanel>
+        </DataTemplate>
+
+
+        <ui:DateConverter x:Key="DateConverter"/>
+
+        <DataTemplate x:Key="ccTemplateDiagnosisAndIntervention">
+
+            <StackPanel>
+                <TextBlock x:Name="tbTemplateConceptActionType" Text="{dat:Binding Path=Concept}" 
+                HorizontalAlignment="Left" 
+                FontWeight="UltraBold" TextWrapping="Wrap" ToolTip="{dat:Binding Path=Definition}" />
+               <!-- <TextBlock Text="{Binding Path=Definition}" HorizontalAlignment="Left"  TextWrapping="Wrap" /> -->
+            </StackPanel>
+
+        </DataTemplate>
+
+		<DataTemplate x:Key="ccTemplateOutcomeType">
+
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="will" Margin="0,0,5,0" />
+				<TextBlock x:Name="tbTemplateConceptOutcomeType" Text="{dat:Binding Path=Concept, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" 
+                HorizontalAlignment="Left"  Foreground="{StaticResource DiagnosisColor}"
+                FontWeight="UltraBold" TextWrapping="Wrap" ToolTip="{dat:Binding Path=Definition}" />
+               <!-- <TextBlock Text="{Binding Path=Definition}" HorizontalAlignment="Left"  TextWrapping="Wrap" /> -->
+            </StackPanel>
+
+		</DataTemplate>
+
+
+
+		<SolidColorBrush x:Key="FrameworkElementBorderSelected" Color="Yellow" />
+        
+        <SolidColorBrush x:Key="FrameworkElementBorder" Color="White" />
+    	
+    	<Storyboard x:Key="StoryboardAnimateCarePlan">
+    		<ColorAnimationUsingKeyFrames BeginTime="00:00:00" RepeatBehavior="Forever" Storyboard.TargetName="spActiveCarePlan" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+    			<SplineColorKeyFrame KeyTime="00:00:00" Value="#FF0038FB"/>
+    			<SplineColorKeyFrame KeyTime="00:00:02" Value="#FF0038FB"/>
+    		</ColorAnimationUsingKeyFrames>
+    		<DoubleAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="spActiveCarePlan" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)">
+    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+    			<SplineDoubleKeyFrame KeyTime="00:00:00.9000000" Value="0"/>
+    			<SplineDoubleKeyFrame KeyTime="00:00:02" Value="0"/>
+    		</DoubleAnimationUsingKeyFrames>
+    		<ColorAnimationUsingKeyFrames RepeatBehavior="Forever" BeginTime="00:00:00" Storyboard.TargetName="spActiveCarePlan" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
+    			<SplineColorKeyFrame KeyTime="00:00:00" Value="#FFF5F5F8"/>
+    			<SplineColorKeyFrame KeyTime="00:00:02" Value="#FFF5F5F8"/>
+    		</ColorAnimationUsingKeyFrames>
+    		<StringAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(TextBlock.Text)">
+    			<DiscreteStringKeyFrame KeyTime="00:00:00" Value="Active Care plan"/>
+    		</StringAnimationUsingKeyFrames>
+    		<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="spActiveCarePlan" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Offset)">
+    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+    			<SplineDoubleKeyFrame KeyTime="00:00:00.9000000" Value="0.593"/>
+    		</DoubleAnimationUsingKeyFrames>
+    	</Storyboard>
+
+ </Window.Resources>
+	<Window.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource StoryboardAnimateCarePlan}"/>
+		</EventTrigger>
+	</Window.Triggers>
+ 
+    
+    <StackPanel Background="{StaticResource BlueTheme}">
+
+        <TextBlock x:Name="tbUserName" Visibility="Collapsed" />
+      <DockPanel >  
+        <Menu DockPanel.Dock="Left">
+                <MenuItem Header="View">
+					<MenuItem x:Name="miViewActiveCarePlanTags" Click="miViewActiveCarePlanTags_Click" Header="Toggle active careplan tags" />
+                </MenuItem>
+                <MenuItem Header="Report">
+                    <MenuItem x:Name="miCarePlanBlog" Header="Careplan Blog" Click="miCarePlanBlog_Click" />
+                </MenuItem>
+                <MenuItem Header="Terminology">
+                    <MenuItem x:Name="miTerminologyCheck" Header="Check Integrity" Click="MenuItemLanguageIntegrity_Click" />
+            	   
+                </MenuItem>
+                <MenuItem Header="About"  Click="MenuItemOm_Click" />
+               
+            </Menu>
+            
+             <!-- Active care plan -->
+           
+             <StackPanel  DockPanel.Dock="Right" Orientation="Horizontal" x:Name="spActiveCarePlan">
+             	<StackPanel.Background>
+             		<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+             			<GradientStop Color="#FFF5F5F8" Offset="0"/>
+             			<GradientStop Color="#FF0038FB" Offset="1"/>
+             		</LinearGradientBrush>
+             	</StackPanel.Background>
+             
+             <TextBlock Margin="5,0,0,0" Text="Care plan" TextAlignment="Center"
+                        FontSize="15" 
+                        FontWeight="UltraBold" 
+                        VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                        Background="{x:Null}" x:Name="textBlock"
+                  />
+         </StackPanel>
+         
+        </DockPanel>
+         <ToolBarTray >
+                  <ToolBar>
+                       <Button Click="btnBack_Click">
+                          <Image Source="Images\ArrowBack.png" Height="20" ToolTip="Previous careplan item"/>
+                       </Button>
+                       <Button Click="btnForward_Click">
+                          <Image Source="Images\ArrowForward.png" Height="20" ToolTip="Next careplan item"/>
+                       </Button>
+                       
+                        <Button x:Name="btnHome" Click="btnHome_Click">
+                          <Image Source="Images\Home.png" Height="20" ToolTip="Return to selected careplan item"/>
+                       </Button>
+                      
+                      <Button x:Name="btnSaveTagComments" ToolTip="Save tag comments" Visibility="Collapsed" Click="btnSaveTagComments_Click">
+			           	<Image Source="\Images\Save.png" Height="15" Margin="5,0,5,0" />
+                      </Button>
+                       
+                       <Button Click="btnNewItem_Click">
+                         <Image Source="Images\New.png" Height="20" ToolTip="New careplan item" />
+                       </Button>
+                       <Button Click="btnDeleteItem_Click">
+                          <Image Source="Images\Delete.png" Height="20" ToolTip="Delete selected careplan item"/>
+                       </Button>
+                       
+                  </ToolBar>
+                  
+                  
+                  <ToolBar>
+                   <!-- CareBlog -->
+                                    
+             <ComboBox x:Name="lvCareBlog" MaxHeight="100"
+                                     MouseDoubleClick="lvCareBlog_MouseDoubleClick"
+                                     SelectionChanged="lvCareBlog_SelectionChanged"
+                                      HorizontalContentAlignment="Left"
+                                     AllowDrop="True"
+                                     Drop="lvCareBlog_Drop"
+                                     IsSynchronizedWithCurrentItem="True">
+         <!--<ListView.View>
+
+                    <GridView x:Name="gvView" AllowsColumnReorder="True"   >
+
+                        
+                        <GridViewColumn x:Name="gvcContent"
+                                        Header="Content" 
+                                        Width="35"
+                                          >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                   <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="tbContainsCareComponent" Text="  " Visibility="Collapsed" />
+                                    <TextBlock x:Name="tbContainsDiagnosis" Text="  " Visibility="Collapsed" />
+                                    <TextBlock x:Name="tbContainsIntervention" Text="  " Visibility="Collapsed" />
+                                    <TextBlock x:Name="tbContainsFolksonomy" Text="  " Visibility="Collapsed" />
+                                   
+                                   </StackPanel>    
+                                   <DataTemplate.Triggers>
+                                       <DataTrigger Binding="{Binding Path=ContainsCareComponent}" Value="True">
+                                           <Setter TargetName="tbContainsCareComponent" Property="Background" Value="Magenta" />
+                                           <Setter TargetName="tbContainsCareComponent" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>
+
+                                       <DataTrigger Binding="{Binding Path=ContainsDiagnosis}" Value="True">
+                                           <Setter TargetName="tbContainsDiagnosis" Property="Background" Value="Green" />
+                                           <Setter TargetName="tbContainsDiagnosis" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>
+                                       <DataTrigger Binding="{Binding Path=ContainsIntervention}" Value="True">
+                                           <Setter TargetName="tbContainsIntervention" Property="Background" Value="Blue" />
+                                           <Setter TargetName="tbContainsIntervention" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>
+                                       <DataTrigger Binding="{Binding Path=ContainsFolksonomy}" Value="True">
+                                           <Setter TargetName="tbContainsFolksonomy" Property="Background" Value="Yellow" />
+                                           <Setter TargetName="tbContainsFolksonomy" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>
+
+                                   </DataTemplate.Triggers>  
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+                        <GridViewColumn x:Name="gvcTitle"
+                                        Header="Title" 
+                                        Width="150" 
+                                          >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                     <TextBlock Text="{Binding Path=Title}" TextWrapping="Wrap"/>
+                                 </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+                         <GridViewColumn x:Name="gvcCreatedDate" Header="Created date"
+                      Width="100" >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=History.CreatedDate, Converter={StaticResource DateTimeConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+                        <GridViewColumn x:Name="gvcCreatedBy" Header="Created by"
+                      Width="90" >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=History.CreatedBy}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="gvcUpdatedDate" Header="Last update"
+                      Width="100" >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=History.UpdatedDate, Converter={StaticResource DateTimeConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+                        <GridViewColumn x:Name="gvcUpdatedBy" Header="Updated by"
+                      Width="90" >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=History.UpdatedBy}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+
+
+                     
+                    </GridView>
+
+                </ListView.View>-->
+                               
+                 <ComboBox.ItemTemplate>
+                     <DataTemplate>
+                                    <Border x:Name="bItem" BorderThickness="1" CornerRadius="5"
+                                            BorderBrush="LightGray" 
+                                            Width="400"
+                                            Margin="2"
+                                            Padding="3">
+                                         <StackPanel Orientation="Horizontal" >
+                                            <TextBlock x:Name="tbContainsCareComponent" Text="  " Visibility="Collapsed" />
+                                             <TextBlock x:Name="tbContainsDiagnosis" Text="  " Visibility="Collapsed" />
+                                             <TextBlock x:Name="tbContainsIntervention" Text="  " Visibility="Collapsed" />
+                                              <TextBlock x:Name="tbContainsFolksonomy" Text="  " Visibility="Collapsed" />
+                                            <TextBlock Margin="5,0,0,0" Text="{dat:Binding Path=Title, Converter={StaticResource TitleConverter}}" ToolTip="{dat:Binding Path=Title}"  FontWeight="UltraBold" TextWrapping="Wrap"/>
+                                            <TextBlock Margin="5,0,0,0" Text="{dat:Binding Path=History.LastUpdate, Converter={StaticResource DateTimeConverter}}" />
+                                            <TextBlock Margin="5,0,0,0" Text="{dat:Binding Path=History.LastUpdater}" />
+                                          </StackPanel>
+                                            
+                                     </Border>
+                         <DataTemplate.Triggers>
+                                   <DataTrigger Binding="{dat:Binding Path=ContainsCareComponent}" Value="True">
+                                           <Setter TargetName="tbContainsCareComponent" Property="Background" Value="{StaticResource CareComponentColor}" />
+                                           <Setter TargetName="tbContainsCareComponent" Property="Visibility" Value="Visible" />
+                                   </DataTrigger>
+
+                                       <DataTrigger Binding="{dat:Binding Path=ContainsDiagnosis}" Value="True">
+                                           <Setter TargetName="tbContainsDiagnosis" Property="Background" Value="{StaticResource DiagnosisColor}" />
+                                           <Setter TargetName="tbContainsDiagnosis" Property="Visibility" Value="Visible" />
+                                      
+                                       </DataTrigger>
+                                       <DataTrigger Binding="{dat:Binding Path=ContainsIntervention}" Value="True">
+                                           <Setter TargetName="tbContainsIntervention" Property="Background" Value="{StaticResource InterventionColor}" />
+                                           <Setter TargetName="tbContainsIntervention" Property="Visibility" Value="Visible" />
+                            
+                                       </DataTrigger>
+                                       <DataTrigger Binding="{dat:Binding Path=ContainsFolksonomy}" Value="True">
+                                           <Setter TargetName="tbContainsFolksonomy" Property="Background" Value="Yellow" />
+                                           <Setter TargetName="tbContainsFolksonomy" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>
+                                       
+                                       <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ComboBoxItem}},Path=IsSelected}" Value="True">
+                                           <Setter TargetName="spItemHistory" Property="Visibility" Value="Visible" />
+                                       </DataTrigger>-->
+                                     
+                         </DataTemplate.Triggers>
+                     </DataTemplate>
+                 </ComboBox.ItemTemplate>
+                 <!--<ListView.ItemsPanel>
+                     <ItemsPanelTemplate>
+                         <WrapPanel MaxWidth="500" />
+                     </ItemsPanelTemplate>
+                 </ListView.ItemsPanel>-->
+             </ComboBox>
+             
+                             
+                  </ToolBar>
+                  <ToolBar>
+                  
+                  	<ComboBox x:Name="cbLanguage" Width="60" 
+											   SelectionChanged="cbLanguage_SelectionChanged"
+											   VerticalAlignment="Top">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+							   <Image x:Name="imgFlagCombo" Width="40" />
+							   <!--<Image x:Name="imgPassed" Margin="5,0,0,0" Width="10" VerticalAlignment="Center" />-->
+							  </StackPanel>
+							<DataTemplate.Triggers>
+								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="nb-NO">
+									<Setter Property="Source" Value="Flags/nb-No.gif" TargetName="imgFlagCombo" />
+	                             
+								</DataTrigger>
+								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="en-US">
+									<Setter Property="Source" Value="Flags/en-US.gif" TargetName="imgFlagCombo" />
+	                               
+								</DataTrigger>
+								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="ko-KR">
+									<Setter Property="Source" Value="Flags/ko-KR.gif" TargetName="imgFlagCombo" />
+	                             
+								</DataTrigger>
+								 <DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="True">
+									<Setter Property="ToolTip" Value="Passed language integrity shallow test" TargetName="imgFlagCombo" />
+								  <!--<Setter Property="Source" Value="Images/OK.png" TargetName="imgPassed" />-->
+	                           
+								 </DataTrigger>
+								<DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="False">
+									<Setter Property="ToolTip" Value="Did not pass the language integrity shallow test" TargetName="imgFlagCombo" />
+								  <!--<Setter Property="Source" Value="Images/ERROR.png" TargetName="imgPassed" />-->
+	                           
+								</DataTrigger>
+
+	                            
+							</DataTemplate.Triggers>
+						</DataTemplate>
+
+					</ComboBox.ItemTemplate>
+
+				</ComboBox>
+				
+				<StackPanel Orientation="Horizontal"  >
+                        <!-- LANGAUGE attrib change
+                                                Norwegian : Søk
+                                                English : Search -->
+                        <Label HorizontalAlignment="Left" Foreground="#FF000000" VerticalAlignment="Center" Content="Search :"/>
+                        <TextBox Width="100" x:Name="tbSearch" TextChanged="tbSearch_TextChanged" VerticalContentAlignment="Center" VerticalAlignment="Center"  />
+                    </StackPanel>
+						
+                  </ToolBar>
+             </ToolBarTray>
+            
+              
+        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.7*" />
+             <ColumnDefinition Width="Auto" /> <!-- Grid Splitter-->
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="Auto" /> <!-- Grid Splitter-->
+            <ColumnDefinition Width="1.1*"/>
+      
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+          
+                     
+        <Grid Grid.Column="0" Background="White">
+        <Grid.ColumnDefinitions>
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--<RowDefinition Height="Auto" />-->
+			<RowDefinition Height="*"/>
+	    </Grid.RowDefinitions>
+          
+      <!-- Careplan item-->
+          <FlowDocumentReader Grid.Row="0" Grid.Column="0"  x:Name="fdReaderCareBlog" 
+          Margin="5" IsPrintEnabled="True"  ScrollViewer.VerticalScrollBarVisibility="Auto"
+          MaxHeight="600" VerticalAlignment="Top" />
+            
+        </Grid>
+        
+        <GridSplitter Grid.Column="1" Grid.Row="0" Width="1" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    
+      <ScrollViewer  Grid.Row ="0" Grid.Column="2" 
+     ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="600" > 
+        <StackPanel>
+      
+         <!-- Tags -->
+             <Expander  x:Name="exTags" IsExpanded="True"
+                  Background="{StaticResource BlueTheme}" VerticalAlignment="Top"
+                  >
+                  <Expander.Header>
+                    <TextBlock Text="Item Tags" FontSize="13" FontWeight="UltraBold" />
+                  </Expander.Header>
+                 
+                     
+           <ListView x:Name="lbTags"  
+               
+                AllowDrop="True" 
+                Drop="lbTags_Drop"
+                Margin="5,0,0,0"
+                SelectionMode="Single"
+                SelectionChanged="lbTags_SelectionChanged"
+                MinHeight="50"
+                MaxHeight="600"
+                ItemTemplate="{StaticResource TagDisplay}"
+                ItemContainerStyle="{StaticResource GreenItemContainer}"
+                Background="{StaticResource ItemTitleBackground}"
+                
+                >
+                <ListView.GroupStyle>
+					<GroupStyle HeaderTemplate="{StaticResource CareComponentHeader}" />
+				</ListView.GroupStyle>
+               
+                
+        
+             <ListView.ContextMenu>
+				<ContextMenu x:Name="ctxmTags">
+					    <MenuItem Header="Delete tag" x:Name="miDeleteTag" Click="miDeleteTag_Click"  />
+						<MenuItem Header="Plan/Evaluate" x:Name="miManageOutcomes" Click="miManageOutcomes_Click" />
+					
+				</ContextMenu>
+             </ListView.ContextMenu>
+       <!--<ListView.ItemsPanel>
+           <ItemsPanelTemplate>
+               <WrapPanel MaxWidth="500"  HorizontalAlignment="Left" />
+           </ItemsPanelTemplate>
+       </ListView.ItemsPanel>-->
+           
+           <!--<ListView.View>
+                <GridView x:Name="gvTagView" AllowsColumnReorder="True"   >
+
+                        <GridViewColumn x:Name="gvcLatestOutcome"
+                                        Width="10"
+                                          >
+
+                            <GridViewColumn.CellTemplate>
+                                
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+                        <GridViewColumn x:Name="gvcConcept"
+                                        Header="Concept" 
+                                        Width="150"
+                                          >
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+
+                        </GridViewColumn>
+                        
+
+                     
+                    </GridView>    
+               
+           </ListView.View>-->
+        <ListView.Resources>
+			<!-- Based on http://msdn2.microsoft.com/en-us/library/ms752068.aspx, accessed 12 march 2008 -->
+
+		<Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBoxBase}">
+			<Setter Property="SnapsToDevicePixels" Value="True"/>
+			<Setter Property="OverridesDefaultStyle" Value="True"/>
+			<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+			<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+			<Setter Property="MinWidth" Value="120"/>
+			<Setter Property="MinHeight" Value="20"/>
+			<Setter Property="AllowDrop" Value="false"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBoxBase}">
+						<!--<Border 
+          Name="Border"
+          CornerRadius="2" 
+          Padding="2"
+          Background="{StaticResource WindowBackgroundBrush}"
+          BorderBrush="{StaticResource SolidBorderBrush}"
+          BorderThickness="1" >-->
+						<ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+						<!--</Border>-->
+						<!--<ControlTemplate.Triggers>
+          <Trigger Property="IsEnabled" Value="False">
+            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+          </Trigger>
+        </ControlTemplate.Triggers>-->
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
+		
+
+        </ListView.Resources>
+       </ListView>
+       
+             </Expander>
+       
+        <!-- Active careplan tags-->
+          <Expander x:Name="exTaxonomy" IsExpanded="False" Background="{StaticResource BlueTheme}" >
+                <Expander.Header>
+                   <TextBlock Text="Careplan Tags" FontSize="13" FontWeight="UltraBold" />
+                  
+                </Expander.Header>
+                <ListView x:Name="lbTaxonomy" MaxHeight="600" 
+                SelectionChanged="lbTaxonomy_SelectionChanged"
+                ItemTemplate="{StaticResource TagDisplay}"
+                ItemContainerStyle="{StaticResource GreenItemContainer}"
+                Background="{StaticResource BlueTheme}"  >
+                 <ListView.GroupStyle>
+                     <GroupStyle HeaderTemplate="{StaticResource CareComponentHeader}" />
+                   </ListView.GroupStyle>
+                   <ListView.Resources>
+                   
+                   <!-- Based on http://msdn2.microsoft.com/en-us/library/ms752068.aspx, accessed 12 march 2008 -->
+
+		<Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBoxBase}">
+			<Setter Property="SnapsToDevicePixels" Value="True"/>
+			<Setter Property="OverridesDefaultStyle" Value="True"/>
+			<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+			<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+			<Setter Property="MinWidth" Value="120"/>
+			<Setter Property="MinHeight" Value="20"/>
+			<Setter Property="AllowDrop" Value="false"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBoxBase}">
+						<!--<Border 
+          Name="Border"
+          CornerRadius="2" 
+          Padding="2"
+          Background="{StaticResource WindowBackgroundBrush}"
+          BorderBrush="{StaticResource SolidBorderBrush}"
+          BorderThickness="1" >-->
+						<ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+						<!--</Border>-->
+						<!--<ControlTemplate.Triggers>
+          <Trigger Property="IsEnabled" Value="False">
+            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+          </Trigger>
+        </ControlTemplate.Triggers>-->
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+                   
+      </ListView.Resources>
+                 
+             </ListView>
+            </Expander>
+     </StackPanel>
+    </ScrollViewer>
+              
+       <GridSplitter Grid.Column="3" Grid.Row="0" Width="1" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+      
+         <Grid Grid.Column="4" x:Name="gridRight">
+             <Grid.ColumnDefinitions>
+				<ColumnDefinition />
+             </Grid.ColumnDefinitions>
+             <Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				
+             </Grid.RowDefinitions>
+   
+    <ScrollViewer  Grid.Row ="0" Grid.Column="0" 
+     ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="600" > 
+        <StackPanel>
+         
+           
+        
+          
+         <Expander x:Name="exFramework"  IsExpanded ="True" Foreground="#FF000000" Background="{DynamicResource BlueTheme}">
+
+                <Expander.Header>
+                    <StackPanel>
+                     <StackPanel Margin="5,0,0,0"  x:Name="spCopyright" Orientation="Horizontal">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                   <TextBlock x:Name="tbFrameworkName" Text="{dat:Binding Path=Name}"  />
+                                   <TextBlock Margin="5,0,0,0" x:Name="tbFrameworkVersion" Text="{dat:Binding Path=Version}"   />
+                                </StackPanel>
+                               
+                               <TextBlock x:Name="tbFrameworkAuthors" Text="{dat:Binding Path=Authors}" Foreground="#FF000000" />
+                               <TextBlock x:Name="tbFrameworkLastUpdate" Text="{dat:Binding Path=LastUpdate, Converter={StaticResource DateConverter}}" Foreground="#FF000000" />
+                            </StackPanel>       
+                     
+                           <Image x:Name="imgLogo"  Height="20" Source="{dat:Binding Path=LogoURL}" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+
+						
+
+                    </StackPanel>
+                </Expander.Header>
+            
+               <StackPanel>
+                    
+                    
+                    
+                    
+             <!-- Care Components -->
+                    
+                    <Expander  IsExpanded="True">
+                            
+                            <Expander.Header>
+                              <TextBlock Text="Care Components" Background="{StaticResource BrushFrameworkCareComponent}" /> 
+                            </Expander.Header>
+                            <StackPanel>
+                                <!-- LANGAUGE attrib change 
+    Norwegian: "Ingen omsorgs komponenter funnet!"
+    English : "No care components found!"
+    -->
+                                <Label x:Name="lblNoMatchCareComponent" Visibility="Collapsed" Content="No care components found!"/>
+                                <StackPanel x:Name="spCareComponent">
+                                    
+                                    <ContentControl Margin="5" x:Name="ccCareComponent"
+                                             PreviewMouseLeftButtonDown="ccCareComponent_MouseDown"
+                                                     >
+                                        <ContentControl.ContentTemplate>
+                                            <DataTemplate>
+                                                <Border BorderThickness="1" Background="White" x:Name="ccCareComponentBorder" 
+                                                        MouseEnter="ccFrameworkElement_MouseEnter" 
+                                                        MouseLeave="ccFrameworkElement_MouseLeave" >
+                                                    <StackPanel>
+                                                        <TextBlock Text="{dat:Binding Path=Component}"
+                                                         FontWeight="Bold" Foreground="{StaticResource CareComponentColor}" />
+                                                   <TextBlock Text="{dat:Binding Path=Definition}" TextWrapping="Wrap" />
+                                               </StackPanel>
+
+                                                </Border>
+
+                                            </DataTemplate>
+                                        </ContentControl.ContentTemplate>
+                                    </ContentControl>
+                                    
+ 
+ 
+                                    <ListBox x:Name = "lbCareComponent" 
+                                            Margin="5" 
+					                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						                    SelectionChanged="lbCareComponent_SelectionChanged"
+                                             
+					                        
+                                              >
+                                        <!-- <Label FontWeight="Bold">Omsorgs komponent</Label> -->
+
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <!-- <StackPanel Orientation="Horizontal" /> -->
+                                                <WrapPanel />
+
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{dat:Binding Path=Component}" 
+                                                           ToolTip="{dat:Binding Path=Definition}"
+                                                           Width="110" />
+
+                                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+
+                                        <ListBox.GroupStyle>
+                                            <GroupStyle>
+                                                <GroupStyle.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock FontWeight="Bold" FontSize="15"
+											Text="{dat:Binding Path=Name}"/>
+                                                                    </DataTemplate>
+                                                </GroupStyle.HeaderTemplate>
+                                            </GroupStyle>
+                                        </ListBox.GroupStyle>
+
+
+                                    </ListBox>
+
+                                </StackPanel>
+                            </StackPanel>
+                        
+                    </Expander>
+
+                    
+                    <!-- Outcome Types -->
+
+                    <!-- LANGAUGE attrib change-->
+
+                    <Expander IsExpanded="False">
+                          <Expander.Header>
+                              <TextBlock Text="Expected outcome" Background="{StaticResource BrushFrameworkDiagnosis}" /> 
+                            </Expander.Header>
+
+                            <StackPanel>
+
+                            <Border Margin="5" BorderThickness="1" 
+                                    MouseEnter="ccFrameworkElement_MouseEnter"
+                                    MouseLeave="ccFrameworkElement_MouseLeave"
+                                    Background="White"
+                                    HorizontalAlignment="Left"
+                                    >
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <ContentControl Margin="5,0,0,0" x:Name="ccOutcomeType"
+                                                ContentTemplate="{StaticResource ccTemplateOutcomeType}"
+                                                PreviewMouseLeftButtonDown="ccOutcomeType_MouseDown"/>
+                                     <Image Margin="5,0,0,0" Source="{dat:Binding Path=Source, ElementName=imgOutcomeType}"  Height="15" />
+                                   
+                                </StackPanel>
+                             </Border>
+
+                            <ListBox x:Name = "lbOutcomeType"  
+                                                 Margin="5"
+                                                 Width="130"
+						 	                    MaxHeight="300"
+						 	                    HorizontalAlignment="Left"
+                                         
+                                         IsSynchronizedWithCurrentItem="True" 
+                                     SelectionChanged="lbOutcomeType_SelectionChanged">
+
+                                
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image x:Name="imgOutcomeType" Width="15" Height="15"  />
+                                            <TextBlock Margin="5,0,0,0" Text ="{dat:Binding Path=Concept, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" ToolTip="{dat:Binding Path=Definition}" Padding="5,0,0,0" />
+                                         
+                                        </StackPanel>
+                                            <DataTemplate.Triggers>
+                                       <DataTrigger Binding="{dat:Binding Path=Code}" Value="1">
+                                           <Setter TargetName="imgOutcomeType" Property="Source" Value="Outcome Types\Improved.png" />
+                                        </DataTrigger>
+                                           <DataTrigger Binding="{dat:Binding Path=Code}" Value="2">
+                                           <Setter TargetName="imgOutcomeType" Property="Source" Value="Outcome Types\Stabilized.png" />
+                                       </DataTrigger>
+                                       <DataTrigger Binding="{dat:Binding Path=Code}" Value="3">
+                                           <Setter TargetName="imgOutcomeType" Property="Source" Value="Outcome Types\Worsened.png" />
+                                       </DataTrigger>
+                                      </DataTemplate.Triggers>  
+                                   </DataTemplate>
+                                  </ListBox.ItemTemplate>
+                                    
+                                </ListBox>
+
+                            <CheckBox Margin="5" x:Name="cbAttachToDiagnosis" 
+                                      Content="Attach to diagnosis" 
+                                      IsChecked="False" 
+                                      Checked="cbAttachToDiagnosis_Checked"
+                                      Unchecked="cbAttachToDiagnosis_UnChecked"/>
+
+
+
+
+                        </StackPanel>
+                 
+                    </Expander>
+
+
+                    <!-- Diagnoses -->
+                    <!-- LANGAUGE attrib change-->
+
+                    <Expander IsExpanded="True" >
+                           <Expander.Header>
+                              <TextBlock Text="Diagnoses" Background="{StaticResource BrushFrameworkDiagnosis}" HorizontalAlignment="Stretch" /> 
+                            </Expander.Header>
+
+                        <StackPanel>
+                            <!-- LANGAUGE attrib change-->
+
+                            <Label x:Name="lblNoMatchNursingDiagnoses" Visibility="Collapsed" Content="No diagnoses found!"/>
+                            
+                            
+                            <StackPanel x:Name="spNursingDiagnoses" Margin="5">
+                                
+                               <GroupBox Header="Reason"> 
+                                 <StackPanel Margin="5">
+									<Border PreviewMouseLeftButtonDown="ccNursingDiagnosis_MouseDown"
+                                        MouseEnter="ccFrameworkElement_MouseEnter" 
+                                        MouseLeave="ccFrameworkElement_MouseLeave"
+                                        Background="White"
+                                        BorderThickness="1">
+                                    
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+
+                                        
+                                          <StackPanel Margin="5,0,0,0" Width="220">
+											<ContentControl  x:Name="ccNursingDiagnosis"
+                                                ContentTemplate="{StaticResource ccTemplateDiagnosisAndIntervention}" Foreground="{StaticResource DiagnosisColor}" />
+                                             <StackPanel x:Name="spShowOutcome" Orientation="Horizontal" Visibility="Collapsed">
+                                                 <TextBlock Text="will" Margin="0,0,5,0" />
+                                                 <TextBlock x:Name="tbShowOutcomeConcept" Text="{Binding Path=Concept, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}"  Foreground="{StaticResource DiagnosisColor}" />
+                                                 <Image Margin="5,0,0,0" x:Name="imgOutcomeType" Height="15" VerticalAlignment="Center" />
+                                    
+                                             </StackPanel>
+                                             <TextBlock Text="{dat:Binding Path=Text, ElementName=tbReasonDiagnosis, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+														FontStyle="Italic" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
+                                          </StackPanel>
+                                        
+									</StackPanel>
+                                
+									</Border>                                 
+
+									<TextBox Margin="0,5" HorizontalAlignment="Stretch" x:Name="tbReasonDiagnosis" 
+									TextChanged="tbReasonDiagnosis_TextChanged" 
+									ToolTip="Enter additional information about this diagnosis" 
+									TextWrapping="Wrap"/>
+									
+								</StackPanel>
+							</GroupBox>
+                               
+                                <ListBox x:Name = "lbNursingDiagnosis"  
+                                                 Margin="0,5,0,5"
+						 	                    SelectionChanged="lbNursingDiagnosis_SelectionChanged"
+							             MouseDoubleClick="lbNursingDiagnosis_MouseDoubleClick"
+                                          MaxHeight="300"
+                                        
+                                         HorizontalAlignment="Left"
+                                         IsSynchronizedWithCurrentItem="True"
+                >
+
+                                    <!-- <Label FontWeight="Bold">Sykepleie diagnoser</Label> -->
+
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="tbConcept" Text ="{dat:Binding Path=Concept}" ToolTip="{dat:Binding Path=Definition}" Padding="5,0,0,0" />
+                                                            <DataTemplate.Triggers>
+                                                                <DataTrigger Binding="{dat:Binding Path=MinorCode}" Value="{x:Null}">
+                                                                    <Setter Property="FontWeight" TargetName="tbConcept" Value="Bold" />
+                                                                    <Setter Property="Padding" TargetName="tbConcept" Value="0" />
+                                                                </DataTrigger>
+                                                            </DataTemplate.Triggers>
+                                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!--
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="15"
+                         Text="{Binding Path=Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListBox.GroupStyle> -->
+                                </ListBox>
+
+
+
+
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+
+
+                    <!-- Action Types -->
+
+                    <!-- LANGAUGE attrib change-->
+
+                    <Expander IsExpanded="False" >
+                         <Expander.Header>
+                              <TextBlock Text="Action type" Background="{StaticResource BrushFrameworkIntervention}" /> 
+                          </Expander.Header>
+
+                        <StackPanel Margin="5,5,5,5">
+
+                            <Border PreviewMouseLeftButtonDown="ccActionType_MouseDown"
+                                        MouseEnter="ccFrameworkElement_MouseEnter" 
+                                        MouseLeave="ccFrameworkElement_MouseLeave"
+                                        Background="White"
+                                        BorderThickness="1">
+		                                        
+								   <StackPanel Width="220"  HorizontalAlignment="Left">
+										<TextBlock x:Name="tbConceptActionType"  HorizontalAlignment="Left"  FontWeight="UltraBold"
+										 TextWrapping="Wrap" Foreground="{StaticResource InterventionColor}" />
+										<TextBlock x:Name="tbDefinitionActionType" HorizontalAlignment="Left" TextWrapping="Wrap" />
+									</StackPanel>
+		                                
+		                                 
+                            </Border>
+                            
+                            <ListBox x:Name = "lbActionType"  
+                                                 Margin="0,5,0,5"
+						 	                    MaxHeight="300"
+                                         IsSynchronizedWithCurrentItem="True"
+                                         HorizontalAlignment="Left"
+                                         SelectionChanged="lbActionType_SelectionChanged"
+                                                >
+
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                         <TextBlock  Text ="{dat:Binding Path=Concept}" ToolTip="{dat:Binding Path=Definition}" Padding="5,0,0,0" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+                            
+                            <StackPanel Orientation="Horizontal">
+								<ComboBox x:Name="cbActionType" Width="100"
+								 ToolTip="Select an action type" 
+								 SelectionChanged="cbActionType_SelectionChanged" 
+								 IsEditable="True"  />
+								
+                        
+                               <CheckBox VerticalAlignment="Center" Margin ="5,0,0,0" x:Name="cbAttachToIntervention" 
+                               Content="Attach to intervention" 
+                                      IsChecked="False" Checked="cbAttachToIntervention_Checked"
+                                      Unchecked="cbAttachToIntervention_UnChecked"/>
+
+                            </StackPanel>
+
+
+
+
+                        </StackPanel>
+
+                    </Expander>
+
+                    <!-- LANGAUGE attrib change-->
+
+                    <Expander IsExpanded="True" >
+                          <Expander.Header>
+                              <TextBlock Text="Interventions" Background="{StaticResource BrushFrameworkIntervention}" /> 
+                            </Expander.Header>
+
+                        <StackPanel>
+                            <!-- LANGAUGE attrib change-->
+
+                            <Label x:Name="lblNoMatchNursingInterventions" Visibility="Collapsed" Content="No interventions found!"/>
+                            <StackPanel x:Name="spNursingInterventions">
+                              
+                              <GroupBox Header="Description"> 
+                                <StackPanel>   
+                               <Border PreviewMouseLeftButtonDown="ccNursingIntervention_MouseDown"
+                                        MouseEnter="ccFrameworkElement_MouseEnter" 
+                                        MouseLeave="ccFrameworkElement_MouseLeave"
+                                        Background="White"
+                                        BorderThickness="1">
+                                     
+                                <StackPanel  Margin="5"  Background="White" >
+                                  <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="tbNursingInterventionActionModifier" Margin="0,0,5,0" Foreground="{StaticResource InterventionColor}" Visibility="Collapsed" />
+									<TextBlock x:Name="tbNursingInterventionConcept" TextWrapping="Wrap" FontWeight="UltraBold" Foreground="{StaticResource InterventionColor}" />
+							      </StackPanel> 
+							        <TextBlock Text="{dat:Binding Path=Text, ElementName=tbReasonIntervention, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+														FontStyle="Italic" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                
+                                </Border>
+                                
+                                
+									<TextBox Margin="0,5" HorizontalAlignment="Stretch" x:Name="tbReasonIntervention" 
+									TextChanged="tbReasonIntervention_TextChanged" 
+									ToolTip="Enter additional information about this intervention" 
+									TextWrapping="Wrap"/>
+									
+                                </StackPanel>
+                                </GroupBox>
+                                
+                                <ListBox x:Name = "lbNursingInterventions"  
+                                         Margin="5"
+						 	             SelectionChanged="lbNursingInterventions_SelectionChanged"
+							             MouseDoubleClick="lbNursingInterventions_MouseDoubleClick"
+                                         MaxHeight="300" 
+                                         HorizontalAlignment="Left"
+                                         IsSynchronizedWithCurrentItem="True"
+                                         >
+
+                                   
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="tbConceptIntervention" Text ="{dat:Binding Path=Concept}" ToolTip="{dat:Binding Path=Definition}" Padding="5,0,0,0" />
+                                                            <DataTemplate.Triggers>
+                                                                <DataTrigger Binding="{dat:Binding Path=MinorCode}" Value="{x:Null}">
+                                                                    <Setter Property="FontWeight" TargetName="tbConceptIntervention" Value="Bold" />
+                                                                    <Setter Property="Padding" TargetName="tbConceptIntervention" Value="0" />
+                                                                </DataTrigger>
+                                                            </DataTemplate.Triggers>
+                                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!--
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="15"
+                         Text="{Binding Path=Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListBox.GroupStyle> -->
+                                </ListBox>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Expander>
+                </StackPanel>
+
+                
+            </Expander>
+       
+       </StackPanel>     
+        </ScrollViewer>
+       
+       
+           
+           
+           
+         </Grid>
+          
+         
+      
+       <!--</ScrollViewer>-->
+             
+    
+   
+    </Grid>
+        
+   </StackPanel>
+</Window>
