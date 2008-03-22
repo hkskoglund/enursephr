@@ -232,7 +232,7 @@ namespace CCC.UI
                     tbCareComponent = new TextBlock(new Run(currentCareComponent));
                     tbCareComponent.FontSize = 14;
                     tbCareComponent.FontWeight = FontWeights.UltraBold;
-                    tbCareComponent.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareCompoenentColor");
+                    tbCareComponent.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareComponentColor");
                     tbCareComponent.Margin = new Thickness(10, 0, 10, 0);
                     tbCareComponent.VerticalAlignment = VerticalAlignment.Center;
                     pTags.Inlines.Add(tbCareComponent);
