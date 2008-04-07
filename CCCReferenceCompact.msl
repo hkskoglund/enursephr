@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+  <EntityContainerMapping StorageEntityContainer="App" CdmEntityContainer="ReferenceFrameworkEntities">
+    <EntitySetMapping Name="ActionType">
+      <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.ActionType)">
+        <MappingFragment StoreEntitySet="ActionType">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Care_Component">
+      <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Care_Component)">
+        <MappingFragment StoreEntitySet="Care Component">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Nursing_Diagnosis">
+      <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Nursing_Diagnosis)">
+        <MappingFragment StoreEntitySet="Nursing Diagnosis">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+          <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+          <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Nursing_Intervention">
+      <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Nursing_Intervention)">
+        <MappingFragment StoreEntitySet="Nursing Intervention">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+          <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+          <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutcomeType">
+      <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.OutcomeType)">
+        <MappingFragment StoreEntitySet="OutcomeType">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

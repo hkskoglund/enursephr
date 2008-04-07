@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CareplanModel.Store" Alias="Self" ProviderManifestToken="09.00.3042" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+  <EntityContainer Name="dbo">
+    <EntitySet Name="TemplateCarePlan" EntityType="CareplanModel.Store.TemplateCarePlan">
+      <DefiningQuery>SELECT 
+      [TemplateCarePlan].[Name] AS [Name], 
+      [TemplateCarePlan].[Description] AS [Description], 
+      [TemplateCarePlan].[Category] AS [Category]
+      FROM [dbo].[TemplateCarePlan] AS [TemplateCarePlan]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'Careplan.dbo.TemplateCarePlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="TemplateCarePlan">
+    <Key>
+      <PropertyRef Name="Category" />
+    </Key>
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="255" />
+    <Property Name="Category" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+</Schema>

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+  <EntityContainerMapping StorageEntityContainer="App" CdmEntityContainer="CarePlanEntities">
+    <EntitySetMapping Name="ActionT">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.ActionT)">
+        <MappingFragment StoreEntitySet="ActionT">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="SingleConcept" ColumnName="SingleConcept" />
+          <ScalarProperty Name="TaxonomyTagId" ColumnName="TaxonomyTagId" />
+          <ScalarProperty Name="TagId" ColumnName="TagId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Annotation">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CPAnnotation)">
+        <MappingFragment StoreEntitySet="Annotation">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarePlan">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CarePlan)">
+        <MappingFragment StoreEntitySet="CarePlan">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="TemplateCategoryID" ColumnName="TemplateCategoryID" />
+          <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="History">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.History)">
+        <MappingFragment StoreEntitySet="History">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Item">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Item)">
+        <MappingFragment StoreEntitySet="Item">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ContainsDiagnosis" ColumnName="ContainsDiagnosis" />
+          <ScalarProperty Name="ContainsIntervention" ColumnName="ContainsIntervention" />
+          <ScalarProperty Name="ContainsCareComponent" ColumnName="ContainsCareComponent" />
+          <ScalarProperty Name="ContainsFolksonomy" ColumnName="ContainsFolksonomy" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Outcome">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Outcome)">
+        <MappingFragment StoreEntitySet="Outcome">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ActualOutcome" ColumnName="ActualOutcome" />
+          <ScalarProperty Name="ActualEvaluation" ColumnName="ActualEvaluation" />
+          <ScalarProperty Name="ActualDate" ColumnName="ActualDate" />
+          <ScalarProperty Name="ExpectedOutcome" ColumnName="ExpectedOutcome" />
+          <ScalarProperty Name="ExpectedGoal" ColumnName="ExpectedGoal" />
+          <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+          <ScalarProperty Name="TaxonomyTagId" ColumnName="TaxonomyTagId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tag">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Tag)">
+        <MappingFragment StoreEntitySet="Tag">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TaxonomyType" ColumnName="TaxonomyType" />
+          <ScalarProperty Name="TaxonomyTagId" ColumnName="TaxonomyTagId" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_ActionT_Tag" TypeName="CCC.BusinessLayer.FK_ActionT_Tag" StoreEntitySet="ActionT">
+      <EndProperty Name="Tag">
+        <ScalarProperty Name="Id" ColumnName="TagId" />
+      </EndProperty>
+      <EndProperty Name="ActionT">
+        <ScalarProperty Name="TagId" ColumnName="TagId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_ActionType_History" TypeName="CCC.BusinessLayer.FK_ActionType_History" StoreEntitySet="ActionT">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="ActionT">
+        <ScalarProperty Name="TagId" ColumnName="TagId" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Annotation_History" TypeName="CCC.BusinessLayer.FK_Annotation_History" StoreEntitySet="Annotation">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="Annotation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Annotation_Item" TypeName="CCC.BusinessLayer.FK_Annotation_Item" StoreEntitySet="Annotation">
+      <EndProperty Name="Item">
+        <ScalarProperty Name="Id" ColumnName="ItemId" />
+      </EndProperty>
+      <EndProperty Name="Annotation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_CarePlan_History" TypeName="CCC.BusinessLayer.FK_CarePlan_History" StoreEntitySet="CarePlan">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="CarePlan">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Item_CarePlan" TypeName="CCC.BusinessLayer.FK_Item_CarePlan" StoreEntitySet="Item">
+      <EndProperty Name="CarePlan">
+        <ScalarProperty Name="Id" ColumnName="CarePlanId" />
+      </EndProperty>
+      <EndProperty Name="Item">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Item_History" TypeName="CCC.BusinessLayer.FK_Item_History" StoreEntitySet="Item">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="Item">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Outcome_History" TypeName="CCC.BusinessLayer.FK_Outcome_History" StoreEntitySet="Outcome">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="Outcome">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Tag_History" TypeName="CCC.BusinessLayer.FK_Tag_History" StoreEntitySet="Tag">
+      <EndProperty Name="History">
+        <ScalarProperty Name="Id" ColumnName="HistoryId" />
+      </EndProperty>
+      <EndProperty Name="Tag">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="HistoryId" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Tag_Item" TypeName="CCC.BusinessLayer.FK_Tag_Item" StoreEntitySet="Tag">
+      <EndProperty Name="Item">
+        <ScalarProperty Name="Id" ColumnName="ItemId" />
+      </EndProperty>
+      <EndProperty Name="Tag">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Outcome_Tag" TypeName="CCC.BusinessLayer.FK_Outcome_Tag" StoreEntitySet="Outcome">
+      <EndProperty Name="Tag">
+        <ScalarProperty Name="Id" ColumnName="TagId" />
+      </EndProperty>
+      <EndProperty Name="Outcome">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

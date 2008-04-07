@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Alias="Self" ProviderManifestToken="3.5" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+  <EntityContainer Name="App">
+    <EntitySet Name="ActionT" EntityType="Model.Store.ActionT" />
+    <EntitySet Name="Annotation" EntityType="Model.Store.Annotation" />
+    <EntitySet Name="CarePlan" EntityType="Model.Store.CarePlan" />
+    <EntitySet Name="History" EntityType="Model.Store.History" />
+    <EntitySet Name="Item" EntityType="Model.Store.Item" />
+    <EntitySet Name="Outcome" EntityType="Model.Store.Outcome" />
+    <EntitySet Name="Tag" EntityType="Model.Store.Tag" />
+    <AssociationSet Name="FK_ActionT_Tag" Association="Model.Store.FK_ActionT_Tag">
+      <End Role="Tag" EntitySet="Tag" />
+      <End Role="ActionT" EntitySet="ActionT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActionType_History" Association="Model.Store.FK_ActionType_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="ActionT" EntitySet="ActionT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Annotation_History" Association="Model.Store.FK_Annotation_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="Annotation" EntitySet="Annotation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Annotation_Item" Association="Model.Store.FK_Annotation_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="Annotation" EntitySet="Annotation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CarePlan_History" Association="Model.Store.FK_CarePlan_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="CarePlan" EntitySet="CarePlan" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_CarePlan" Association="Model.Store.FK_Item_CarePlan">
+      <End Role="CarePlan" EntitySet="CarePlan" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_History" Association="Model.Store.FK_Item_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Outcome_History" Association="Model.Store.FK_Outcome_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="Outcome" EntitySet="Outcome" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Outcome_Tag" Association="Model.Store.FK_Outcome_Tag">
+      <End Role="Tag" EntitySet="Tag" />
+      <End Role="Outcome" EntitySet="Outcome" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tag_History" Association="Model.Store.FK_Tag_History">
+      <End Role="History" EntitySet="History" />
+      <End Role="Tag" EntitySet="Tag" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tag_Item" Association="Model.Store.FK_Tag_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="Tag" EntitySet="Tag" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ActionT">
+    <Key>
+      <PropertyRef Name="TagId" />
+    </Key>
+    <Property Name="Code" Type="smallint" Nullable="false" />
+    <Property Name="SingleConcept" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="TaxonomyTagId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TagId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="Annotation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ItemId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Data" Type="image" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="CarePlan">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="TemplateCategoryID" Type="smallint" />
+    <Property Name="PatientId" Type="uniqueidentifier" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+    <Property Name="Description" Type="image" />
+  </EntityType>
+  <EntityType Name="History">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" Nullable="false" MaxLength="150" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CarePlanId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="ContainsDiagnosis" Type="bit" />
+    <Property Name="ContainsIntervention" Type="bit" />
+    <Property Name="ContainsCareComponent" Type="bit" />
+    <Property Name="ContainsFolksonomy" Type="bit" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+    <Property Name="Description" Type="image" />
+  </EntityType>
+  <EntityType Name="Outcome">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ActualOutcome" Type="smallint" />
+    <Property Name="ActualEvaluation" Type="nvarchar" MaxLength="255" />
+    <Property Name="ActualDate" Type="datetime" />
+    <Property Name="ExpectedOutcome" Type="smallint" Nullable="false" />
+    <Property Name="ExpectedGoal" Type="nvarchar" MaxLength="255" />
+    <Property Name="ExpectedDate" Type="datetime" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+    <Property Name="TagId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TaxonomyTagId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ItemId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TaxonomyType" Type="nvarchar" Nullable="false" MaxLength="256" />
+    <Property Name="HistoryId" Type="uniqueidentifier" />
+    <Property Name="TaxonomyTagId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <Association Name="FK_ActionT_Tag">
+    <End Role="Tag" Type="Model.Store.Tag" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Tag">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActionT">
+        <PropertyRef Name="TagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActionType_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+    <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActionT">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Annotation_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+    <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Annotation">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Annotation_Item">
+    <End Role="Item" Type="Model.Store.Item" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Annotation">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CarePlan_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+    <End Role="CarePlan" Type="Model.Store.CarePlan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CarePlan">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_CarePlan">
+    <End Role="CarePlan" Type="Model.Store.CarePlan" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Item" Type="Model.Store.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarePlan">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="CarePlanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Item" Type="Model.Store.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Outcome_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+    <End Role="Outcome" Type="Model.Store.Outcome" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Outcome">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Outcome_Tag">
+    <End Role="Tag" Type="Model.Store.Tag" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Outcome" Type="Model.Store.Outcome" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tag">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Outcome">
+        <PropertyRef Name="TagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tag_History">
+    <End Role="History" Type="Model.Store.History" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Tag" Type="Model.Store.Tag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="History">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tag">
+        <PropertyRef Name="HistoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tag_Item">
+    <End Role="Item" Type="Model.Store.Item" Multiplicity="1" />
+    <End Role="Tag" Type="Model.Store.Tag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tag">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
