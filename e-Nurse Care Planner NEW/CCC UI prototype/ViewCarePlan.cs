@@ -62,8 +62,8 @@ namespace CCC.UI
             if (item == null)
                 return null;
 
-            FlowDocument fdItem = new FlowDocument();
-            this.loadItemDescription(fdItem, item);
+            FlowDocument fdItemDescription = new FlowDocument();
+            this.loadItemDescription(fdItemDescription, item);
 
             Section sItem = new Section();
 
@@ -86,10 +86,16 @@ namespace CCC.UI
             sItem.Blocks.Add(pUpdate);
 
             // Description
-            BlockCollection bItem = fdItem.Blocks;
+            BlockCollection bItem = fdItemDescription.Blocks;
 
-            for (int bNr = 0; bNr < bItem.Count; bNr++)
-                sItem.Blocks.Add(bItem.ElementAt(bNr));
+            // I first used bItem.ElementAt[bNr] and "bNr < bItem.Count" in for-loop here
+            // but debugging shows that when I add items to sItem they are removed from bItem
+            // thus not all description information would be displayed
+            // Fixed : 31 march at 16:03 2008
+            
+            int numParagraphs = bItem.Count;
+            for (int bNr = 0; bNr < numParagraphs; bNr++)
+                sItem.Blocks.Add(bItem.FirstBlock);
 
             // Tags
 
@@ -145,6 +151,8 @@ namespace CCC.UI
 
         public void showCareplanItem(FlowDocumentReader fdReaderCareBlog,Item selItem, TagHandler tagHandler)
         {
+            if (selItem == null)
+                return;
 
             if (selItem.Description == null)
             {
@@ -155,22 +163,41 @@ namespace CCC.UI
             }
 
             FlowDocument fdItem = new FlowDocument();
-            fdItem.Blocks.Add(this.generateItem(tagHandler,selItem,false));
+            Section itemSection = this.generateItem(tagHandler, selItem, false);
+           // foreach (Paragraph paragraph in itemSection.Blocks)
+              fdItem.Blocks.Add(itemSection);
 
             fdReaderCareBlog.Document = fdItem;
             fdReaderCareBlog.Visibility = Visibility.Visible;
            
             fdReaderCareBlog.ViewingMode = FlowDocumentReaderViewingMode.Page;
 
-
         }
+
+        
 
         private void loadItemDescription(FlowDocument fdLoadItemDescription, Item item)
         {
             TextRange range = new TextRange(fdLoadItemDescription.ContentStart, fdLoadItemDescription.ContentEnd);
-            MemoryStream stream = new MemoryStream(item.Description);
-            range.Load(stream, DataFormats.XamlPackage); // XAML-package is a .ZIP container -> its possibile to get it parts like images
+            //MemoryStream stream = new MemoryStream(ConvertHelper.convertToByteArray(item.Description));
 
+            MemoryStream stream = new MemoryStream(item.Description);
+            
+            //range.Load(stream, DataFormats.XamlPackage); // XAML-package is a .ZIP container -> its possibile to get it parts like images
+            try
+            {
+                range.Load(stream, DataFormats.XamlPackage);
+            }
+            catch (System.Windows.Markup.XamlParseException e)
+            {
+               
+                MessageBox.Show(e.Message, "Parsing error of item description content", MessageBoxButton.OK);
+            }
+            catch (ArgumentException arg)
+            {
+
+                MessageBox.Show(arg.Message, "Argument exception", MessageBoxButton.OK);
+            }
         }
 
 
@@ -216,7 +243,7 @@ namespace CCC.UI
             string prevCareComponent = null;
             string currentCareComponent;
 
-            pTags.Inlines.Add("Tags : ");
+           // pTags.Inlines.Add("Tags : ");
             foreach (Tag tag in orderedTags)
             {
 

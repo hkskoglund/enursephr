@@ -40,11 +40,11 @@
     <AspNetConfiguration>$(Configuration)</AspNetConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <SolutionDir>F:\Documents and Settings\hks\Mine dokumenter\Visual Studio 2008\Projects\e-Nurse Care Planner\</SolutionDir>
+    <SolutionDir>F:\Download\testcheckout\e-Nurse Care Planner NEW\</SolutionDir>
     <SolutionExt>.sln</SolutionExt>
     <SolutionFileName>e-Nurse Care Planner.sln</SolutionFileName>
     <SolutionName>e-Nurse Care Planner</SolutionName>
-    <SolutionPath>F:\Documents and Settings\hks\Mine dokumenter\Visual Studio 2008\Projects\e-Nurse Care Planner\e-Nurse Care Planner.sln</SolutionPath>
+    <SolutionPath>F:\Download\testcheckout\e-Nurse Care Planner NEW\e-Nurse Care Planner.sln</SolutionPath>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == '' and '$(MSBuildToolsVersion)' == '2.0'">v2.0</TargetFrameworkVersion>

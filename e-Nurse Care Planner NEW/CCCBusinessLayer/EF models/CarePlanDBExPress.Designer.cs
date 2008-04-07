@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.ActionT))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionType_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.ActionT))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionType_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.History), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.ActionT))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionType_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.ActionT))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Annotation_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CPAnnotation))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Annotation_Item", "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Item), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CPAnnotation))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_CarePlan_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "CarePlan", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CarePlan))]
@@ -22,7 +22,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Outcome_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Outcome))]
 
 // Original file name:
-// Generation date: 07.04.2008 15:54:41
+// Generation date: 03.04.2008 13:52:47
 namespace CCC.BusinessLayer
 {
     
@@ -334,43 +334,6 @@ namespace CCC.BusinessLayer
         partial void OnTagIdChanging(global::System.Guid value);
         partial void OnTagIdChanged();
         /// <summary>
-        /// There are no comments for Tag in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "Tag")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public Tag Tag
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Tag in the schema.
-        /// </summary>
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityReference<Tag> TagReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionType_History", "History")]
@@ -404,6 +367,43 @@ namespace CCC.BusinessLayer
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_ActionType_History", "History", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Tag in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionType_Tag", "Tag")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public Tag Tag
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionType_Tag", "Tag").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionType_Tag", "Tag").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Tag in the schema.
+        /// </summary>
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityReference<Tag> TagReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionType_Tag", "Tag");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionType_Tag", "Tag", value);
                 }
             }
         }
@@ -467,7 +467,7 @@ namespace CCC.BusinessLayer
             {
                 this.OnDataChanging(value);
                 this.ReportPropertyChanging("Data");
-                this._Data = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 1073741823);
+                this._Data = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 2147483647);
                 this.ReportPropertyChanged("Data");
                 this.OnDataChanged();
             }
@@ -618,6 +618,29 @@ namespace CCC.BusinessLayer
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
         /// <summary>
+        /// There are no comments for Property Description in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description
+        {
+            get
+            {
+                return this._Description;
+            }
+            set
+            {
+                this.OnDescriptionChanging(value);
+                this.ReportPropertyChanging("Description");
+                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
+                this.ReportPropertyChanged("Description");
+                this.OnDescriptionChanged();
+            }
+        }
+        private string _Description;
+        partial void OnDescriptionChanging(string value);
+        partial void OnDescriptionChanged();
+        /// <summary>
         /// There are no comments for Property TemplateCategoryID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
@@ -663,29 +686,6 @@ namespace CCC.BusinessLayer
         private global::System.Nullable<global::System.Guid> _PatientId;
         partial void OnPatientIdChanging(global::System.Nullable<global::System.Guid> value);
         partial void OnPatientIdChanged();
-        /// <summary>
-        /// There are no comments for Property Description in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Description
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Description);
-            }
-            set
-            {
-                this.OnDescriptionChanging(value);
-                this.ReportPropertyChanging("Description");
-                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 1073741823);
-                this.ReportPropertyChanged("Description");
-                this.OnDescriptionChanged();
-            }
-        }
-        private byte[] _Description;
-        partial void OnDescriptionChanging(byte[] value);
-        partial void OnDescriptionChanged();
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
@@ -979,11 +979,13 @@ namespace CCC.BusinessLayer
         /// </summary>
         /// <param name="ID">Initial value of Id.</param>
         /// <param name="title">Initial value of Title.</param>
-        public static Item CreateItem(global::System.Guid ID, string title)
+        /// <param name="description">Initial value of Description.</param>
+        public static Item CreateItem(global::System.Guid ID, string title, byte[] description)
         {
             Item item = new Item();
             item.Id = ID;
             item.Title = title;
+            item.Description = description;
             return item;
         }
         /// <summary>
@@ -1032,6 +1034,29 @@ namespace CCC.BusinessLayer
         private string _Title;
         partial void OnTitleChanging(string value);
         partial void OnTitleChanged();
+        /// <summary>
+        /// There are no comments for Property Description in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Description
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Description);
+            }
+            set
+            {
+                this.OnDescriptionChanging(value);
+                this.ReportPropertyChanging("Description");
+                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 2147483647);
+                this.ReportPropertyChanged("Description");
+                this.OnDescriptionChanged();
+            }
+        }
+        private byte[] _Description;
+        partial void OnDescriptionChanging(byte[] value);
+        partial void OnDescriptionChanged();
         /// <summary>
         /// There are no comments for Property ContainsDiagnosis in the schema.
         /// </summary>
@@ -1124,29 +1149,6 @@ namespace CCC.BusinessLayer
         private global::System.Nullable<bool> _ContainsFolksonomy;
         partial void OnContainsFolksonomyChanging(global::System.Nullable<bool> value);
         partial void OnContainsFolksonomyChanged();
-        /// <summary>
-        /// There are no comments for Property Description in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Description
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Description);
-            }
-            set
-            {
-                this.OnDescriptionChanging(value);
-                this.ReportPropertyChanging("Description");
-                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 1073741823);
-                this.ReportPropertyChanged("Description");
-                this.OnDescriptionChanged();
-            }
-        }
-        private byte[] _Description;
-        partial void OnDescriptionChanging(byte[] value);
-        partial void OnDescriptionChanged();
         /// <summary>
         /// There are no comments for Annotation in the schema.
         /// </summary>
@@ -1548,40 +1550,17 @@ namespace CCC.BusinessLayer
         /// <summary>
         /// Create a new Tag object.
         /// </summary>
-        /// <param name="ID">Initial value of Id.</param>
         /// <param name="taxonomyType">Initial value of TaxonomyType.</param>
+        /// <param name="ID">Initial value of Id.</param>
         /// <param name="taxonomyTagId">Initial value of TaxonomyTagId.</param>
-        public static Tag CreateTag(global::System.Guid ID, string taxonomyType, global::System.Guid taxonomyTagId)
+        public static Tag CreateTag(string taxonomyType, global::System.Guid ID, global::System.Guid taxonomyTagId)
         {
             Tag tag = new Tag();
-            tag.Id = ID;
             tag.TaxonomyType = taxonomyType;
+            tag.Id = ID;
             tag.TaxonomyTagId = taxonomyTagId;
             return tag;
         }
-        /// <summary>
-        /// There are no comments for Property Id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this.ReportPropertyChanging("Id");
-                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Id");
-                this.OnIdChanged();
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
         /// <summary>
         /// There are no comments for Property TaxonomyType in the schema.
         /// </summary>
@@ -1606,29 +1585,6 @@ namespace CCC.BusinessLayer
         partial void OnTaxonomyTypeChanging(string value);
         partial void OnTaxonomyTypeChanged();
         /// <summary>
-        /// There are no comments for Property TaxonomyTagId in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid TaxonomyTagId
-        {
-            get
-            {
-                return this._TaxonomyTagId;
-            }
-            set
-            {
-                this.OnTaxonomyTagIdChanging(value);
-                this.ReportPropertyChanging("TaxonomyTagId");
-                this._TaxonomyTagId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("TaxonomyTagId");
-                this.OnTaxonomyTagIdChanged();
-            }
-        }
-        private global::System.Guid _TaxonomyTagId;
-        partial void OnTaxonomyTagIdChanging(global::System.Guid value);
-        partial void OnTaxonomyTagIdChanged();
-        /// <summary>
         /// There are no comments for Property Comment in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
@@ -1652,9 +1608,55 @@ namespace CCC.BusinessLayer
         partial void OnCommentChanging(string value);
         partial void OnCommentChanged();
         /// <summary>
+        /// There are no comments for Property Id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property TaxonomyTagId in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Guid TaxonomyTagId
+        {
+            get
+            {
+                return this._TaxonomyTagId;
+            }
+            set
+            {
+                this.OnTaxonomyTagIdChanging(value);
+                this.ReportPropertyChanging("TaxonomyTagId");
+                this._TaxonomyTagId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TaxonomyTagId");
+                this.OnTaxonomyTagIdChanged();
+            }
+        }
+        private global::System.Guid _TaxonomyTagId;
+        partial void OnTaxonomyTagIdChanging(global::System.Guid value);
+        partial void OnTaxonomyTagIdChanged();
+        /// <summary>
         /// There are no comments for ActionT in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "ActionT")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionType_Tag", "ActionT")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1662,11 +1664,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionType_Tag", "ActionT").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionType_Tag", "ActionT").Value = value;
             }
         }
         /// <summary>
@@ -1678,13 +1680,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionType_Tag", "ActionT");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionType_Tag", "ActionT", value);
                 }
             }
         }

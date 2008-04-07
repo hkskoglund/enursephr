@@ -19,8 +19,8 @@ namespace CCC.UI
             if (value != null)
             {
                 string title = (string)value.ToString();
-                if (title.Length > 30)
-                    title = title.Substring(0, 30) + "...";
+                if (title.Length > 60)
+                    title = title.Substring(0, 60) + "...";
 
                 return title;
 

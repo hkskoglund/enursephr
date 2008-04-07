@@ -16,7 +16,13 @@
                 <Button x:Name="btnSave"  Click="btnSave_Click">
                     <Image x:Name="imgBtnSave" Source="Images\Save.png" Height="15" ToolTip="Save item to careplan" />
                 </Button>
-            </ToolBar>
+				<Button x:Name="btnInsertHyperlink" Click="btnInsertHyperlink_Click">
+					<Image x:Name="imgBtnInsertHyperlink" Source="Images\URL.png" Height="15" ToolTip="Insert web-address" />
+				</Button>
+				<Button x:Name="btnInsertImage" Click="btnInsertImage_Click" IsEnabled="False" >
+					<Image x:Name="imgBtnInsertImage" Source="Images\OpenFolder.png" Height="15" ToolTip="Insert image" />
+				</Button>
+			</ToolBar>
         </ToolBarTray>
         
         <StackPanel x:Name="spNewItem" Margin="5,0,5,0">
@@ -34,7 +40,13 @@
             
             <TextBlock Margin="0,5,0,0" Text="Description" FontWeight="UltraBold" />
            
-            <RichTextBox x:Name="rtbDescription"  MaxHeight="300" Height="200"   TextChanged="rtbDescription_TextChanged"  />
+            <RichTextBox x:Name="rtbDescription"  MaxHeight="300" Height="200" 
+              TextChanged="rtbDescription_TextChanged"
+              IsDocumentEnabled="True"
+             
+              
+             
+                />
         </StackPanel>
         
         <!--<TextBlock Text="Attachments (resources)" FontWeight="Bold" />

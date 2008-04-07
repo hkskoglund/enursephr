@@ -24,6 +24,8 @@ using Microsoft.Samples.KMoore.WPFSamples.DateControls;
 using System.Windows.Annotations;
 using System.IO;
 using System.Data.Objects;
+using System.Xml;
+using System.Diagnostics;
 
 
 //Copyright (c) 2008 Henning Knut Skoglund
@@ -66,9 +68,22 @@ namespace CCC.UI
 
         ListCollectionView cvItemTags;
 
+        myAnnotationService aService;
+        
+        public ViewInformationAcqusition infoAcq = new ViewInformationAcqusition();
+
+        public ContentType contentType = new ContentType();
+
+        // Previous width of tag-panel and taxonomy-panel Grid
+        GridLength prevTagsWidth = new GridLength(0);
+        GridLength prevTaxonomyWidth = new GridLength(0);
+        
+        // True if item is to be displayed in full screen
+        bool FullScreenItem = false;       
 
         public WindowMain()
             {
+           
                     InitializeComponent();
                 
                
@@ -108,7 +123,10 @@ namespace CCC.UI
                 App.Current.Properties["Version"] = Properties.Settings.Default.Version;
                 App.Current.Properties["LanguageName"] = Properties.Settings.Default.LanguageName;
 
-                
+                // Setup event handling of hyperlinks
+
+                fdReaderCareBlog.AddHandler(Hyperlink.RequestNavigateEvent,new RequestNavigateEventHandler(hyperlink_RequestNavigate));
+
                 // Load CCC Framework 
 
                 try
@@ -160,12 +178,18 @@ namespace CCC.UI
                     if (i.Id == Properties.Settings.Default.LastItem) // Point to last item selected
                         lastItem = i;
                 }
-                
-                
+
+
+                // Start annotation service
+
+                aService = new myAnnotationService(fdReaderCareBlog);
+               
+                // Setup of item collection change handling (updates combobox)
+
                 App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
                 Item_AssociationChanged(this, null);
-
-
+               
+                // Start at last selected item from previous session by default
               
                 if (lastItem != null)
                     lvCareBlog.SelectedItem = lastItem;
@@ -173,11 +197,15 @@ namespace CCC.UI
                 // Show all tags for the current careplan
                 buildAllTags(App.carePlan.ActiveCarePlan);
 
-                
+               
+
                 /* LANGUAGE attrib change */
                 tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
 
+                lvAnnotation.ItemsSource = infoAcq.CvStatement;
 
+
+                
                 
                 // Setup careplan templates sub-UI
 
@@ -207,10 +235,10 @@ namespace CCC.UI
                
             }
 
-            void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
+            public void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
             {
-               
-                lvCareBlog.ItemsSource = App.carePlan.ActiveCarePlan.Item.OrderBy(i => i.History.LastUpdate);
+              
+                lvCareBlog.ItemsSource = App.carePlan.ActiveCarePlan.Item.OrderByDescending(i => i.History.LastUpdate);
             }
 
             public void inferContentFromTags(Item i)
@@ -333,7 +361,7 @@ namespace CCC.UI
                 if (selItem == null)
                     return;
                
-                App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+                //App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
                  
                 inferContentFromTags(selItem);
 
@@ -374,8 +402,10 @@ namespace CCC.UI
                
                 WindowNewItem wndNewItem = new WindowNewItem();
                 wndNewItem.ShowDialog();
-             
-                App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
+
+                // Assume user want to work with the newly created item
+
+                lvCareBlog.SelectedItem = wndNewItem.CurrentItem;
                
              }
 
@@ -397,10 +427,14 @@ namespace CCC.UI
                    {
                        //if (!selItem.Tag.IsLoaded)
                        //    selItem.Tag.Load();
-
+                      
                        selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Disable tag association
                       
                        App.carePlan.DB.DeleteObject(selItem.History);
+
+                       infoAcq.Statement.Clear(); // Remove annotation-references
+                       if (aService.Service.IsEnabled)
+                           aService.Service.Disable();
                       
                        App.carePlan.DB.DeleteObject(selItem);
 
@@ -418,6 +452,8 @@ namespace CCC.UI
                        fdReaderCareBlog.Document = null;
                        fdReaderCareBlog.Visibility = Visibility.Collapsed;
                        buildAllTags(App.carePlan.ActiveCarePlan);
+                    
+                       lvCareBlog_SelectionChanged(lvCareBlog, null); // Fake event to update control 
 
                    }
 
@@ -451,8 +487,15 @@ namespace CCC.UI
                 ////spPanel.Children.Add(pTitle);
                 //sItem.Blocks.Add(pTitle);
 
+                aService.changeItemStore(selItem);
+
+                infoAcq.Refresh(aService.Service.Store);
+               
 
                 App.carePlan.showCareplanItem(fdReaderCareBlog,selItem,tagHandler);
+
+
+               
 
                 //spPanel.Children.Add(fdview);
 
@@ -463,8 +506,7 @@ namespace CCC.UI
                 //lvCareBlog.ScrollIntoView(selItem);
             }
 
-           
-                    
+               
            
            
             private void lvCareBlog_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -478,8 +520,11 @@ namespace CCC.UI
                 wndUpdateItem.UpdateItem = true;
                 wndUpdateItem.CurrentItem = selItem;
                 wndUpdateItem.ShowDialog();
-         
+
+                infoAcq.Refresh(aService.Service.Store); // In case annotation references is changed...
+
                 App.carePlan.showCareplanItem(fdReaderCareBlog,selItem,tagHandler);
+                
             }
 
             #endregion
@@ -561,7 +606,8 @@ namespace CCC.UI
                 if (taxonomyType == "CCC/NursingDiagnosis" || taxonomyType == "CCC/NursingIntervention")
                 {
                     selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Remove event handling now
-                    Tag newTag = CCC.BusinessLayer.Tag.CreateTag(taxonomyType, Guid.NewGuid(), taxonomyGuid);
+                    Tag newTag = CCC.BusinessLayer.Tag.CreateTag(Guid.NewGuid(), taxonomyType, taxonomyGuid);
+                  
                     newTag.Item = selItem;
                     newTag.Comment = comment;
 
@@ -635,6 +681,7 @@ namespace CCC.UI
 
             private void miCarePlanBlog_Click(object sender, RoutedEventArgs e)
             {
+                aService.Service.Disable();
                 App.carePlan.generateCareBlog(fdReaderCareBlog, App.carePlan.ActiveCarePlan,tagHandler,true);
                 exTags.IsExpanded = false;
                 exTaxonomy.IsExpanded = true;
@@ -691,15 +738,7 @@ namespace CCC.UI
                 Tag_AssociationChanged(this, null);
             }
 
-            private void miViewActiveCarePlanTags_Click(object sender, RoutedEventArgs e)
-            {
-
-                if (exTaxonomy.Visibility == Visibility.Visible)
-                    exTaxonomy.Visibility = Visibility.Collapsed;
-                else
-                    exTaxonomy.Visibility = Visibility.Visible;
-
-            }
+            
 
             private void tbReasonDiagnosis_TextChanged(object sender, TextChangedEventArgs e)
             {
@@ -761,8 +800,21 @@ namespace CCC.UI
                 
             }
 
+            private void turnOnAnnotationService(Item item)
+            {
+                aService.changeItemStore(item);
+            }
+
+            private void turnOffAnnotationService()
+            {
+                aService.Service.Disable();
+            }
+
+            #region Item navigation for a specific careplan
+
             private void btnBack_Click(object sender, RoutedEventArgs e)
             {
+
                 int selIndex = lvCareBlog.SelectedIndex;
 
                 if (selIndex > 0)
@@ -771,6 +823,8 @@ namespace CCC.UI
                     selIndex = lvCareBlog.Items.Count - 1;
 
                 lvCareBlog.SelectedIndex = selIndex;
+
+               
             }
 
             private void btnForward_Click(object sender, RoutedEventArgs e)
@@ -787,20 +841,295 @@ namespace CCC.UI
 
             private void btnHome_Click(object sender, RoutedEventArgs e)
             {
-                App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
+                Item selItem = lvCareBlog.SelectedItem as Item;
+                App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+                turnOnAnnotationService(selItem);
+            }
+
+            #endregion
+
+
+            #region Annotation toolbar
+
+            private void btnCaptureDiseaseStatement_Click(object sender, RoutedEventArgs e)
+            {
+
+                if (!fdReaderCareBlog.Selection.IsEmpty)
+                {
+                    contentType = ContentType.Disease;
+
+                    Annotation annotation = AnnotationHelper.CreateHighlightForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName, (Brush)this.TryFindResource("DiseaseHighlightColor"));
+
+                    this.addContent(annotation, ContentType.Disease);
+                    aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
+
+                }
+                else
+                    MessageBox.Show("Please select some text as the disease information", "Empty disease information selection", MessageBoxButton.OK);
+            }
+
+
+            private void btnCaptureDiagnosticStatement_Click(object sender, RoutedEventArgs e)
+            {
+                
+                if (!fdReaderCareBlog.Selection.IsEmpty)
+                {
+                    contentType = ContentType.Diagnostic;
+
+                    Annotation annotation = AnnotationHelper.CreateHighlightForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName, (Brush)this.TryFindResource("DiagnosisHighlightColor"));
+                    
+                    this.addContent(annotation, ContentType.Diagnostic);
+                    aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
+
+                }
+                else
+                    MessageBox.Show("Please select some text as the diagnostic information", "Empty diagnostic information selection", MessageBoxButton.OK);
+            }
+
+
+            private void btnCaptureInterventionalStatement_Click(object sender, RoutedEventArgs e)
+            {
+                if (!fdReaderCareBlog.Selection.IsEmpty)
+                {
+                    contentType = ContentType.Interventional;
+
+                    Annotation annotation = AnnotationHelper.CreateHighlightForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName, (Brush)this.TryFindResource("InterventionHighlightColor"));
+                    
+                    this.addContent(annotation, ContentType.Interventional);
+                    aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
+
+                }
+                else
+                    MessageBox.Show("Please select some text as the interventional information", "Empty interventional information selection", MessageBoxButton.OK);
+
+            }
+
+            private void btnCaptureMedicationalStatement_Click(object sender, RoutedEventArgs e)
+            {
+                if (!fdReaderCareBlog.Selection.IsEmpty)
+                {
+                    contentType = ContentType.Medication;
+
+                    Annotation annotation = AnnotationHelper.CreateHighlightForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName, (Brush)this.TryFindResource("MedicationHighlightColor"));
+
+                    this.addContent(annotation, ContentType.Medication);
+                    aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
+
+                }
+                else
+                    MessageBox.Show("Please select some text as the medicational information", "Empty medicational information selection", MessageBoxButton.OK);
+
+            }
+
+            /// <summary>
+            /// Inserts a XML-tree in the contents section of an annotation to capture information that was annotated
+            /// this might be a diagnostics statement or an interventional statement
+            /// <eNurseCP>
+            ///     <Statement ContentType="Diagnosis" Content="???"
+            /// </eNurseCP>
+            ///  </summary>
+            /// <param name="annotation"></param>
+            /// <param name="contentType"></param>
+            public void addContent(Annotation annotation, ContentType contentType)
+            {
+                XmlDocument xDoc = new XmlDocument();
+                XmlElement xHeading = xDoc.CreateElement("eNurseCP");
+                XmlElement xStatement = xDoc.CreateElement("Statement");
+
+                // Content type
+                if (contentType == ContentType.Diagnostic)
+                    xStatement.SetAttribute("ContentType", "Diagnostic");
+                else if (contentType == ContentType.Interventional)
+                    xStatement.SetAttribute("ContentType", "Interventional");
+                else if (contentType == ContentType.Disease)
+                    xStatement.SetAttribute("ContentType", "Disease");
+                else if (contentType == ContentType.Medication)
+                    xStatement.SetAttribute("ContentType", "Medication");
+                
+                // Content
+
+                xStatement.SetAttribute("Content", getText(annotation));
+                xHeading.AppendChild(xStatement);
+
+                annotation.Anchors.First().Contents.Add(xHeading);
+
+            }
+
+
+            /// <summary>
+            /// Get text pointed to by BoundingStart and BoundingEnd-anchors (highlighted area) in the flowdocument 
+            /// Partly dependent on information avalable on MSDN-library
+            /// </summary>
+            /// <param name="annotation"></param>
+            /// <returns></returns>
+            public string getText(Annotation annotation)
+            {
+                AnnotationService service = AnnotationService.GetService(fdReaderCareBlog);
+
+                IAnchorInfo info = AnnotationHelper.GetAnchorInfo(service, annotation);
+                if (info == null)
+                    return null;
+
+                TextAnchor tAnchor = info.ResolvedAnchor as TextAnchor;
+
+                TextRange range = new TextRange((TextPointer)tAnchor.BoundingStart, (TextPointer)tAnchor.BoundingEnd);
+
+                return range.Text;
+
+            }
+
+            public string getAnnotationContent(Annotation annotation)
+            {
+                if (annotation.Anchors[0].Contents.Count == 0)
+                    return String.Empty;
+
+                
+                XmlDocument xdoc = new XmlDocument();
+
+                xdoc.LoadXml(annotation.Anchors[0].Contents[0].OuterXml);
+
+                XmlNode xe = xdoc.SelectSingleNode("eNurseCP/Statement[1]");
+                return xe.Attributes["Content"].Value;
+
+            }
+
+            public ContentType getContentType(Annotation annotation)
+            {
+
+                if (annotation.Anchors[0].Contents.Count == 0)
+                    return ContentType.Null;
+
+                XmlDocument xdoc = new XmlDocument();
+                xdoc.LoadXml(annotation.Anchors[0].Contents[0].OuterXml);
+
+                XmlNode xe = xdoc.SelectSingleNode("eNurseCP/Statement[1]"); // XPath-query
+                string contentType = xe.Attributes["ContentType"].Value;
+
+                ContentType cType = new ContentType();
+                switch (contentType)
+                {
+                    case "Diagnostic": cType = ContentType.Diagnostic; break;
+                    case "Interventional": cType = ContentType.Interventional; break;
+                    case "Disease": cType = ContentType.Disease; break;
+                    case "Medication": cType = ContentType.Medication; break;
+                }
+
+                return cType;
+            }
+
+           
+            #endregion
+
+            private void lvAnnotation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                
+
+                //Annotation selAnnotation = ((sender as ListBox).SelectedItem) as Annotation;
+                //if (selAnnotation == null)
+                //    return;
+
+                //// Suggest information/reason for code in CCC framework
+                //if (this.getContentType(selAnnotation) == ContentType.Diagnostic)
+                //    tbReasonDiagnosis.Text = this.getText(selAnnotation);
+                //else
+                    
+                //    if (this.getContentType(selAnnotation) == ContentType.Interventional)
+                //    tbReasonIntervention.Text = this.getText(selAnnotation);
+                
+               
+            }
+
+            /// <summary>
+            /// Convert the first character to uppercase
+            /// </summary>
+            /// <param name="content"></param>
+            /// <returns></returns>
+            private string firstCharToUpper(string content)
+            {
+                string firstChar = content.Substring(0, 1).ToUpperInvariant();
+                return content.Remove(0, 1).Insert(0, firstChar);
+            }
+
+            
+            private void btnAcquireDiagnosticInformation_Click(object sender, RoutedEventArgs e)
+            {
+                Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
+                if (selAnnotation == null)
+                {
+                    MessageBox.Show("No aquired diagnostic information selected", "No acquired diagnostic information", MessageBoxButton.OK);
+                    return;
+                }
+
+                if (getContentType(selAnnotation) == ContentType.Diagnostic)
+                    tbReasonDiagnosis.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
+                
+                else
+                    MessageBox.Show("Please select diagnostic information", "Select diagnostic information", MessageBoxButton.OK);
+            }
+
+            private void btnAcquireInterventionalInformation_Click(object sender, RoutedEventArgs e)
+            {
+                Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
+                if (selAnnotation == null)
+                {
+                    MessageBox.Show("No aquired interventional or medicational information selected", "No acquired interventional or medicational information", MessageBoxButton.OK);
+                    return;
+                }
+
+                ContentType contentType = getContentType(selAnnotation);
+                if (contentType == ContentType.Interventional || contentType == ContentType.Medication)
+                    tbReasonIntervention.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
+                else
+                    MessageBox.Show("Please select interventional or medicational information", "Select interventional or medicational information", MessageBoxButton.OK);
+            
+            }
+
+
+            // Info from https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2574377&SiteID=1
+            void hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+            {
+                Process.Start(e.Uri.ToString());
+
+                e.Handled = true;
+            }
+
+            private void btnFullScreen_Click(object sender, RoutedEventArgs e)
+            {
+                if (!FullScreenItem)
+                {
+                    prevTagsWidth = gcTags.Width;
+                    gcTags.Width = new GridLength(0);
+
+                    prevTaxonomyWidth = gcTaxonomy.Width;
+                    gcTaxonomy.Width = new GridLength(0);
+                
+                    FullScreenItem = true;
+                }
+                else
+                {
+                    gcTags.Width = prevTagsWidth;
+                    gcTaxonomy.Width = prevTaxonomyWidth;
+
+                    FullScreenItem = false;
+
+                }
+
+               
+                if (!FullScreenItem)
+                    fdReaderCareBlog.SwitchViewingMode(FlowDocumentReaderViewingMode.Page);
+                else
+                    fdReaderCareBlog.SwitchViewingMode(FlowDocumentReaderViewingMode.Scroll);
+
             }
            
 
-         
-            
 
-           
 
-            
-           
-            
-            
-           
+
+
+
+
+
         }
 }
 

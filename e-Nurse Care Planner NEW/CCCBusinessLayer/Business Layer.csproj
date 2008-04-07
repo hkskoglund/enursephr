@@ -86,6 +86,8 @@
     <Compile Include="CarePlanEntitiesWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ContentType.cs" />
+    <Compile Include="Converters.cs" />
     <Compile Include="EF models\CarePlanDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -141,12 +143,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CCCReferenceCompact.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.csdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.msl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.ssdl" />
+    <None Include="App.Config" />
     <None Include="bin\Debug\EF models\CarePlanDB.csdl" />
     <None Include="bin\Debug\EF models\CarePlanDB.msl" />
     <None Include="bin\Debug\EF models\CarePlanDB.ssdl" />
+    <None Include="bin\Debug\EF models\CareplanTemplateDB.csdl" />
+    <None Include="bin\Debug\EF models\CareplanTemplateDB.msl" />
+    <None Include="bin\Debug\EF models\CareplanTemplateDB.ssdl" />
     <None Include="bin\Release\EF models\CarePlanDB.csdl" />
     <None Include="bin\Release\EF models\CarePlanDB.msl" />
     <None Include="bin\Release\EF models\CarePlanDB.ssdl" />
@@ -156,12 +159,12 @@
     <None Include="bin\Release\EF models\CCCReferenceCompact.csdl" />
     <None Include="bin\Release\EF models\CCCReferenceCompact.msl" />
     <None Include="bin\Release\EF models\CCCReferenceCompact.ssdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.csdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.ssdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.msl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.ssdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.csdl" />
-    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.msl" />
+    <None Include="bin\Debug\EF models\CCCFrameworkCompact.csdl" />
+    <None Include="bin\Debug\EF models\CCCReferenceCompact.ssdl" />
+    <None Include="bin\Debug\EF models\CCCFrameworkCompact.msl" />
+    <None Include="bin\Debug\EF models\CCCFrameworkCompact.ssdl" />
+    <None Include="bin\Debug\EF models\CCCReferenceCompact.csdl" />
+    <None Include="bin\Debug\EF models\CCCReferenceCompact.msl" />
     <None Include="bin\Release\EF models\CareplanTemplateDB.csdl" />
     <None Include="bin\Release\EF models\CareplanTemplateDB.ssdl" />
     <None Include="bin\Release\EF models\CareplanTemplateDB.msl" />
@@ -222,10 +225,13 @@
     <Content Include="Databases\CCC Terminology Reference.sdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Databases\COPYRIGHT.txt" />
+    <Content Include="Databases\CarePlan.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\Databases\" />
-    <Folder Include="LanguageAnalysis\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

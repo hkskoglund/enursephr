@@ -128,6 +128,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WindowInsertHyperlink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -162,17 +166,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\AnnotationToolTipConverter.cs" />
     <Compile Include="Converter\DateConverter.cs" />
     <Compile Include="Converter\DateTimeConverter.cs" />
+    <Compile Include="Converter\HighlightTextConverter.cs" />
     <Compile Include="Converter\MajorCodeConverter.cs" />
     <Compile Include="Converter\RemoveParentesisOutcomeConcept.cs" />
+    <Compile Include="Converter\StatementContentConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\StatementContentTypeConverter.cs" />
     <Compile Include="Converter\TitleConverter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converter\UpperCaseConverter.cs" />
+    <Compile Include="Converter\ValidContentConverter.cs" />
+    <Compile Include="AnnotationService.cs" />
     <Compile Include="ViewCarePlan.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewInformationAcqusition.cs" />
     <Compile Include="WindowDatabaseError.xaml.cs">
       <DependentUpon>WindowDatabaseError.xaml</DependentUpon>
     </Compile>
@@ -204,6 +217,9 @@
     <Compile Include="WindowCopyright.xaml.cs">
       <DependentUpon>WindowCopyright.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowInsertHyperlink.xaml.cs">
+      <DependentUpon>WindowInsertHyperlink.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowMain - explorer.cs" />
     <Compile Include="WindowMultiLanguageIntegrity.xaml.cs">
       <DependentUpon>WindowMultiLanguageIntegrity.xaml</DependentUpon>
@@ -218,6 +234,7 @@
       <DependentUpon>WindowVideoShow.xaml</DependentUpon>
     </Compile>
     <None Include="App.Config" />
+    <None Include="Images\License agreement.rtf" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -312,6 +329,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\URL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OpenFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FullScreen.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Video\" />

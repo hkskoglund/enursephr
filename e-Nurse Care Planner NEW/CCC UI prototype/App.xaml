@@ -3,8 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     StartupUri="WindowMain.xaml" SessionEnding="Application_SessionEnding">
     <Application.Resources>
-        
-        <LinearGradientBrush x:Key="TagsBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+    
+    <!-- Annotation START -->
+		<SolidColorBrush x:Key="DiseaseHighlightColor" Color="#54FF0000" />
+		<SolidColorBrush x:Key="DiagnosisHighlightColor" Color="#54008000"/>
+		<SolidColorBrush x:Key="InterventionHighlightColor" Color="#540000FF" />
+		<SolidColorBrush x:Key="MedicationHighlightColor" Color="#54474747" />
+
+    <!-- Annotation END -->
+    
+		<LinearGradientBrush x:Key="TagsBackground" EndPoint="0.5,1" StartPoint="0.5,0">
         		<GradientStop Color="#FF2100FF" Offset="0.17"/>
         		<GradientStop Color="#FFFFFFFF" Offset="1"/>
         	</LinearGradientBrush>
@@ -16,8 +24,10 @@
 
         <SolidColorBrush x:Key="DiagnosisItem" Color="#FF18A618"/>
 
+		<SolidColorBrush x:Key="DiseaseColor" Color="Red" />
 		<SolidColorBrush x:Key="DiagnosisColor" Color="Green" />
 		<SolidColorBrush x:Key="InterventionColor" Color="Blue" />
+		<SolidColorBrush x:Key="MedicationColor" Color="#FF4E4E4E"/>
 		<SolidColorBrush x:Key="CareComponentColor" Color="Magenta" />
 
 		<LinearGradientBrush x:Key="InterventionItem" EndPoint="1,1" StartPoint="0,0">
@@ -50,6 +60,8 @@
     		<GradientStop Color="#FF0041F8" Offset="0.485"/>
     		<GradientStop Color="#FFFFFFFF" Offset="1"/>
     	</LinearGradientBrush>
+    	<SolidColorBrush x:Key="CarePlanTagsBackground" Color="#FFE7E1E1"/>
+    	<SolidColorBrush x:Key="ItemTagsBackground" Color="#FF96ABE5"/>
 
 
     </Application.Resources>

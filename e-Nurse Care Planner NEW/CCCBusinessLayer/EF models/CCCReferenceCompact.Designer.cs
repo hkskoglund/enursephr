@@ -11,7 +11,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 05.01.2008 10:44:26
+// Generation date: 26.03.2008 11:22:49
 namespace ReferenceFrameworkModel
 {
     

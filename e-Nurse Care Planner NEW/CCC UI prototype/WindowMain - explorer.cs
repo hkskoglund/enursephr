@@ -330,7 +330,7 @@ namespace CCC.UI
 
             ccNursingDiagnosis.Content = App.cccFrameWork.cvDiagnoses.CurrentItem;
             
-
+            
 
         }
 
@@ -556,11 +556,13 @@ namespace CCC.UI
         private void ccFrameworkElement_MouseEnter(object sender, MouseEventArgs e)
         {
             (sender as Border).BorderBrush = (Brush)this.TryFindResource("FrameworkElementBorderSelected");
+            (sender as Border).Cursor = Cursors.Hand;
         }
 
         private void ccFrameworkElement_MouseLeave(object sender, MouseEventArgs e)
         {
             (sender as Border).BorderBrush = (Brush)this.TryFindResource("FrameworkElementBorder");
+            (sender as Border).Cursor = null;
         }
         #endregion
 
@@ -637,6 +639,7 @@ namespace CCC.UI
         
         private void cbAttachToIntervention_Checked(object sender, RoutedEventArgs e)
         {
+            gcActionType.Width = new GridLength(75);
             tbNursingInterventionActionModifier.Visibility = Visibility.Visible;
             tbConceptActionType.Text = cbActionType.Text;
             tbNursingInterventionActionModifier.Text = cbActionType.Text;
@@ -658,6 +661,7 @@ namespace CCC.UI
 
         private void cbAttachToIntervention_UnChecked(object sender, RoutedEventArgs e)
         {
+            gcActionType.Width = new GridLength(0);
             tbNursingInterventionActionModifier.Visibility = Visibility.Collapsed;
             tbConceptActionType.Text = ((ActionType)(lbActionType.SelectedItem)).Concept;
             tbNursingInterventionActionModifier.Text = null;
