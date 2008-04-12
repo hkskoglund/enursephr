@@ -14,7 +14,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_NursingIntervention_CareComponent", "Care_component", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Care_component), "Nursing_Intervention", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.FrameworkIntervention))]
 
 // Original file name:
-// Generation date: 26.03.2008 11:21:48
+// Generation date: 12.04.2008 16:35:28
 namespace CCC.BusinessLayer
 {
     

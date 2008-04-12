@@ -113,12 +113,12 @@ namespace CCC.UI
 
         public void generateCareBlog(FlowDocumentReader fdReaderCareBlog,CarePlan cp, TagHandler tagHandler, bool hasLineSeparator)
         {
-            if (cp.Item.Count == 0)
+            if (cp.Item.Count == 0) // Check for empty careplan
                 return;
 
             FlowDocument fdCareBlog = new FlowDocument();
 
-            int blogItemNr = 0;
+            //int blogItemNr = 0;
             //dictItemBlog = new Dictionary<string,Guid>();
 
             Item lastItem = cp.Item.OrderByDescending(d => d.History.LastUpdate).Last();

@@ -62,7 +62,7 @@ namespace CCC.UI
         ListCollectionView cvCareplanTags;
 
       
-        Dictionary<string, Guid> dictItemBlog;
+     //   Dictionary<string, Guid> dictItemBlog;
 
         public TagHandler tagHandler = new TagHandler();
 

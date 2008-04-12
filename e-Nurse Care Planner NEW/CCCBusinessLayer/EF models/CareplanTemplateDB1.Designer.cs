@@ -11,7 +11,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 26.03.2008 11:30:44
+// Generation date: 12.04.2008 16:35:28
 namespace CCC.BusinessLayer
 {
     

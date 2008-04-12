@@ -22,7 +22,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Outcome_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Outcome))]
 
 // Original file name:
-// Generation date: 07.04.2008 15:54:41
+// Generation date: 12.04.2008 16:35:29
 namespace CCC.BusinessLayer
 {
     

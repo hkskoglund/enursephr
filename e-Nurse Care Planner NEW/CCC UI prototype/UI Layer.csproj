@@ -63,14 +63,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Download\wpfbagotricks\source\J832.Wpf.BagOTricksLibrary\bin\Debug\J832.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Download\wpfbagotricks\source\J832.Wpf.BagOTricksLibrary\bin\Debug\J832.Wpf.BagOTricksLib.dll</HintPath>
-    </Reference>
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -116,18 +110,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WindowImageShow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WindowChangeConflict.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WindowConcurrencyException.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="WindowInsertHyperlink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,10 +131,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowOutcomes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WindowVideoShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,10 +167,6 @@
     <Compile Include="WindowDatabaseError.xaml.cs">
       <DependentUpon>WindowDatabaseError.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowImageShow.xaml.cs">
-      <DependentUpon>WindowImageShow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -208,12 +182,6 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ViewCCCFrameWork.cs" />
-    <Compile Include="WindowChangeConflict.xaml.cs">
-      <DependentUpon>WindowChangeConflict.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowConcurrencyException.xaml.cs">
-      <DependentUpon>WindowConcurrencyException.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WindowCopyright.xaml.cs">
       <DependentUpon>WindowCopyright.xaml</DependentUpon>
     </Compile>
@@ -229,9 +197,6 @@
     </Compile>
     <Compile Include="WindowOutcomes.xaml.cs">
       <DependentUpon>WindowOutcomes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowVideoShow.xaml.cs">
-      <DependentUpon>WindowVideoShow.xaml</DependentUpon>
     </Compile>
     <None Include="App.Config" />
     <None Include="Images\License agreement.rtf" />
@@ -344,6 +309,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\FullScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="J832\J832.Common.dll" />
+    <EmbeddedResource Include="J832\J832.Wpf.BagOTricksLib.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Video\" />
