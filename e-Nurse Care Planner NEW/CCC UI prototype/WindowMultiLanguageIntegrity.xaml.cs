@@ -11,10 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.ComponentModel;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.Data;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -20,7 +20,7 @@ using Microsoft.Win32;
 using System.Windows.Markup;
 using System.Data.EntityClient;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     /// <summary>
     /// Interaction logic for WindowNewItem.xaml

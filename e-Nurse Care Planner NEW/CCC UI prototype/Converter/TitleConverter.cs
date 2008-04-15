@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Data; // IValueConverter
 using System.Globalization; // CultureInfo
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     public class TitleConverter : IValueConverter
     {

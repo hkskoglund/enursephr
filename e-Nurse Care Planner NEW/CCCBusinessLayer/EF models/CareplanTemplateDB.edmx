@@ -12,14 +12,14 @@
       </DesignerInfoPropertySet>
     </edmx:Options>
     <edmx:ReverseEngineer />
-    <edmx:Diagrams ><Diagram Name="CareplanTemplateDB"><EntityTypeShape EntityType="CCC.BusinessLayer.TemplateCarePlan" PointX="0.75" PointY="0.75" Width="1.5" Height="1.427958984375" IsExpanded="true" /></Diagram></edmx:Diagrams>
+    <edmx:Diagrams ><Diagram Name="CareplanTemplateDB"><EntityTypeShape EntityType="eNurseCP.BusinessLayer.TemplateCarePlan" PointX="0.75" PointY="0.75" Width="1.5" Height="1.427958984375" IsExpanded="true" /></Diagram></edmx:Diagrams>
   </edmx:Designer>
   <edmx:Runtime>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="CCC.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+      <Schema Namespace="eNurseCP.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
         <EntityContainer Name="CareplanTemplateEntities">
-          <EntitySet Name="TemplateCarePlan" EntityType="CCC.BusinessLayer.TemplateCarePlan" />
+          <EntitySet Name="TemplateCarePlan" EntityType="eNurseCP.BusinessLayer.TemplateCarePlan" />
         </EntityContainer>
         <EntityType Name="TemplateCarePlan">
           <Key>
@@ -61,7 +61,7 @@
       <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
         <EntityContainerMapping StorageEntityContainer="dbo" CdmEntityContainer="CareplanTemplateEntities">
           <EntitySetMapping Name="TemplateCarePlan">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.TemplateCarePlan)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.TemplateCarePlan)">
               <MappingFragment StoreEntitySet="TemplateCarePlan">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

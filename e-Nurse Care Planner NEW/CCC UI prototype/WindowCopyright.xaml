@@ -2,13 +2,45 @@
     Norwegian: "Om"
     English : "About"
     -->
-    <Window x:Class="CCC.UI.WindowCopyright"
+<Window x:Class="eNurseCP.userInterfaceLayer.WindowCopyright"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="About"  SizeToContent="Height" Width="400" >
+    Title="About"  
+    Background="{StaticResource BlueTheme}"    
+        Height="590" Width="450" ResizeMode="NoResize" >
+    <Window.Resources>
 
-    <FlowDocumentScrollViewer x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
-        <FlowDocument Background="{StaticResource BlueTheme}">
+        <DataTemplate x:Key="DBHealthItem">
+            <StackPanel Orientation="Horizontal">
+                <!--<TextBlock Text="{Binding Path=OK}" ToolTip="{Binding Path=Message}" Width="50" />-->
+                
+                <Image Height="15" x:Name="imgOK" Margin="0,0,5,0" VerticalAlignment="Top" />
+                
+                <TextBlock Text="{Binding Path=Database}"  FontWeight="UltraBold"  Width="90" />
+                      <TextBlock x:Name="tbMessage" Text="{Binding Path=Message}"
+                                 TextWrapping="Wrap" />
+                
+                            
+            </StackPanel>
+            
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=OK}" Value="True">
+                    <Setter Property="Source" TargetName="imgOK" Value="Images/OK.png" />
+                    <Setter Property="Width" TargetName="tbMessage" Value="30" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=OK}" Value="False">
+                    <Setter Property="Source" TargetName="imgOK" Value="Images/ERROR.png" />
+                    <Setter Property="Width" TargetName="tbMessage" Value="310" />
+
+                </DataTrigger>
+
+            </DataTemplate.Triggers>
+
+        </DataTemplate>
+    </Window.Resources>
+        <StackPanel>
+       <FlowDocumentScrollViewer  Height="400" x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
+        <FlowDocument >
 
             <FlowDocument.Resources>
                 <Style x:Key="Title" TargetType="{x:Type Paragraph}">
@@ -34,12 +66,24 @@
 
             <Paragraph  Style="{StaticResource Title}">
                 e-Nurse Care Planner
+                <Floater 
+            Margin="5"  
+            HorizontalAlignment="Center"
+            
+            >
+                    <BlockUIContainer>
+                        <Image Source="Images/eNurse.jpg" Width="4cm"/>
+                    </BlockUIContainer>
+                </Floater>
             </Paragraph>
 
+
             <Paragraph Style="{StaticResource BodyText}">
-                This program enables creation of care plans. It also offers exploration
-                    of diagnoses and interventions in the nurse classification system;
-                <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>
+                This application makes it possible to code clincal information with the help
+                of
+                <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic> . It
+                is also possible to integrate other taxonomies. The content model is inspired from 
+                RSS with a title and and a description for each careplan item.
                 <LineBreak />
                 <LineBreak />
                 <!--
@@ -55,32 +99,45 @@
                     -->
                 Project initiated by M.Sc. IT/nurse Henning Knut Skoglund , november 2007,
                     available as open source on
-                <Hyperlink NavigateUri = "http://www.codeplex.com/nursingcareplanner" >CodePlex</Hyperlink> from january 2008.
-                <!-- <Figure 
-            Padding="0,0,0,0" 
-            Margin="5"  
-            HorizontalAnchor="ContentCenter"
-            >
-                        <BlockUIContainer>
-                            <Image Source="Bilder/Siving Henning Skoglund e-Pleie logo.jpg" Width="6cm"/>
-                        </BlockUIContainer>
-                    </Figure> -->
+                <Hyperlink x:Name="hyperCodeplex" ToolTip="http://www.codeplex.com/nursingcareplanner"
+                    NavigateUri = "http://www.codeplex.com/nursingcareplanner" RequestNavigate="hyperCodeplex_RequestNavigate" >CodePlex</Hyperlink> from january 2008 .
             </Paragraph>
-            <!--<Paragraph Style="{StaticResource BodyText}">
-                    Tilbakemeldinger kan rettes til e-post: hk-sko@online.no
-                </Paragraph>-->
-            <!--<Paragraph Style="{StaticResource SubTitle}">
-                    Copyright notice of CCC framework
-                </Paragraph>
-                <Paragraph Style="{StaticResource BodyText}">
-                    Dr. Virginia K. Saba
-                    <LineBreak /> Nurse Kathryn Niemi Moelstad
-                    <LineBreak />
-                    M.Sc. og Nurse Karl Oyri
 
-                </Paragraph>-->
+            <Paragraph Style="{StaticResource BodyText}">
+                If you have questions or feedback please e-mail: hk-sko@online.no
+            </Paragraph>
+
+
         </FlowDocument>
 
     </FlowDocumentScrollViewer>
+
+        <StackPanel x:Name="spLoading" Visibility="Visible" Margin="10">
+        
+           
+            <TextBlock Margin="3" Text="Databases:" />
+            <ListBox x:Name="lbDatabaseHealth" HorizontalAlignment="Left" ItemTemplate="{StaticResource DBHealthItem}" MaxHeight="80" MaxWidth="425"  >
+                <ListBox.Resources>
+                    
+                    
+                </ListBox.Resources>
+               
+            </ListBox>
+   <!-- Next behavior based on tip from Mike Hillberg's blog at http://blogs.msdn.com/mikehillberg/archive/2007/05/17/TwoProgressBarTricks.aspx-->    
+            <Grid  Margin="0,5,0,5" Width="200" Height="50" HorizontalAlignment="Left">
+                <ProgressBar x:Name="pbLoading" Height="20"  Minimum="0" Maximum="100"  Value="25"  />
+            
+                
+                <Viewbox> 
+                    <TextBlock  x:Name="tbLoading" Foreground="Black" TextWrapping="Wrap" Text="Initializing user interface..." VerticalAlignment="Center"
+                      />
+                  </Viewbox> 
+           
+             </Grid>
+      
+       </StackPanel> 
+        
+     </StackPanel>
+
 
 </Window>

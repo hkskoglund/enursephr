@@ -1,4 +1,4 @@
-﻿<Window x:Class="CCC.UI.WindowDatabaseError"
+﻿<Window x:Class="eNurseCP.userInterfaceLayer.WindowDatabaseError"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Database Error" SizeToContent="WidthAndHeight">

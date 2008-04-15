@@ -9,7 +9,7 @@ using System.Globalization;
 // Based on information from blog http://www.wiredprairie.us/journal/2007/01/how_to_display_a_formatted_num.html
 // Accessed : 11 february 2008
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     [ValueConversion(typeof(object), typeof(string))]
     public class MajorCodeConverter : IValueConverter

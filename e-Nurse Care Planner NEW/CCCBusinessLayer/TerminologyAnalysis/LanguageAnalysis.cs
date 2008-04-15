@@ -6,7 +6,7 @@ using ReferenceFrameworkModel;
 using System.ComponentModel;
 
 
-namespace CCC.BusinessLayer
+namespace eNurseCP.BusinessLayer
 {
 
    
@@ -90,13 +90,20 @@ namespace CCC.BusinessLayer
 
             this.Version = version;
             // Setup what to expect
-            
-               this.ExpectedNumberOfCarePatterns = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfCarePatterns;
-               this.ExpectedNumberOfCareComponents = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumerOfCareComponents;
-               this.ExpectedNumberOfDiagnoses = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfDiagnoses;
-               this.ExpectedNumberOfInterventions = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfInterventions;
-               this.ExpectedNumberOfOutcomeTypes = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfOutcomeTypes;
-               this.ExpectedNumberOfActionTypes = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfActionTypes;
+
+            try
+            {
+                this.ExpectedNumberOfCarePatterns = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfCarePatterns;
+                this.ExpectedNumberOfCareComponents = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumerOfCareComponents;
+                this.ExpectedNumberOfDiagnoses = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfDiagnoses;
+                this.ExpectedNumberOfInterventions = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfInterventions;
+                this.ExpectedNumberOfOutcomeTypes = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfOutcomeTypes;
+                this.ExpectedNumberOfActionTypes = db.Framework.Where(v => v.Version.Contains(this.Version)).First().ExpectedNumberOfActionTypes;
+            }
+            catch (Exception ex)
+            {
+                return; 
+            }
 
             this.ExpectedInfo = "Analysis on version " + this.Version +
                     " - expected care patterns: " + this.ExpectedNumberOfCarePatterns +
@@ -453,7 +460,7 @@ namespace CCC.BusinessLayer
             foreach (ReferenceFrameworkModel.Nursing_Diagnosis verifyDiag in referenceNursingDiagnosis)
             {
 
-                List<CCC.BusinessLayer.FrameworkDiagnosis> verifyNursingDiagnosis = new List<CCC.BusinessLayer.FrameworkDiagnosis>();
+                List<eNurseCP.BusinessLayer.FrameworkDiagnosis> verifyNursingDiagnosis = new List<eNurseCP.BusinessLayer.FrameworkDiagnosis>();
 
                 if (verifyDiag.MinorCode != null)
                     verifyNursingDiagnosis = (from

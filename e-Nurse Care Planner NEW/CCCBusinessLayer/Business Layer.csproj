@@ -8,8 +8,8 @@
     <ProjectGuid>{081A088E-EC70-4679-8DBA-124FB6C5788F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CCC.BusinessLayer</RootNamespace>
-    <AssemblyName>e-Nurse Care Planner Businesslayer</AssemblyName>
+    <RootNamespace>eNurseCP.BusinessLayer</RootNamespace>
+    <AssemblyName>eNurseCPBusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="ContentType.cs" />
     <Compile Include="ConverterByteString.cs" />
+    <Compile Include="databaseHealth.cs" />
     <Compile Include="EF models\CarePlanDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,6 +141,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CCCReferenceCompact.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="bin\Debug\EF models\CarePlanDB.csdl" />
     <None Include="bin\Debug\EF models\CarePlanDB.msl" />
     <None Include="bin\Debug\EF models\CarePlanDB.ssdl" />
@@ -216,14 +218,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Databases\CCC Framework.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\CCC Terminology Reference.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\COPYRIGHT.txt" />
     <Content Include="Databases\CarePlan.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Databases\Measurements.sdf">
     </Content>
   </ItemGroup>
   <ItemGroup>

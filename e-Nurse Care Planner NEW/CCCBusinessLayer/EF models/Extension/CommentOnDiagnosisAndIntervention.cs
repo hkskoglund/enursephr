@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CCC.BusinessLayer
+namespace eNurseCP.BusinessLayer
 {
     public partial class FrameworkDiagnosis : global::System.Data.Objects.DataClasses.EntityObject
     {

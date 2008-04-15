@@ -8,13 +8,13 @@ using System.Windows.Annotations;
 using System.Windows.Annotations.Storage;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.Xml.Linq;
 using System.Xml;
 
 // Code based on info. from Derek Mehlhorn blog http://blogs.msdn.com/mehlhorn/archive/2006/03/11/549132.aspx
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
 
     public class ItemAnnotationStore

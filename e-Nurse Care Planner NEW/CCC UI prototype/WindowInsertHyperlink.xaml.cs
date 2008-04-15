@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     /// <summary>
     /// Interaction logic for WindowInsertHyperlink.xaml

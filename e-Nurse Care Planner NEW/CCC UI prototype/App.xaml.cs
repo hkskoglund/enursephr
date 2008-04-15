@@ -6,9 +6,9 @@ using System.Linq;
 using System.Windows;
 using System.Threading;
 using System.IO;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     /// <summary>
     /// Interaction logic for App.xaml

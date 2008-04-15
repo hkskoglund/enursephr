@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace CCC.BusinessLayer
+namespace eNurseCP.BusinessLayer
 {
     public class MActionType
     {

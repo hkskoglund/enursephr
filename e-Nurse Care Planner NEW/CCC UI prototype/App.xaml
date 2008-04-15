@@ -1,4 +1,4 @@
-﻿<Application x:Class="CCC.UI.App"
+﻿<Application x:Class="eNurseCP.userInterfaceLayer.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     StartupUri="WindowMain.xaml" SessionEnding="Application_SessionEnding">

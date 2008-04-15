@@ -10,10 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using Microsoft.Samples.KMoore.WPFSamples.DateControls;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     /// <summary>
     /// Interaction logic for WindowOutcomes.xaml
@@ -31,7 +31,7 @@ namespace CCC.UI
         {
             Tag selTag = this.DataContext as Tag;
             // Default to outcome 1, user must change it
-            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, ((WindowMain) App.Current.MainWindow).tagHandler.getTaxonomyGuidOutcomeType(1, Properties.Settings.Default.Version));
+            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, ((WindowMain)App.Current.MainWindow).tagHandler.getTaxonomyGuidOutcomeType(1, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version));
             newOutcome.Tag = selTag;
             History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
             newOutcome.History = newHistory;
@@ -51,7 +51,7 @@ namespace CCC.UI
                 ((WindowMain)App.Current.MainWindow).SaveCarePlan();
             }
             else
-                MessageBox.Show("No outcome selected to delete", "No outcome selected", MessageBoxButton.OK);
+                MessageBox.Show("No outcome selected to delete, please select an outcome if possible", "No outcome selected", MessageBoxButton.OK,MessageBoxImage.Information);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

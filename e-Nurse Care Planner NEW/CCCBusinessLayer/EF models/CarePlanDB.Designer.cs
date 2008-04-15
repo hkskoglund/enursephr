@@ -9,21 +9,21 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.ActionT))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_ActionType_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.ActionT))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Annotation_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CPAnnotation))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Annotation_Item", "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Item), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CPAnnotation))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_CarePlan_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "CarePlan", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.CarePlan))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Item_CarePlan", "CarePlan", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.CarePlan), "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Item))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Item_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Item))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Outcome_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Outcome))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Tag_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CCC.BusinessLayer.History), "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Tag))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Tag_Item", "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Item), "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Tag))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Outcome_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Tag), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Outcome))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_History_ActionT", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.History), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.ActionT))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Tag_ActionT", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.Tag), "ActionT", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.ActionT))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_History_Annotation", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.History), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.CPAnnotation))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Item_Annotation", "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.Item), "Annotation", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.CPAnnotation))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_CarePlan_Item", "CarePlan", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.CarePlan), "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.Item))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_History_CarePlan", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.History), "CarePlan", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.CarePlan))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_History_Item", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.History), "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.Item))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Outcome_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.History), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.Outcome))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Tag_History", "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.History), "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(eNurseCP.BusinessLayer.Tag))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Tag_Item", "Item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.Item), "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.Tag))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("eNurseCP.BusinessLayer", "FK_Outcome_Tag", "Tag", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eNurseCP.BusinessLayer.Tag), "Outcome", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eNurseCP.BusinessLayer.Outcome))]
 
 // Original file name:
-// Generation date: 12.04.2008 16:35:29
-namespace CCC.BusinessLayer
+// Generation date: 13.04.2008 14:10:09
+namespace eNurseCP.BusinessLayer
 {
     
     /// <summary>
@@ -215,12 +215,12 @@ namespace CCC.BusinessLayer
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.ActionT in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.ActionT in the schema.
     /// </summary>
     /// <KeyProperties>
     /// TagId
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="ActionT")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="ActionT")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class ActionT : global::System.Data.Objects.DataClasses.EntityObject
@@ -334,46 +334,9 @@ namespace CCC.BusinessLayer
         partial void OnTagIdChanging(global::System.Guid value);
         partial void OnTagIdChanged();
         /// <summary>
-        /// There are no comments for Tag in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "Tag")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public Tag Tag
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Tag in the schema.
-        /// </summary>
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityReference<Tag> TagReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("CCC.BusinessLayer.FK_ActionT_Tag", "Tag", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionType_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_ActionT", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -381,11 +344,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_ActionType_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_ActionT", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_ActionType_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_ActionT", "History").Value = value;
             }
         }
         /// <summary>
@@ -397,24 +360,61 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_ActionType_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_ActionT", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_ActionType_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_ActionT", "History", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Tag in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_ActionT", "Tag")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public Tag Tag
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "Tag").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "Tag").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Tag in the schema.
+        /// </summary>
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityReference<Tag> TagReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "Tag");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "Tag", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.CPAnnotation in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.CPAnnotation in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="CPAnnotation")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="CPAnnotation")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class CPAnnotation : global::System.Data.Objects.DataClasses.EntityObject
@@ -478,7 +478,7 @@ namespace CCC.BusinessLayer
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Annotation_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_Annotation", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -486,11 +486,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Annotation_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Annotation", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Annotation_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Annotation", "History").Value = value;
             }
         }
         /// <summary>
@@ -502,20 +502,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Annotation_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Annotation", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_Annotation_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Annotation", "History", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Item in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Annotation_Item", "Item")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Item_Annotation", "Item")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -523,11 +523,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Annotation_Item", "Item").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Item_Annotation", "Item").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Annotation_Item", "Item").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Item_Annotation", "Item").Value = value;
             }
         }
         /// <summary>
@@ -539,24 +539,24 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Annotation_Item", "Item");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Item_Annotation", "Item");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Item>("CCC.BusinessLayer.FK_Annotation_Item", "Item", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Item_Annotation", "Item", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.CarePlan in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.CarePlan in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="CarePlan")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="CarePlan")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class CarePlan : global::System.Data.Objects.DataClasses.EntityObject
@@ -687,9 +687,23 @@ namespace CCC.BusinessLayer
         partial void OnDescriptionChanging(byte[] value);
         partial void OnDescriptionChanged();
         /// <summary>
+        /// There are no comments for Item in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_CarePlan_Item", "Item")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Item> Item
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Item>("eNurseCP.BusinessLayer.FK_CarePlan_Item", "Item");
+            }
+        }
+        /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_CarePlan_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_CarePlan", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -697,11 +711,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_CarePlan_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_CarePlan", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_CarePlan_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_CarePlan", "History").Value = value;
             }
         }
         /// <summary>
@@ -713,38 +727,24 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_CarePlan_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_CarePlan", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_CarePlan_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_CarePlan", "History", value);
                 }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Item in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Item_CarePlan", "Item")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Item> Item
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Item>("CCC.BusinessLayer.FK_Item_CarePlan", "Item");
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.History in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.History in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="History")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="History")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class History : global::System.Data.Objects.DataClasses.EntityObject
@@ -881,7 +881,7 @@ namespace CCC.BusinessLayer
         /// <summary>
         /// There are no comments for ActionT in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionType_History", "ActionT")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_ActionT", "ActionT")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -889,13 +889,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<ActionT>("CCC.BusinessLayer.FK_ActionType_History", "ActionT");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<ActionT>("eNurseCP.BusinessLayer.FK_History_ActionT", "ActionT");
             }
         }
         /// <summary>
         /// There are no comments for Annotation in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Annotation_History", "Annotation")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_Annotation", "Annotation")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -903,13 +903,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CPAnnotation>("CCC.BusinessLayer.FK_Annotation_History", "Annotation");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CPAnnotation>("eNurseCP.BusinessLayer.FK_History_Annotation", "Annotation");
             }
         }
         /// <summary>
         /// There are no comments for CarePlan in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_CarePlan_History", "CarePlan")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_CarePlan", "CarePlan")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -917,13 +917,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CarePlan>("CCC.BusinessLayer.FK_CarePlan_History", "CarePlan");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CarePlan>("eNurseCP.BusinessLayer.FK_History_CarePlan", "CarePlan");
             }
         }
         /// <summary>
         /// There are no comments for Item in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Item_History", "Item")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_Item", "Item")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -931,13 +931,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Item>("CCC.BusinessLayer.FK_Item_History", "Item");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Item>("eNurseCP.BusinessLayer.FK_History_Item", "Item");
             }
         }
         /// <summary>
         /// There are no comments for Outcome in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Outcome_History", "Outcome")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Outcome_History", "Outcome")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -945,31 +945,54 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Outcome>("CCC.BusinessLayer.FK_Outcome_History", "Outcome");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Outcome>("eNurseCP.BusinessLayer.FK_Outcome_History", "Outcome");
             }
         }
         /// <summary>
         /// There are no comments for Tag in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Tag_History", "Tag")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_History", "Tag")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Tag> Tag
+        public Tag Tag
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Tag>("CCC.BusinessLayer.FK_Tag_History", "Tag");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_History", "Tag").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_History", "Tag").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Tag in the schema.
+        /// </summary>
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityReference<Tag> TagReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_History", "Tag");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Tag_History", "Tag", value);
+                }
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Item in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.Item in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Item")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="Item")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class Item : global::System.Data.Objects.DataClasses.EntityObject
@@ -1032,6 +1055,29 @@ namespace CCC.BusinessLayer
         private string _Title;
         partial void OnTitleChanging(string value);
         partial void OnTitleChanged();
+        /// <summary>
+        /// There are no comments for Property Description in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Description
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Description);
+            }
+            set
+            {
+                this.OnDescriptionChanging(value);
+                this.ReportPropertyChanging("Description");
+                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 1073741823);
+                this.ReportPropertyChanged("Description");
+                this.OnDescriptionChanged();
+            }
+        }
+        private byte[] _Description;
+        partial void OnDescriptionChanging(byte[] value);
+        partial void OnDescriptionChanged();
         /// <summary>
         /// There are no comments for Property ContainsDiagnosis in the schema.
         /// </summary>
@@ -1125,32 +1171,9 @@ namespace CCC.BusinessLayer
         partial void OnContainsFolksonomyChanging(global::System.Nullable<bool> value);
         partial void OnContainsFolksonomyChanged();
         /// <summary>
-        /// There are no comments for Property Description in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Description
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Description);
-            }
-            set
-            {
-                this.OnDescriptionChanging(value);
-                this.ReportPropertyChanging("Description");
-                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 1073741823);
-                this.ReportPropertyChanged("Description");
-                this.OnDescriptionChanged();
-            }
-        }
-        private byte[] _Description;
-        partial void OnDescriptionChanging(byte[] value);
-        partial void OnDescriptionChanged();
-        /// <summary>
         /// There are no comments for Annotation in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Annotation_Item", "Annotation")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Item_Annotation", "Annotation")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1158,13 +1181,13 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CPAnnotation>("CCC.BusinessLayer.FK_Annotation_Item", "Annotation");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CPAnnotation>("eNurseCP.BusinessLayer.FK_Item_Annotation", "Annotation");
             }
         }
         /// <summary>
         /// There are no comments for CarePlan in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Item_CarePlan", "CarePlan")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_CarePlan_Item", "CarePlan")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1172,11 +1195,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("CCC.BusinessLayer.FK_Item_CarePlan", "CarePlan").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("eNurseCP.BusinessLayer.FK_CarePlan_Item", "CarePlan").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("CCC.BusinessLayer.FK_Item_CarePlan", "CarePlan").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("eNurseCP.BusinessLayer.FK_CarePlan_Item", "CarePlan").Value = value;
             }
         }
         /// <summary>
@@ -1188,20 +1211,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("CCC.BusinessLayer.FK_Item_CarePlan", "CarePlan");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePlan>("eNurseCP.BusinessLayer.FK_CarePlan_Item", "CarePlan");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CarePlan>("CCC.BusinessLayer.FK_Item_CarePlan", "CarePlan", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CarePlan>("eNurseCP.BusinessLayer.FK_CarePlan_Item", "CarePlan", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Item_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_History_Item", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1209,11 +1232,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Item_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Item", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Item_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Item", "History").Value = value;
             }
         }
         /// <summary>
@@ -1225,20 +1248,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Item_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Item", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_Item_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_History_Item", "History", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Tag in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Tag_Item", "Tag")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_Item", "Tag")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1246,17 +1269,17 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Tag>("CCC.BusinessLayer.FK_Tag_Item", "Tag");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Tag>("eNurseCP.BusinessLayer.FK_Tag_Item", "Tag");
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Outcome in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.Outcome in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Outcome")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="Outcome")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class Outcome : global::System.Data.Objects.DataClasses.EntityObject
@@ -1462,7 +1485,7 @@ namespace CCC.BusinessLayer
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Outcome_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Outcome_History", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1470,11 +1493,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Outcome_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Outcome_History", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Outcome_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Outcome_History", "History").Value = value;
             }
         }
         /// <summary>
@@ -1486,20 +1509,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Outcome_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Outcome_History", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_Outcome_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_Outcome_History", "History", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Tag in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Outcome_Tag", "Tag")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Outcome_Tag", "Tag")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1507,11 +1530,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_Outcome_Tag", "Tag").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Outcome_Tag", "Tag").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_Outcome_Tag", "Tag").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Outcome_Tag", "Tag").Value = value;
             }
         }
         /// <summary>
@@ -1523,24 +1546,24 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("CCC.BusinessLayer.FK_Outcome_Tag", "Tag");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Outcome_Tag", "Tag");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("CCC.BusinessLayer.FK_Outcome_Tag", "Tag", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Tag>("eNurseCP.BusinessLayer.FK_Outcome_Tag", "Tag", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Tag in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.Tag in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Tag")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="Tag")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class Tag : global::System.Data.Objects.DataClasses.EntityObject
@@ -1606,6 +1629,29 @@ namespace CCC.BusinessLayer
         partial void OnTaxonomyTypeChanging(string value);
         partial void OnTaxonomyTypeChanged();
         /// <summary>
+        /// There are no comments for Property HistoryId in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.Guid> HistoryId
+        {
+            get
+            {
+                return this._HistoryId;
+            }
+            set
+            {
+                this.OnHistoryIdChanging(value);
+                this.ReportPropertyChanging("HistoryId");
+                this._HistoryId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("HistoryId");
+                this.OnHistoryIdChanged();
+            }
+        }
+        private global::System.Nullable<global::System.Guid> _HistoryId;
+        partial void OnHistoryIdChanging(global::System.Nullable<global::System.Guid> value);
+        partial void OnHistoryIdChanged();
+        /// <summary>
         /// There are no comments for Property TaxonomyTagId in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
@@ -1654,7 +1700,7 @@ namespace CCC.BusinessLayer
         /// <summary>
         /// There are no comments for ActionT in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_ActionT_Tag", "ActionT")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_ActionT", "ActionT")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1662,11 +1708,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "ActionT").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "ActionT").Value = value;
             }
         }
         /// <summary>
@@ -1678,20 +1724,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ActionT>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "ActionT");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ActionT>("CCC.BusinessLayer.FK_ActionT_Tag", "ActionT", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ActionT>("eNurseCP.BusinessLayer.FK_Tag_ActionT", "ActionT", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Tag_History", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_History", "History")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1699,11 +1745,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Tag_History", "History").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Tag_History", "History").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Tag_History", "History").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Tag_History", "History").Value = value;
             }
         }
         /// <summary>
@@ -1715,20 +1761,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("CCC.BusinessLayer.FK_Tag_History", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<History>("eNurseCP.BusinessLayer.FK_Tag_History", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("CCC.BusinessLayer.FK_Tag_History", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<History>("eNurseCP.BusinessLayer.FK_Tag_History", "History", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Item in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Tag_Item", "Item")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Tag_Item", "Item")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1736,11 +1782,11 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Tag_Item", "Item").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Tag_Item", "Item").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Tag_Item", "Item").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Tag_Item", "Item").Value = value;
             }
         }
         /// <summary>
@@ -1752,20 +1798,20 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("CCC.BusinessLayer.FK_Tag_Item", "Item");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Tag_Item", "Item");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Item>("CCC.BusinessLayer.FK_Tag_Item", "Item", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Item>("eNurseCP.BusinessLayer.FK_Tag_Item", "Item", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Outcome in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Outcome_Tag", "Outcome")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("eNurseCP.BusinessLayer", "FK_Outcome_Tag", "Outcome")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1773,7 +1819,7 @@ namespace CCC.BusinessLayer
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Outcome>("CCC.BusinessLayer.FK_Outcome_Tag", "Outcome");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Outcome>("eNurseCP.BusinessLayer.FK_Outcome_Tag", "Outcome");
             }
         }
     }

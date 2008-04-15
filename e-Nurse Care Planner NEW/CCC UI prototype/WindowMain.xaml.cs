@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading; // DispatcherTimer
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.ComponentModel;
 // Copyright (c) 2007 Kevin Moore j832.com
 using Microsoft.Samples.KMoore.WPFSamples.DateControls;
@@ -51,11 +51,15 @@ using System.Diagnostics;
 //FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //OTHER DEALINGS IN THE SOFTWARE.
 
-namespace CCC.UI
+
+namespace eNurseCP.userInterfaceLayer
 {
 
     public partial class WindowMain : Window
         {
+
+        public const int EXIT_LOAD_FRAMEWORK = 1;
+        public const int EXIT_LOAD_CAREPLAN = 2;
 
         ObservableCollection<Tag> careplanTags;
         //EntityCollection<Tag> careplanTags = new EntityCollection<Tag>();
@@ -79,13 +83,38 @@ namespace CCC.UI
         GridLength prevTaxonomyWidth = new GridLength(0);
         
         // True if item is to be displayed in full screen
-        bool FullScreenItem = false;       
+        bool FullScreenItem = false;
+
+       
+
+    WindowCopyright wndCopyright;
+
+    Dictionary<string, bool> healthDB;
 
         public WindowMain()
             {
-           
+                    wndCopyright = new WindowCopyright();
+                   healthDB = wndCopyright.checkDatabasesHealth();
+                    wndCopyright.Show();
+                    
                     InitializeComponent();
-                
+
+                    if (healthDB["CCCFramework"])
+                    {
+
+                        wndCopyright.tbLoading.Text = "Loading CCC taxonomy...";
+                        loadCCCFramework();
+
+                        wndCopyright.pbLoading.Value = 75;
+                    }
+                    else
+                    {
+                        exFramework.Visibility = Visibility.Collapsed;
+                        exFramework.Header = "Clinical Care Classification";
+                        exFramework.IsExpanded = false;
+                        exFramework.IsEnabled = false;
+                        tbSearch.IsEnabled = false;
+                    }
                
             }
 
@@ -99,6 +128,7 @@ namespace CCC.UI
             wDatabaseError.tbDatabaseErrorDetail.Text += ex.StackTrace;
 
             wDatabaseError.ShowDialog();
+          
 
         }
             
@@ -118,91 +148,40 @@ namespace CCC.UI
 
             private void Window_Loaded(object sender, RoutedEventArgs e)
             {
+
+                
+                /* LANGUAGE attrib change */
+                tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName;
+                //+ " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
+
                 // Enable sharing of properties across layers
 
-                App.Current.Properties["Version"] = Properties.Settings.Default.Version;
-                App.Current.Properties["LanguageName"] = Properties.Settings.Default.LanguageName;
+                App.Current.Properties["Version"] = eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version;
+                App.Current.Properties["LanguageName"] = eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName;
 
                 // Setup event handling of hyperlinks
 
                 fdReaderCareBlog.AddHandler(Hyperlink.RequestNavigateEvent,new RequestNavigateEventHandler(hyperlink_RequestNavigate));
 
-                // Load CCC Framework 
-
-                try
-                {
-                    App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName,
-                        Properties.Settings.Default.Version);
-                   
-                }
-                catch (Exception exception)
-                {
-                    
-                    showException(exception);
-                    App.Current.Shutdown(1);
-                  
-                }
-
-                refreshCCCFramework();
-
-                // Load a test care plan
-
-                try
-                {
-                    App.carePlan = new ViewCarePlan();
-                    App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.First();
-                }
-                catch (Exception exception)
-                {
-                    showException(exception);
-                    MessageBox.Show("Could not load careplan, application will end now", "Loading of careplan failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-                    this.Close();
-                }
-                
-                
-                // Setup care blog items
-                if (!App.carePlan.ActiveCarePlan.Item.IsLoaded)
-                    App.carePlan.ActiveCarePlan.Item.Load();
-
-                Item lastItem = null;
-
-               
-                foreach (Item i in App.carePlan.ActiveCarePlan.Item)
-                {// Load related history and tags
-                    i.HistoryReference.Load();
-                    i.Tag.Load();
-                    i.Tag.AssociationChanged += new CollectionChangeEventHandler(Tag_AssociationChanged);
-                    inferContentFromTags(i); // Find content from tags, contains diagnoses, interventions, care component?
-                
-                    if (i.Id == Properties.Settings.Default.LastItem) // Point to last item selected
-                        lastItem = i;
-                }
-
-
-                // Start annotation service
-
-                aService = new myAnnotationService(fdReaderCareBlog);
-               
-                // Setup of item collection change handling (updates combobox)
-
-                App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
-                Item_AssociationChanged(this, null);
-               
-                // Start at last selected item from previous session by default
               
-                if (lastItem != null)
-                    lvCareBlog.SelectedItem = lastItem;
+               
+                // Start annotation service
+                 aService = new myAnnotationService(fdReaderCareBlog);
+                lvAnnotation.ItemsSource = infoAcq.CvStatement;
 
-                // Show all tags for the current careplan
-                buildAllTags(App.carePlan.ActiveCarePlan);
+
+                if (healthDB["Careplan"])
+                {
+                    wndCopyright.tbLoading.Text = "Loading test careplan....";
+                    loadCareplan(Guid.NewGuid(), true); // Load a test careplan
+                    wndCopyright.pbLoading.Value = 100;
+                    // Show all tags for the current careplan
+                    buildAllTags(App.carePlan.ActiveCarePlan);
+               }
 
                
 
-                /* LANGUAGE attrib change */
-                tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
-
-                lvAnnotation.ItemsSource = infoAcq.CvStatement;
+              
 
 
                 
@@ -230,10 +209,103 @@ namespace CCC.UI
                 //cvCarePlanTemplate.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
 
                 //lbCarePlanTemplates.ItemsSource = cvCarePlanTemplate;
-
-
+                
+               if (healthDB["Careplan"] && healthDB["CCCFramework"] && healthDB["CCCReference"])
+                   wndCopyright.Close();
                
             }
+
+        public void loadCCCFramework()
+        {
+            bool loadFail = false;
+             // Load CCC Framework 
+
+                try
+                {
+                    App.cccFrameWork = new ViewCCCFrameWork(eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName,
+                        eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
+                   
+                }
+                catch (Exception exception)
+                {
+                    loadFail = true;
+                    showException(exception);
+                    
+                   // stopApplication("Could not load CCC framework", "CCC framework", WindowMain.EXIT_LOAD_FRAMEWORK);
+                  
+                }
+
+                if (!loadFail)
+                    refreshCCCFramework();
+                else
+                {
+                    exFramework.IsExpanded = false;
+                    exFramework.IsEnabled = false;
+                    tbSearch.IsEnabled = false;
+                }
+        }
+
+        private void stopApplication(string errMsg, string errTitle, int exitCode)
+        {
+            MessageBox.Show(errMsg, errTitle, MessageBoxButton.OK, MessageBoxImage.Stop);
+            App.Current.MainWindow.Close();
+            System.Environment.Exit(exitCode);
+               
+        }
+
+            private void loadCareplan(Guid carePlanID, bool testPlan)
+            {
+                
+                try
+                {
+                    App.carePlan = new ViewCarePlan();
+                    if (testPlan)
+                        App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.First();
+                    else
+                        App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where(cp => cp.Id == carePlanID).First();
+                }
+                catch (Exception exception)
+                {
+                    showException(exception);
+                    stopApplication("Could not load careplan", "Careplan", WindowMain.EXIT_LOAD_CAREPLAN);
+
+                        }
+
+                // Setup care blog items
+                if (!App.carePlan.ActiveCarePlan.Item.IsLoaded)
+                    App.carePlan.ActiveCarePlan.Item.Load();
+
+                Item lastItem = null;
+
+                if (App.carePlan.ActiveCarePlan.Item.Count > 0)
+                {
+
+                    foreach (Item i in App.carePlan.ActiveCarePlan.Item)
+                    {// Load related history and tags
+                        i.HistoryReference.Load();
+                        i.Tag.Load();
+                        i.Tag.AssociationChanged += new CollectionChangeEventHandler(Tag_AssociationChanged);
+                        inferContentFromTags(i); // Find content from tags, contains diagnoses, interventions, care component?
+
+                        if (i.Id == eNurseCP.userInterfaceLayer.Properties.Settings.Default.LastItem) // Point to last item selected
+                            lastItem = i;
+                    }
+
+                    // Setup of item collection change handling (updates combobox)
+
+                    App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
+                    Item_AssociationChanged(this, null);
+
+                    // Start at last selected item from previous session by default
+
+                    if (lastItem != null)
+                        lvCareBlog.SelectedItem = lastItem;
+                }
+                //else
+                //    MessageBox.Show("This careplan is empty", "Empty careplan", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                        
+            }
+
 
             public void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
             {
@@ -279,11 +351,14 @@ namespace CCC.UI
 
             }
 
-
+        /// <summary>
+        /// Finds concept and care component for a tag and build up a careplan of all tags
+        /// </summary>
+        /// <param name="cp"></param>
             void buildAllTags(CarePlan cp)
             {
-                string version = Properties.Settings.Default.Version;
-                string languageName = Properties.Settings.Default.LanguageName;
+                string version = eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version;
+                string languageName = eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName;
 
                 careplanTags = new ObservableCollection<Tag>();
 
@@ -320,7 +395,7 @@ namespace CCC.UI
                    latest = (Outcome)qOutcome.Take(1).First();
                    tag.LatestOutcome = latest.ExpectedOutcome;
                    tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where(o => o.Code == latest.ExpectedOutcome &&
-                       o.Version == Properties.Settings.Default.Version && o.Language_Name == Properties.Settings.Default.LanguageName).First().Concept;
+                       o.Version == eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version && o.Language_Name == eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName).First().Concept;
                }
 
                else
@@ -334,8 +409,8 @@ namespace CCC.UI
             public void refreshTags()
             {
 
-               string version = Properties.Settings.Default.Version;
-               string languageName = Properties.Settings.Default.LanguageName;
+                string version = eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version;
+                string languageName = eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName;
    
                 Item selItem = lvCareBlog.SelectedItem as Item;
                 if (selItem == null)
@@ -378,6 +453,8 @@ namespace CCC.UI
             private void MenuItemOm_Click(object sender, RoutedEventArgs e)
             {
                 WindowCopyright wc = new WindowCopyright();
+                wc.spLoading.Visibility = Visibility.Collapsed;
+                wc.Height = 450;
                 wc.ShowDialog();
             }
 
@@ -399,6 +476,12 @@ namespace CCC.UI
 
             private void btnNewItem_Click(object sender, RoutedEventArgs e)
             {
+
+                if (!healthDB["Careplan"])
+                {
+                    MessageBox.Show("No database access to the careplan, please check database connectivity", "No database access to careplan", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                
                 WindowNewItem wndNewItem = new WindowNewItem();
                 wndNewItem.ShowDialog();
@@ -471,8 +554,8 @@ namespace CCC.UI
                     return; // Empty selection
 
                 // Keep record of latest item selected
-                Properties.Settings.Default.LastItem = selItem.Id;
-                Properties.Settings.Default.Save();
+                eNurseCP.userInterfaceLayer.Properties.Settings.Default.LastItem = selItem.Id;
+                eNurseCP.userInterfaceLayer.Properties.Settings.Default.Save();
 
                 refreshTags();
 
@@ -549,7 +632,8 @@ namespace CCC.UI
 
                 if (selItem == null)
                 {
-                    MessageBox.Show("You have not selected an careplan item to attach this tag to", "No careplan item selected");
+                    MessageBox.Show("You have not selected an careplan item to attach this tag to,\nplease create a new careplan item or select one before retrying this action", 
+                        "No careplan item selected",MessageBoxButton.OK,MessageBoxImage.Information);
                     return;
                 }
 
@@ -558,7 +642,7 @@ namespace CCC.UI
                 {
                     taxonomyType = "CCC/CareComponent";
                     Care_component component = (Care_component)transfer.GetData("CCC/CareComponent");
-                    taxonomyGuid = tagHandler.getTaxonomyGuidCareComponent(component.Code, Properties.Settings.Default.Version);
+                    taxonomyGuid = tagHandler.getTaxonomyGuidCareComponent(component.Code, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
                  
                 }
 
@@ -566,7 +650,7 @@ namespace CCC.UI
                 {
                     fOutcomeType = (FrameworkOutcomeType)transfer.GetData("CCC/OutcomeType");
                     // Find guid in reference terminology
-                    taxonomyOutcomeAttachmentGuid = tagHandler.getTaxonomyGuidOutcomeType(fOutcomeType.Code, Properties.Settings.Default.Version);
+                    taxonomyOutcomeAttachmentGuid = tagHandler.getTaxonomyGuidOutcomeType(fOutcomeType.Code, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
                 }
 
                 if (transfer.GetDataPresent("CCC/NursingDiagnosis"))
@@ -575,7 +659,7 @@ namespace CCC.UI
                     FrameworkDiagnosis fDiag = (FrameworkDiagnosis)transfer.GetData("CCC/NursingDiagnosis");
                     comment = fDiag.Comment;
                     // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
-                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, Properties.Settings.Default.Version);
+                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
 
                 }
 
@@ -583,7 +667,7 @@ namespace CCC.UI
                 {
                     taxonomyType = "CCC/ActionType";
                     fActionType = (ActionType)transfer.GetData("CCC/ActionType");
-                    taxonomyActionTypeAttachmentGuid = tagHandler.getTaxonomyGuidActionType(fActionType.Code, Properties.Settings.Default.Version);
+                    taxonomyActionTypeAttachmentGuid = tagHandler.getTaxonomyGuidActionType(fActionType.Code, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
                    
                 }
 
@@ -594,7 +678,7 @@ namespace CCC.UI
 
                     comment = fInterv.Comment;
                     // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
-                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingIntervention(fInterv.ComponentCode, fInterv.MajorCode, fInterv.MinorCode, Properties.Settings.Default.Version);
+                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingIntervention(fInterv.ComponentCode, fInterv.MajorCode, fInterv.MinorCode, eNurseCP.userInterfaceLayer.Properties.Settings.Default.Version);
                    
                    
                 }
@@ -606,7 +690,7 @@ namespace CCC.UI
                 if (taxonomyType == "CCC/NursingDiagnosis" || taxonomyType == "CCC/NursingIntervention")
                 {
                     selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Remove event handling now
-                    Tag newTag = CCC.BusinessLayer.Tag.CreateTag(Guid.NewGuid(), taxonomyType, taxonomyGuid);
+                    Tag newTag = eNurseCP.BusinessLayer.Tag.CreateTag(Guid.NewGuid(), taxonomyType, taxonomyGuid);
                   
                     newTag.Item = selItem;
                     newTag.Comment = comment;
@@ -634,7 +718,8 @@ namespace CCC.UI
                     if (taxonomyActionTypeAttachmentGuid != Guid.Empty)
                     {
 
-                        ActionT newActionType = ActionT.CreateActionT(fActionType.Code, tbConceptActionType.Text, taxonomyActionTypeAttachmentGuid, newTag.Id);
+                        ActionT newActionType = ActionT.CreateActionT( fActionType.Code,
+                            tbConceptActionType.Text, taxonomyActionTypeAttachmentGuid, newTag.Id);
                         newActionType.Tag = newTag;
 
                    
@@ -681,8 +766,23 @@ namespace CCC.UI
 
             private void miCarePlanBlog_Click(object sender, RoutedEventArgs e)
             {
-                aService.Service.Disable();
+                if (App.carePlan == null)
+                {
+                    MessageBox.Show("No active careplan, is database connectivity OK?", "No active careplan", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (App.carePlan.ActiveCarePlan.Item.Count  == 0)
+                {
+                    MessageBox.Show("The current careplan is empty, please create at least one item first", "Empty careplan", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (aService.Service.IsEnabled)
+                    aService.Service.Disable();
+                
                 App.carePlan.generateCareBlog(fdReaderCareBlog, App.carePlan.ActiveCarePlan,tagHandler,true);
+                
                 exTags.IsExpanded = false;
                 exTaxonomy.IsExpanded = true;
             }
@@ -706,11 +806,11 @@ namespace CCC.UI
                 Tag selTag = (Tag)lbTags.SelectedItem;
                 if (selTag == null)
                 {
-                    MessageBox.Show("No tag selected to delete", "No tag selected", MessageBoxButton.OK);
+                    MessageBox.Show("No tag selected to delete", "No tag selected", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
-                MessageBoxResult result = MessageBox.Show("Tag " + selTag.Concept + " will be deleted, are you sure?", "Delete "+selTag.Concept, MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show("Tag " + selTag.Concept + " will be deleted, are you sure?", "Delete "+selTag.Concept, MessageBoxButton.YesNo,MessageBoxImage.Question);
                 if (result == MessageBoxResult.No)
                     return;
 
@@ -842,8 +942,16 @@ namespace CCC.UI
             private void btnHome_Click(object sender, RoutedEventArgs e)
             {
                 Item selItem = lvCareBlog.SelectedItem as Item;
-                App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
-                turnOnAnnotationService(selItem);
+                if (selItem != null)
+                {
+                    App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+                    turnOnAnnotationService(selItem);
+                }
+                else
+                {
+                    MessageBox.Show("No careplan item selected, probably empty careplan?", "No careplan item selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
             }
 
             #endregion
@@ -853,6 +961,9 @@ namespace CCC.UI
 
             private void btnCaptureDiseaseStatement_Click(object sender, RoutedEventArgs e)
             {
+
+                if (!checkSelection(fdReaderCareBlog))
+                    return;
 
                 if (!fdReaderCareBlog.Selection.IsEmpty)
                 {
@@ -865,13 +976,16 @@ namespace CCC.UI
 
                 }
                 else
-                    MessageBox.Show("Please select some text as the disease information", "Empty disease information selection", MessageBoxButton.OK);
+                    MessageBox.Show("Please select some text as the disease information", "Empty disease information selection", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
 
             private void btnCaptureDiagnosticStatement_Click(object sender, RoutedEventArgs e)
             {
-                
+
+                if (!checkSelection(fdReaderCareBlog))
+                    return;
+
                 if (!fdReaderCareBlog.Selection.IsEmpty)
                 {
                     contentType = ContentType.Diagnostic;
@@ -883,12 +997,16 @@ namespace CCC.UI
 
                 }
                 else
-                    MessageBox.Show("Please select some text as the diagnostic information", "Empty diagnostic information selection", MessageBoxButton.OK);
+                    MessageBox.Show("Please select some text as the diagnostic information", "Empty diagnostic information selection", MessageBoxButton.OK,MessageBoxImage.Information);
             }
 
 
             private void btnCaptureInterventionalStatement_Click(object sender, RoutedEventArgs e)
             {
+                if (!checkSelection(fdReaderCareBlog))
+                    return;
+
+                
                 if (!fdReaderCareBlog.Selection.IsEmpty)
                 {
                     contentType = ContentType.Interventional;
@@ -900,12 +1018,34 @@ namespace CCC.UI
 
                 }
                 else
-                    MessageBox.Show("Please select some text as the interventional information", "Empty interventional information selection", MessageBoxButton.OK);
+                    MessageBox.Show("Please select some text as the interventional information", "Empty interventional information selection", MessageBoxButton.OK,MessageBoxImage.Information);
+
+            }
+
+            /// <summary>
+            /// Checks if a flowdocument reader has empty selection
+            /// </summary>
+            /// <param name="fdReader"></param>
+            /// <returns></returns>
+            private bool checkSelection(FlowDocumentReader fdReader)
+            {
+
+                if (fdReader.Selection == null)
+                {
+                    MessageBox.Show("You have not selected any text to highlight", "No text selected to highlight", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+                else
+                    return true;
 
             }
 
             private void btnCaptureMedicationalStatement_Click(object sender, RoutedEventArgs e)
             {
+
+                if (!checkSelection(fdReaderCareBlog))
+                    return;
+
                 if (!fdReaderCareBlog.Selection.IsEmpty)
                 {
                     contentType = ContentType.Medication;
@@ -917,7 +1057,7 @@ namespace CCC.UI
 
                 }
                 else
-                    MessageBox.Show("Please select some text as the medicational information", "Empty medicational information selection", MessageBoxButton.OK);
+                    MessageBox.Show("Please select some text as the medicational information", "Empty medicational information selection", MessageBoxButton.OK,MessageBoxImage.Information);
 
             }
 
@@ -1056,7 +1196,7 @@ namespace CCC.UI
                 Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
                 if (selAnnotation == null)
                 {
-                    MessageBox.Show("No aquired diagnostic information selected", "No acquired diagnostic information", MessageBoxButton.OK);
+                    MessageBox.Show("No aquired diagnostic information selected, try selecting a diagnostic statement", "No acquired diagnostic information", MessageBoxButton.OK,MessageBoxImage.Information);
                     return;
                 }
 
@@ -1064,7 +1204,7 @@ namespace CCC.UI
                     tbReasonDiagnosis.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
                 
                 else
-                    MessageBox.Show("Please select diagnostic information", "Select diagnostic information", MessageBoxButton.OK);
+                    MessageBox.Show("Please select diagnostic information", "Select diagnostic information", MessageBoxButton.OK,MessageBoxImage.Information);
             }
 
             private void btnAcquireInterventionalInformation_Click(object sender, RoutedEventArgs e)
@@ -1072,7 +1212,7 @@ namespace CCC.UI
                 Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
                 if (selAnnotation == null)
                 {
-                    MessageBox.Show("No aquired interventional or medicational information selected", "No acquired interventional or medicational information", MessageBoxButton.OK);
+                    MessageBox.Show("No aquired interventional or medicational information selected", "No acquired interventional or medicational information", MessageBoxButton.OK,MessageBoxImage.Information);
                     return;
                 }
 
@@ -1080,7 +1220,7 @@ namespace CCC.UI
                 if (contentType == ContentType.Interventional || contentType == ContentType.Medication)
                     tbReasonIntervention.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
                 else
-                    MessageBox.Show("Please select interventional or medicational information", "Select interventional or medicational information", MessageBoxButton.OK);
+                    MessageBox.Show("Please select interventional or medicational information", "Select interventional or medicational information", MessageBoxButton.OK, MessageBoxImage.Information);
             
             }
 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="CCC.UI.WindowInsertHyperlink"
+﻿<Window x:Class="eNurseCP.userInterfaceLayer.WindowInsertHyperlink"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Insert web-address" Width="300" SizeToContent="Height"

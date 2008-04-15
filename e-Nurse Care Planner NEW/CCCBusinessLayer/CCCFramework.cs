@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Configuration;
 
-namespace CCC.BusinessLayer
+namespace eNurseCP.BusinessLayer
 {
 
     public class CCC_Framework : INotifyPropertyChanged 

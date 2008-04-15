@@ -12,61 +12,61 @@
       </DesignerInfoPropertySet>
     </edmx:Options>
     <edmx:ReverseEngineer />
-    <edmx:Diagrams ><Diagram Name="CarePlanDB"><EntityTypeShape EntityType="CCC.BusinessLayer.ActionT" PointX="3" PointY="1.125" Width="1.5" Height="1.9210009765624998" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.CPAnnotation" PointX="3" PointY="4.25" Width="1.5" Height="1.5923063151041674" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.CarePlan" PointX="3" PointY="9" Width="1.5" Height="2.0853483072916674" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.History" PointX="0.75" PointY="3.75" Width="1.5" Height="2.7427376302083335" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.Item" PointX="5.25" PointY="6" Width="1.5" Height="2.7427376302083344" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.Outcome" PointX="9.75" PointY="4.25" Width="1.5" Height="2.5783902994791656" IsExpanded="true" /><EntityTypeShape EntityType="CCC.BusinessLayer.Tag" PointX="7.5" PointY="5.125" Width="1.5" Height="2.2496956380208335" IsExpanded="true" /><AssociationConnector Association="CCC.BusinessLayer.FK_ActionT_Tag" ManuallyRouted="false"><ConnectorPoint PointX="8.25" PointY="5.125" /><ConnectorPoint PointX="8.25" PointY="2.08550048828125" /><ConnectorPoint PointX="4.5" PointY="2.08550048828125" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_ActionType_History" ManuallyRouted="false"><ConnectorPoint PointX="1.5" PointY="3.75" /><ConnectorPoint PointX="1.5" PointY="2.08550048828125" /><ConnectorPoint PointX="3" PointY="2.08550048828125" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Annotation_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="5.0461531575520837" /><ConnectorPoint PointX="3" PointY="5.0461531575520837" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Annotation_Item" ManuallyRouted="false"><ConnectorPoint PointX="5.25" PointY="7.3713688151041676" /><ConnectorPoint PointX="3.75" PointY="7.3713688151041676" /><ConnectorPoint PointX="3.75" PointY="5.8423063151041674" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_CarePlan_History" ManuallyRouted="false"><ConnectorPoint PointX="1.5" PointY="6.4927376302083335" /><ConnectorPoint PointX="1.5" PointY="10.042674153645834" /><ConnectorPoint PointX="3" PointY="10.042674153645834" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Item_CarePlan" ManuallyRouted="false"><ConnectorPoint PointX="4.5" PointY="10.042674153645834" /><ConnectorPoint PointX="6" PointY="10.042674153645834" /><ConnectorPoint PointX="6" PointY="8.7427376302083353" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Item_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="6.2463688151041667" /><ConnectorPoint PointX="3.6666666666666665" PointY="6.2463688151041659" /><ConnectorPoint PointX="3.8333333333333335" PointY="6.2463688151041667" /><ConnectorPoint PointX="5.25" PointY="6.2463688151041667" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Outcome_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="3.9999995" /><ConnectorPoint PointX="8.1666666666666661" PointY="3.9999994999999995" /><ConnectorPoint PointX="8.3333333333333339" PointY="3.9999995" /><ConnectorPoint PointX="10.5" PointY="3.9999995" /><ConnectorPoint PointX="10.5" PointY="4.25" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Tag_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="5.9211531575520837" /><ConnectorPoint PointX="7.5" PointY="5.9211531575520837" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Tag_Item" ManuallyRouted="false"><ConnectorPoint PointX="6.75" PointY="6.6873478190104167" /><ConnectorPoint PointX="7.5" PointY="6.6873478190104167" /></AssociationConnector><AssociationConnector Association="CCC.BusinessLayer.FK_Outcome_Tag" ManuallyRouted="false"><ConnectorPoint PointX="9" PointY="5.9766951497395828" /><ConnectorPoint PointX="9.75" PointY="5.9766951497395828" /></AssociationConnector></Diagram></edmx:Diagrams>
+    <edmx:Diagrams ><Diagram Name="CarePlanDB"><EntityTypeShape EntityType="eNurseCP.BusinessLayer.ActionT" PointX="3" PointY="1.125" Width="1.5" Height="1.9210009765624998" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.CPAnnotation" PointX="3" PointY="4.25" Width="1.5" Height="1.5923063151041674" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.CarePlan" PointX="3" PointY="9" Width="1.5" Height="2.0853483072916674" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.History" PointX="0.75" PointY="3.75" Width="1.5" Height="2.7427376302083335" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.Item" PointX="5.25" PointY="6" Width="1.5" Height="2.7427376302083344" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.Outcome" PointX="9.75" PointY="4.25" Width="1.5" Height="2.5783902994791656" IsExpanded="true" /><EntityTypeShape EntityType="eNurseCP.BusinessLayer.Tag" PointX="7.5" PointY="5" Width="1.5" Height="2.4140429687499996" IsExpanded="true" /><AssociationConnector Association="eNurseCP.BusinessLayer.FK_History_ActionT" ManuallyRouted="false"><ConnectorPoint PointX="1.5" PointY="3.75" /><ConnectorPoint PointX="1.5" PointY="2.08550048828125" /><ConnectorPoint PointX="3" PointY="2.08550048828125" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Tag_ActionT" ManuallyRouted="false"><ConnectorPoint PointX="8.25" PointY="5" /><ConnectorPoint PointX="8.25" PointY="2.08550048828125" /><ConnectorPoint PointX="4.5" PointY="2.08550048828125" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_History_Annotation" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="5.0461531575520837" /><ConnectorPoint PointX="3" PointY="5.0461531575520837" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Item_Annotation" ManuallyRouted="false"><ConnectorPoint PointX="5.25" PointY="7.3713688151041676" /><ConnectorPoint PointX="3.75" PointY="7.3713688151041676" /><ConnectorPoint PointX="3.75" PointY="5.8423063151041674" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_CarePlan_Item" ManuallyRouted="false"><ConnectorPoint PointX="4.5" PointY="10.042674153645834" /><ConnectorPoint PointX="6" PointY="10.042674153645834" /><ConnectorPoint PointX="6" PointY="8.7427376302083353" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_History_CarePlan" ManuallyRouted="false"><ConnectorPoint PointX="1.5" PointY="6.4927376302083335" /><ConnectorPoint PointX="1.5" PointY="10.042674153645834" /><ConnectorPoint PointX="3" PointY="10.042674153645834" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_History_Item" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="6.2463688151041667" /><ConnectorPoint PointX="3.6666666666666665" PointY="6.2463688151041659" /><ConnectorPoint PointX="3.8333333333333335" PointY="6.2463688151041667" /><ConnectorPoint PointX="5.25" PointY="6.2463688151041667" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Outcome_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="3.9999995" /><ConnectorPoint PointX="8.1666666666666661" PointY="3.9999994999999995" /><ConnectorPoint PointX="8.3333333333333339" PointY="3.9999995" /><ConnectorPoint PointX="10.5" PointY="3.9999995" /><ConnectorPoint PointX="10.5" PointY="4.25" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Tag_History" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="5.9211531575520837" /><ConnectorPoint PointX="7.5" PointY="5.9211531575520837" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Tag_Item" ManuallyRouted="false"><ConnectorPoint PointX="6.75" PointY="6.707021484375" /><ConnectorPoint PointX="7.5" PointY="6.707021484375" /></AssociationConnector><AssociationConnector Association="eNurseCP.BusinessLayer.FK_Outcome_Tag" ManuallyRouted="false"><ConnectorPoint PointX="9" PointY="5.9141951497395828" /><ConnectorPoint PointX="9.75" PointY="5.9141951497395828" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
   <edmx:Runtime>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="CCC.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+      <Schema Namespace="eNurseCP.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
         <EntityContainer Name="CarePlanEntities">
-          <EntitySet Name="ActionT" EntityType="CCC.BusinessLayer.ActionT" />
-          <EntitySet Name="Annotation" EntityType="CCC.BusinessLayer.CPAnnotation" />
-          <EntitySet Name="CarePlan" EntityType="CCC.BusinessLayer.CarePlan" />
-          <EntitySet Name="History" EntityType="CCC.BusinessLayer.History" />
-          <EntitySet Name="Item" EntityType="CCC.BusinessLayer.Item" />
-          <EntitySet Name="Outcome" EntityType="CCC.BusinessLayer.Outcome" />
-          <EntitySet Name="Tag" EntityType="CCC.BusinessLayer.Tag" />
-          <AssociationSet Name="FK_ActionT_Tag" Association="CCC.BusinessLayer.FK_ActionT_Tag">
+          <EntitySet Name="ActionT" EntityType="eNurseCP.BusinessLayer.ActionT" />
+          <EntitySet Name="Annotation" EntityType="eNurseCP.BusinessLayer.CPAnnotation" />
+          <EntitySet Name="CarePlan" EntityType="eNurseCP.BusinessLayer.CarePlan" />
+          <EntitySet Name="History" EntityType="eNurseCP.BusinessLayer.History" />
+          <EntitySet Name="Item" EntityType="eNurseCP.BusinessLayer.Item" />
+          <EntitySet Name="Outcome" EntityType="eNurseCP.BusinessLayer.Outcome" />
+          <EntitySet Name="Tag" EntityType="eNurseCP.BusinessLayer.Tag" />
+          <AssociationSet Name="FK_History_ActionT" Association="eNurseCP.BusinessLayer.FK_History_ActionT">
+            <End Role="History" EntitySet="History" />
+            <End Role="ActionT" EntitySet="ActionT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_ActionT" Association="eNurseCP.BusinessLayer.FK_Tag_ActionT">
             <End Role="Tag" EntitySet="Tag" />
             <End Role="ActionT" EntitySet="ActionT" />
           </AssociationSet>
-          <AssociationSet Name="FK_ActionType_History" Association="CCC.BusinessLayer.FK_ActionType_History">
-            <End Role="History" EntitySet="History" />
-            <End Role="ActionT" EntitySet="ActionT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Annotation_History" Association="CCC.BusinessLayer.FK_Annotation_History">
+          <AssociationSet Name="FK_History_Annotation" Association="eNurseCP.BusinessLayer.FK_History_Annotation">
             <End Role="History" EntitySet="History" />
             <End Role="Annotation" EntitySet="Annotation" />
           </AssociationSet>
-          <AssociationSet Name="FK_Annotation_Item" Association="CCC.BusinessLayer.FK_Annotation_Item">
+          <AssociationSet Name="FK_Item_Annotation" Association="eNurseCP.BusinessLayer.FK_Item_Annotation">
             <End Role="Item" EntitySet="Item" />
             <End Role="Annotation" EntitySet="Annotation" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarePlan_History" Association="CCC.BusinessLayer.FK_CarePlan_History">
-            <End Role="History" EntitySet="History" />
-            <End Role="CarePlan" EntitySet="CarePlan" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_CarePlan" Association="CCC.BusinessLayer.FK_Item_CarePlan">
+          <AssociationSet Name="FK_CarePlan_Item" Association="eNurseCP.BusinessLayer.FK_CarePlan_Item">
             <End Role="CarePlan" EntitySet="CarePlan" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Item_History" Association="CCC.BusinessLayer.FK_Item_History">
+          <AssociationSet Name="FK_History_CarePlan" Association="eNurseCP.BusinessLayer.FK_History_CarePlan">
+            <End Role="History" EntitySet="History" />
+            <End Role="CarePlan" EntitySet="CarePlan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Item" Association="eNurseCP.BusinessLayer.FK_History_Item">
             <End Role="History" EntitySet="History" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Outcome_History" Association="CCC.BusinessLayer.FK_Outcome_History">
+          <AssociationSet Name="FK_Outcome_History" Association="eNurseCP.BusinessLayer.FK_Outcome_History">
             <End Role="History" EntitySet="History" />
             <End Role="Outcome" EntitySet="Outcome" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tag_History" Association="CCC.BusinessLayer.FK_Tag_History">
+          <AssociationSet Name="FK_Tag_History" Association="eNurseCP.BusinessLayer.FK_Tag_History">
             <End Role="History" EntitySet="History" />
             <End Role="Tag" EntitySet="Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tag_Item" Association="CCC.BusinessLayer.FK_Tag_Item">
+          <AssociationSet Name="FK_Tag_Item" Association="eNurseCP.BusinessLayer.FK_Tag_Item">
             <End Role="Item" EntitySet="Item" />
             <End Role="Tag" EntitySet="Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK_Outcome_Tag" Association="CCC.BusinessLayer.FK_Outcome_Tag">
+          <AssociationSet Name="FK_Outcome_Tag" Association="eNurseCP.BusinessLayer.FK_Outcome_Tag">
             <End Role="Tag" EntitySet="Tag" />
             <End Role="Outcome" EntitySet="Outcome" />
           </AssociationSet>
@@ -79,8 +79,8 @@
           <Property Name="SingleConcept" Type="String" Nullable="false" MaxLength="30" />
           <Property Name="TaxonomyTagId" Type="Guid" Nullable="false" />
           <Property Name="TagId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Tag" Relationship="CCC.BusinessLayer.FK_ActionT_Tag" FromRole="ActionT" ToRole="Tag" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_ActionType_History" FromRole="ActionT" ToRole="History" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_History_ActionT" FromRole="ActionT" ToRole="History" />
+          <NavigationProperty Name="Tag" Relationship="eNurseCP.BusinessLayer.FK_Tag_ActionT" FromRole="ActionT" ToRole="Tag" />
         </EntityType>
         <EntityType Name="CPAnnotation">
           <Key>
@@ -88,8 +88,8 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Data" Type="Binary" MaxLength="1073741823" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_Annotation_History" FromRole="Annotation" ToRole="History" />
-          <NavigationProperty Name="Item" Relationship="CCC.BusinessLayer.FK_Annotation_Item" FromRole="Annotation" ToRole="Item" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_History_Annotation" FromRole="Annotation" ToRole="History" />
+          <NavigationProperty Name="Item" Relationship="eNurseCP.BusinessLayer.FK_Item_Annotation" FromRole="Annotation" ToRole="Item" />
         </EntityType>
         <EntityType Name="CarePlan">
           <Key>
@@ -100,8 +100,8 @@
           <Property Name="TemplateCategoryID" Type="Int16" />
           <Property Name="PatientId" Type="Guid" />
           <Property Name="Description" Type="Binary" MaxLength="1073741823" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_CarePlan_History" FromRole="CarePlan" ToRole="History" />
-          <NavigationProperty Name="Item" Relationship="CCC.BusinessLayer.FK_Item_CarePlan" FromRole="CarePlan" ToRole="Item" />
+          <NavigationProperty Name="Item" Relationship="eNurseCP.BusinessLayer.FK_CarePlan_Item" FromRole="CarePlan" ToRole="Item" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_History_CarePlan" FromRole="CarePlan" ToRole="History" />
         </EntityType>
         <EntityType Name="History">
           <Key>
@@ -112,12 +112,12 @@
           <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" />
           <Property Name="UpdatedDate" Type="DateTime" />
           <Property Name="UpdatedBy" Type="String" MaxLength="150" />
-          <NavigationProperty Name="ActionT" Relationship="CCC.BusinessLayer.FK_ActionType_History" FromRole="History" ToRole="ActionT" />
-          <NavigationProperty Name="Annotation" Relationship="CCC.BusinessLayer.FK_Annotation_History" FromRole="History" ToRole="Annotation" />
-          <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_CarePlan_History" FromRole="History" ToRole="CarePlan" />
-          <NavigationProperty Name="Item" Relationship="CCC.BusinessLayer.FK_Item_History" FromRole="History" ToRole="Item" />
-          <NavigationProperty Name="Outcome" Relationship="CCC.BusinessLayer.FK_Outcome_History" FromRole="History" ToRole="Outcome" />
-          <NavigationProperty Name="Tag" Relationship="CCC.BusinessLayer.FK_Tag_History" FromRole="History" ToRole="Tag" />
+          <NavigationProperty Name="ActionT" Relationship="eNurseCP.BusinessLayer.FK_History_ActionT" FromRole="History" ToRole="ActionT" />
+          <NavigationProperty Name="Annotation" Relationship="eNurseCP.BusinessLayer.FK_History_Annotation" FromRole="History" ToRole="Annotation" />
+          <NavigationProperty Name="CarePlan" Relationship="eNurseCP.BusinessLayer.FK_History_CarePlan" FromRole="History" ToRole="CarePlan" />
+          <NavigationProperty Name="Item" Relationship="eNurseCP.BusinessLayer.FK_History_Item" FromRole="History" ToRole="Item" />
+          <NavigationProperty Name="Outcome" Relationship="eNurseCP.BusinessLayer.FK_Outcome_History" FromRole="History" ToRole="Outcome" />
+          <NavigationProperty Name="Tag" Relationship="eNurseCP.BusinessLayer.FK_Tag_History" FromRole="History" ToRole="Tag" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -125,15 +125,15 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="255" />
+          <Property Name="Description" Type="Binary" MaxLength="1073741823" />
           <Property Name="ContainsDiagnosis" Type="Boolean" />
           <Property Name="ContainsIntervention" Type="Boolean" />
           <Property Name="ContainsCareComponent" Type="Boolean" />
           <Property Name="ContainsFolksonomy" Type="Boolean" />
-          <Property Name="Description" Type="Binary" MaxLength="1073741823" />
-          <NavigationProperty Name="Annotation" Relationship="CCC.BusinessLayer.FK_Annotation_Item" FromRole="Item" ToRole="Annotation" />
-          <NavigationProperty Name="CarePlan" Relationship="CCC.BusinessLayer.FK_Item_CarePlan" FromRole="Item" ToRole="CarePlan" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_Item_History" FromRole="Item" ToRole="History" />
-          <NavigationProperty Name="Tag" Relationship="CCC.BusinessLayer.FK_Tag_Item" FromRole="Item" ToRole="Tag" />
+          <NavigationProperty Name="Annotation" Relationship="eNurseCP.BusinessLayer.FK_Item_Annotation" FromRole="Item" ToRole="Annotation" />
+          <NavigationProperty Name="CarePlan" Relationship="eNurseCP.BusinessLayer.FK_CarePlan_Item" FromRole="Item" ToRole="CarePlan" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_History_Item" FromRole="Item" ToRole="History" />
+          <NavigationProperty Name="Tag" Relationship="eNurseCP.BusinessLayer.FK_Tag_Item" FromRole="Item" ToRole="Tag" />
         </EntityType>
         <EntityType Name="Outcome">
           <Key>
@@ -147,8 +147,8 @@
           <Property Name="ExpectedGoal" Type="String" MaxLength="255" />
           <Property Name="ExpectedDate" Type="DateTime" />
           <Property Name="TaxonomyTagId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_Outcome_History" FromRole="Outcome" ToRole="History" />
-          <NavigationProperty Name="Tag" Relationship="CCC.BusinessLayer.FK_Outcome_Tag" FromRole="Outcome" ToRole="Tag" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_Outcome_History" FromRole="Outcome" ToRole="History" />
+          <NavigationProperty Name="Tag" Relationship="eNurseCP.BusinessLayer.FK_Outcome_Tag" FromRole="Outcome" ToRole="Tag" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -156,18 +156,23 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="TaxonomyType" Type="String" Nullable="false" MaxLength="256" />
+          <Property Name="HistoryId" Type="Guid" />
           <Property Name="TaxonomyTagId" Type="Guid" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="256" />
-          <NavigationProperty Name="ActionT" Relationship="CCC.BusinessLayer.FK_ActionT_Tag" FromRole="Tag" ToRole="ActionT" />
-          <NavigationProperty Name="History" Relationship="CCC.BusinessLayer.FK_Tag_History" FromRole="Tag" ToRole="History" />
-          <NavigationProperty Name="Item" Relationship="CCC.BusinessLayer.FK_Tag_Item" FromRole="Tag" ToRole="Item" />
-          <NavigationProperty Name="Outcome" Relationship="CCC.BusinessLayer.FK_Outcome_Tag" FromRole="Tag" ToRole="Outcome" />
+          <NavigationProperty Name="ActionT" Relationship="eNurseCP.BusinessLayer.FK_Tag_ActionT" FromRole="Tag" ToRole="ActionT" />
+          <NavigationProperty Name="History" Relationship="eNurseCP.BusinessLayer.FK_Tag_History" FromRole="Tag" ToRole="History" />
+          <NavigationProperty Name="Item" Relationship="eNurseCP.BusinessLayer.FK_Tag_Item" FromRole="Tag" ToRole="Item" />
+          <NavigationProperty Name="Outcome" Relationship="eNurseCP.BusinessLayer.FK_Outcome_Tag" FromRole="Tag" ToRole="Outcome" />
         </EntityType>
-        <Association Name="FK_ActionT_Tag">
-          <End Role="Tag" Type="CCC.BusinessLayer.Tag" Multiplicity="1">
+        <Association Name="FK_History_ActionT">
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="0..1" />
+          <End Role="ActionT" Type="eNurseCP.BusinessLayer.ActionT" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Tag_ActionT">
+          <End Role="Tag" Type="eNurseCP.BusinessLayer.Tag" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ActionT" Type="CCC.BusinessLayer.ActionT" Multiplicity="0..1" />
+          <End Role="ActionT" Type="eNurseCP.BusinessLayer.ActionT" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Tag">
               <PropertyRef Name="Id" />
@@ -177,55 +182,57 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ActionType_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1" />
-          <End Role="ActionT" Type="CCC.BusinessLayer.ActionT" Multiplicity="*" />
+        <Association Name="FK_History_Annotation">
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="0..1" />
+          <End Role="Annotation" Type="eNurseCP.BusinessLayer.CPAnnotation" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Annotation_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1" />
-          <End Role="Annotation" Type="CCC.BusinessLayer.CPAnnotation" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_Annotation_Item">
-          <End Role="Item" Type="CCC.BusinessLayer.Item" Multiplicity="1">
+        <Association Name="FK_Item_Annotation">
+          <End Role="Item" Type="eNurseCP.BusinessLayer.Item" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Annotation" Type="CCC.BusinessLayer.CPAnnotation" Multiplicity="*" />
+          <End Role="Annotation" Type="eNurseCP.BusinessLayer.CPAnnotation" Multiplicity="*" />
         </Association>
-        <Association Name="FK_CarePlan_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1" />
-          <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_Item_CarePlan">
-          <End Role="CarePlan" Type="CCC.BusinessLayer.CarePlan" Multiplicity="1">
+        <Association Name="FK_CarePlan_Item">
+          <End Role="CarePlan" Type="eNurseCP.BusinessLayer.CarePlan" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Item" Type="CCC.BusinessLayer.Item" Multiplicity="*" />
+          <End Role="Item" Type="eNurseCP.BusinessLayer.Item" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Item_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="CCC.BusinessLayer.Item" Multiplicity="*" />
+        <Association Name="FK_History_CarePlan">
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="0..1" />
+          <End Role="CarePlan" Type="eNurseCP.BusinessLayer.CarePlan" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_History_Item">
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="0..1" />
+          <End Role="Item" Type="eNurseCP.BusinessLayer.Item" Multiplicity="*" />
         </Association>
         <Association Name="FK_Outcome_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1" />
-          <End Role="Outcome" Type="CCC.BusinessLayer.Outcome" Multiplicity="*" />
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="0..1" />
+          <End Role="Outcome" Type="eNurseCP.BusinessLayer.Outcome" Multiplicity="*" />
         </Association>
         <Association Name="FK_Tag_History">
-          <End Role="History" Type="CCC.BusinessLayer.History" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Tag" Type="CCC.BusinessLayer.Tag" Multiplicity="*" />
+          <End Role="History" Type="eNurseCP.BusinessLayer.History" Multiplicity="1" />
+          <End Role="Tag" Type="eNurseCP.BusinessLayer.Tag" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="History">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tag">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tag_Item">
-          <End Role="Item" Type="CCC.BusinessLayer.Item" Multiplicity="1" />
-          <End Role="Tag" Type="CCC.BusinessLayer.Tag" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_Outcome_Tag">
-          <End Role="Tag" Type="CCC.BusinessLayer.Tag" Multiplicity="1">
+          <End Role="Item" Type="eNurseCP.BusinessLayer.Item" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Outcome" Type="CCC.BusinessLayer.Outcome" Multiplicity="*" />
+          <End Role="Tag" Type="eNurseCP.BusinessLayer.Tag" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Outcome_Tag">
+          <End Role="Tag" Type="eNurseCP.BusinessLayer.Tag" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Outcome" Type="eNurseCP.BusinessLayer.Outcome" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -240,33 +247,29 @@
           <EntitySet Name="Item" EntityType="Model.Store.Item" />
           <EntitySet Name="Outcome" EntityType="Model.Store.Outcome" />
           <EntitySet Name="Tag" EntityType="Model.Store.Tag" />
-          <AssociationSet Name="FK_ActionT_Tag" Association="Model.Store.FK_ActionT_Tag">
-            <End Role="Tag" EntitySet="Tag" />
-            <End Role="ActionT" EntitySet="ActionT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ActionType_History" Association="Model.Store.FK_ActionType_History">
-            <End Role="History" EntitySet="History" />
-            <End Role="ActionT" EntitySet="ActionT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Annotation_History" Association="Model.Store.FK_Annotation_History">
-            <End Role="History" EntitySet="History" />
-            <End Role="Annotation" EntitySet="Annotation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Annotation_Item" Association="Model.Store.FK_Annotation_Item">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="Annotation" EntitySet="Annotation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarePlan_History" Association="Model.Store.FK_CarePlan_History">
-            <End Role="History" EntitySet="History" />
-            <End Role="CarePlan" EntitySet="CarePlan" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_CarePlan" Association="Model.Store.FK_Item_CarePlan">
+          <AssociationSet Name="FK_CarePlan_Item" Association="Model.Store.FK_CarePlan_Item">
             <End Role="CarePlan" EntitySet="CarePlan" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Item_History" Association="Model.Store.FK_Item_History">
+          <AssociationSet Name="FK_History_ActionT" Association="Model.Store.FK_History_ActionT">
+            <End Role="History" EntitySet="History" />
+            <End Role="ActionT" EntitySet="ActionT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Annotation" Association="Model.Store.FK_History_Annotation">
+            <End Role="History" EntitySet="History" />
+            <End Role="Annotation" EntitySet="Annotation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_CarePlan" Association="Model.Store.FK_History_CarePlan">
+            <End Role="History" EntitySet="History" />
+            <End Role="CarePlan" EntitySet="CarePlan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Item" Association="Model.Store.FK_History_Item">
             <End Role="History" EntitySet="History" />
             <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Annotation" Association="Model.Store.FK_Item_Annotation">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Annotation" EntitySet="Annotation" />
           </AssociationSet>
           <AssociationSet Name="FK_Outcome_History" Association="Model.Store.FK_Outcome_History">
             <End Role="History" EntitySet="History" />
@@ -275,6 +278,10 @@
           <AssociationSet Name="FK_Outcome_Tag" Association="Model.Store.FK_Outcome_Tag">
             <End Role="Tag" EntitySet="Tag" />
             <End Role="Outcome" EntitySet="Outcome" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tag_ActionT" Association="Model.Store.FK_Tag_ActionT">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="ActionT" EntitySet="ActionT" />
           </AssociationSet>
           <AssociationSet Name="FK_Tag_History" Association="Model.Store.FK_Tag_History">
             <End Role="History" EntitySet="History" />
@@ -330,14 +337,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="CarePlanId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Description" Type="image" />
           <Property Name="ContainsDiagnosis" Type="bit" />
           <Property Name="ContainsIntervention" Type="bit" />
           <Property Name="ContainsCareComponent" Type="bit" />
           <Property Name="ContainsFolksonomy" Type="bit" />
           <Property Name="HistoryId" Type="uniqueidentifier" />
-          <Property Name="Description" Type="image" />
+          <Property Name="CarePlanId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Outcome">
           <Key>
@@ -365,71 +372,7 @@
           <Property Name="TaxonomyTagId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="256" />
         </EntityType>
-        <Association Name="FK_ActionT_Tag">
-          <End Role="Tag" Type="Model.Store.Tag" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Tag">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActionT">
-              <PropertyRef Name="TagId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ActionType_History">
-          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
-          <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="History">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ActionT">
-              <PropertyRef Name="HistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Annotation_History">
-          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
-          <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="History">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Annotation">
-              <PropertyRef Name="HistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Annotation_Item">
-          <End Role="Item" Type="Model.Store.Item" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Annotation">
-              <PropertyRef Name="ItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarePlan_History">
-          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
-          <End Role="CarePlan" Type="Model.Store.CarePlan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="History">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarePlan">
-              <PropertyRef Name="HistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Item_CarePlan">
+        <Association Name="FK_CarePlan_Item">
           <End Role="CarePlan" Type="Model.Store.CarePlan" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -443,10 +386,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Item_History">
-          <End Role="History" Type="Model.Store.History" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_History_ActionT">
+          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+          <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="History">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionT">
+              <PropertyRef Name="HistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Annotation">
+          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+          <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="History">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Annotation">
+              <PropertyRef Name="HistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_CarePlan">
+          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
+          <End Role="CarePlan" Type="Model.Store.CarePlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="History">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarePlan">
+              <PropertyRef Name="HistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Item">
+          <End Role="History" Type="Model.Store.History" Multiplicity="0..1" />
           <End Role="Item" Type="Model.Store.Item" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="History">
@@ -454,6 +431,20 @@
             </Principal>
             <Dependent Role="Item">
               <PropertyRef Name="HistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Annotation">
+          <End Role="Item" Type="Model.Store.Item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Annotation" Type="Model.Store.Annotation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Annotation">
+              <PropertyRef Name="ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -483,22 +474,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tag_History">
-          <End Role="History" Type="Model.Store.History" Multiplicity="0..1">
+        <Association Name="FK_Tag_ActionT">
+          <End Role="Tag" Type="Model.Store.Tag" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Tag" Type="Model.Store.Tag" Multiplicity="*" />
+          <End Role="ActionT" Type="Model.Store.ActionT" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionT">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tag_History">
+          <End Role="History" Type="Model.Store.History" Multiplicity="1" />
+          <End Role="Tag" Type="Model.Store.Tag" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="History">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Tag">
-              <PropertyRef Name="HistoryId" />
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tag_Item">
-          <End Role="Item" Type="Model.Store.Item" Multiplicity="1" />
+          <End Role="Item" Type="Model.Store.Item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Tag" Type="Model.Store.Tag" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -516,7 +521,7 @@
       <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
         <EntityContainerMapping StorageEntityContainer="App" CdmEntityContainer="CarePlanEntities">
           <EntitySetMapping Name="ActionT">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.ActionT)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.ActionT)">
               <MappingFragment StoreEntitySet="ActionT">
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="SingleConcept" ColumnName="SingleConcept" />
@@ -526,7 +531,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Annotation">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CPAnnotation)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.CPAnnotation)">
               <MappingFragment StoreEntitySet="Annotation">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
@@ -534,7 +539,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CarePlan">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CarePlan)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.CarePlan)">
               <MappingFragment StoreEntitySet="CarePlan">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -545,7 +550,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="History">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.History)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.History)">
               <MappingFragment StoreEntitySet="History">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -556,20 +561,20 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Item">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Item)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.Item)">
               <MappingFragment StoreEntitySet="Item">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ContainsDiagnosis" ColumnName="ContainsDiagnosis" />
                 <ScalarProperty Name="ContainsIntervention" ColumnName="ContainsIntervention" />
                 <ScalarProperty Name="ContainsCareComponent" ColumnName="ContainsCareComponent" />
                 <ScalarProperty Name="ContainsFolksonomy" ColumnName="ContainsFolksonomy" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Outcome">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Outcome)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.Outcome)">
               <MappingFragment StoreEntitySet="Outcome">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ActualOutcome" ColumnName="ActualOutcome" />
@@ -583,16 +588,26 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tag">
-            <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Tag)">
+            <EntityTypeMapping TypeName="IsTypeOf(eNurseCP.BusinessLayer.Tag)">
               <MappingFragment StoreEntitySet="Tag">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TaxonomyType" ColumnName="TaxonomyType" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
                 <ScalarProperty Name="TaxonomyTagId" ColumnName="TaxonomyTagId" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK_ActionT_Tag" TypeName="CCC.BusinessLayer.FK_ActionT_Tag" StoreEntitySet="ActionT">
+          <AssociationSetMapping Name="FK_History_ActionT" TypeName="eNurseCP.BusinessLayer.FK_History_ActionT" StoreEntitySet="ActionT">
+            <EndProperty Name="History">
+              <ScalarProperty Name="Id" ColumnName="HistoryId" />
+            </EndProperty>
+            <EndProperty Name="ActionT">
+              <ScalarProperty Name="TagId" ColumnName="TagId" />
+            </EndProperty>
+            <Condition ColumnName="HistoryId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Tag_ActionT" TypeName="eNurseCP.BusinessLayer.FK_Tag_ActionT" StoreEntitySet="ActionT">
             <EndProperty Name="Tag">
               <ScalarProperty Name="Id" ColumnName="TagId" />
             </EndProperty>
@@ -600,16 +615,7 @@
               <ScalarProperty Name="TagId" ColumnName="TagId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_ActionType_History" TypeName="CCC.BusinessLayer.FK_ActionType_History" StoreEntitySet="ActionT">
-            <EndProperty Name="History">
-              <ScalarProperty Name="Id" ColumnName="HistoryId" />
-            </EndProperty>
-            <EndProperty Name="ActionT">
-              <ScalarProperty Name="TagId" ColumnName="TagId" />
-            </EndProperty>
-            <Condition ColumnName="HistoryId" IsNull="false" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Annotation_History" TypeName="CCC.BusinessLayer.FK_Annotation_History" StoreEntitySet="Annotation">
+          <AssociationSetMapping Name="FK_History_Annotation" TypeName="eNurseCP.BusinessLayer.FK_History_Annotation" StoreEntitySet="Annotation">
             <EndProperty Name="History">
               <ScalarProperty Name="Id" ColumnName="HistoryId" />
             </EndProperty>
@@ -618,7 +624,7 @@
             </EndProperty>
             <Condition ColumnName="HistoryId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Annotation_Item" TypeName="CCC.BusinessLayer.FK_Annotation_Item" StoreEntitySet="Annotation">
+          <AssociationSetMapping Name="FK_Item_Annotation" TypeName="eNurseCP.BusinessLayer.FK_Item_Annotation" StoreEntitySet="Annotation">
             <EndProperty Name="Item">
               <ScalarProperty Name="Id" ColumnName="ItemId" />
             </EndProperty>
@@ -626,16 +632,7 @@
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_CarePlan_History" TypeName="CCC.BusinessLayer.FK_CarePlan_History" StoreEntitySet="CarePlan">
-            <EndProperty Name="History">
-              <ScalarProperty Name="Id" ColumnName="HistoryId" />
-            </EndProperty>
-            <EndProperty Name="CarePlan">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-            <Condition ColumnName="HistoryId" IsNull="false" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Item_CarePlan" TypeName="CCC.BusinessLayer.FK_Item_CarePlan" StoreEntitySet="Item">
+          <AssociationSetMapping Name="FK_CarePlan_Item" TypeName="eNurseCP.BusinessLayer.FK_CarePlan_Item" StoreEntitySet="Item">
             <EndProperty Name="CarePlan">
               <ScalarProperty Name="Id" ColumnName="CarePlanId" />
             </EndProperty>
@@ -643,7 +640,16 @@
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Item_History" TypeName="CCC.BusinessLayer.FK_Item_History" StoreEntitySet="Item">
+          <AssociationSetMapping Name="FK_History_CarePlan" TypeName="eNurseCP.BusinessLayer.FK_History_CarePlan" StoreEntitySet="CarePlan">
+            <EndProperty Name="History">
+              <ScalarProperty Name="Id" ColumnName="HistoryId" />
+            </EndProperty>
+            <EndProperty Name="CarePlan">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition ColumnName="HistoryId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_History_Item" TypeName="eNurseCP.BusinessLayer.FK_History_Item" StoreEntitySet="Item">
             <EndProperty Name="History">
               <ScalarProperty Name="Id" ColumnName="HistoryId" />
             </EndProperty>
@@ -652,7 +658,7 @@
             </EndProperty>
             <Condition ColumnName="HistoryId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Outcome_History" TypeName="CCC.BusinessLayer.FK_Outcome_History" StoreEntitySet="Outcome">
+          <AssociationSetMapping Name="FK_Outcome_History" TypeName="eNurseCP.BusinessLayer.FK_Outcome_History" StoreEntitySet="Outcome">
             <EndProperty Name="History">
               <ScalarProperty Name="Id" ColumnName="HistoryId" />
             </EndProperty>
@@ -661,16 +667,15 @@
             </EndProperty>
             <Condition ColumnName="HistoryId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Tag_History" TypeName="CCC.BusinessLayer.FK_Tag_History" StoreEntitySet="Tag">
+          <AssociationSetMapping Name="FK_Tag_History" TypeName="eNurseCP.BusinessLayer.FK_Tag_History" StoreEntitySet="Tag">
             <EndProperty Name="History">
-              <ScalarProperty Name="Id" ColumnName="HistoryId" />
+              <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
             <EndProperty Name="Tag">
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
-            <Condition ColumnName="HistoryId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Tag_Item" TypeName="CCC.BusinessLayer.FK_Tag_Item" StoreEntitySet="Tag">
+          <AssociationSetMapping Name="FK_Tag_Item" TypeName="eNurseCP.BusinessLayer.FK_Tag_Item" StoreEntitySet="Tag">
             <EndProperty Name="Item">
               <ScalarProperty Name="Id" ColumnName="ItemId" />
             </EndProperty>
@@ -678,7 +683,7 @@
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Outcome_Tag" TypeName="CCC.BusinessLayer.FK_Outcome_Tag" StoreEntitySet="Outcome">
+          <AssociationSetMapping Name="FK_Outcome_Tag" TypeName="eNurseCP.BusinessLayer.FK_Outcome_Tag" StoreEntitySet="Outcome">
             <EndProperty Name="Tag">
               <ScalarProperty Name="Id" ColumnName="TagId" />
             </EndProperty>

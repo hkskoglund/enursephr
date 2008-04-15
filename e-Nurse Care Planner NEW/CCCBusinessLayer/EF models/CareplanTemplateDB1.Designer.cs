@@ -11,8 +11,8 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 12.04.2008 16:35:28
-namespace CCC.BusinessLayer
+// Generation date: 13.04.2008 14:10:09
+namespace eNurseCP.BusinessLayer
 {
     
     /// <summary>
@@ -66,12 +66,12 @@ namespace CCC.BusinessLayer
         }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.TemplateCarePlan in the schema.
+    /// There are no comments for eNurseCP.BusinessLayer.TemplateCarePlan in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Category
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="TemplateCarePlan")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="eNurseCP.BusinessLayer", Name="TemplateCarePlan")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
     public partial class TemplateCarePlan : global::System.Data.Objects.DataClasses.EntityObject

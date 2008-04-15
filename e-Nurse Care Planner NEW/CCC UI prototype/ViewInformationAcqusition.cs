@@ -6,10 +6,10 @@ using System.Collections.ObjectModel;
 using System.Windows.Annotations;
 using System.Windows.Data;
 using System.ComponentModel;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.Windows.Annotations.Storage;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     public class ViewInformationAcqusition
     {

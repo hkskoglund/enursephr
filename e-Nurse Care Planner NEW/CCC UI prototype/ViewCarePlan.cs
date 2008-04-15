@@ -11,14 +11,14 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.IO;
 using System.Windows.Shapes;
 
 using System.Windows.Media.Imaging;
 
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     public class ViewCarePlan : CarePlanEntitesWrapper
     {
@@ -312,6 +312,7 @@ namespace CCC.UI
                    if (!tag.ActionTReference.IsLoaded)
                        tag.ActionTReference.Load();
 
+             
                    hasActionType = (tag.ActionT == null) ? false : true;
 
                    

@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("e-Nurse Care Planner")]
-[assembly: AssemblyCopyright("Copyright ©  2007 Henning Knut Skoglund")]
+[assembly: AssemblyCopyright("Copyright ©  2008 Henning Knut Skoglund")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

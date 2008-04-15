@@ -1,7 +1,7 @@
-﻿<Window x:Class="CCC.UI.WindowNewItem"
+﻿<Window x:Class="eNurseCP.userInterfaceLayer.WindowNewItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="clr-namespace:CCC.UI"
+    xmlns:ui="clr-namespace:eNurseCP.userInterfaceLayer"
     Title="New careplan item" 
     SizeToContent="Height" Width="400"
     Background="{StaticResource BlueTheme}"
@@ -26,7 +26,13 @@
         </ToolBarTray>
         
         <StackPanel x:Name="spNewItem" Margin="5,0,5,0">
-            <TextBlock Margin="0,5,0,0"  Text="Title" FontWeight="UltraBold"  />
+
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                <Image Source="Images\New.png" />
+                <TextBlock FontSize="20" FontWeight="UltraBold" Text="New careplan item"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBlock Margin="0,0,0,0"  Text="Title" FontWeight="UltraBold"  />
             
             <TextBox x:Name="tbTitle" TextChanged="tbTitle_TextChanged" FontSize="15" FontWeight="UltraBold" MaxHeight="300" TextWrapping="Wrap"  >
               <TextBox.Text>

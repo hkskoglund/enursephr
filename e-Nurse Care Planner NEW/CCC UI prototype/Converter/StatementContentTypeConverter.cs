@@ -10,7 +10,7 @@ using System.Windows.Documents;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     [ValueConversion(typeof(string), typeof(string))]
     public class StatementContentTypeConverter : IValueConverter

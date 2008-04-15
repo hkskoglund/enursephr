@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Globalization;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     
     class EmptyStringRule : ValidationRule

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Windows.Controls;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
   
     public class ViewCCCFrameWork : CCC_Framework

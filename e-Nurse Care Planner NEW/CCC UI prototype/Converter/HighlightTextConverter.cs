@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
     [ValueConversion(typeof(object), typeof(string))]
     public class HighlightTextConverter : IValueConverter

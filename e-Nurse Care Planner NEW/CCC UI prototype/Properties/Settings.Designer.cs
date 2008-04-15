@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CCC.UI.Properties {
+namespace eNurseCP.userInterfaceLayer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -23,26 +23,15 @@ namespace CCC.UI.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=CCC;Integrated Security=True;Pooling=Fal" +
-            "se")]
-        public string CCCConnectionString {
-            get {
-                return ((string)(this["CCCConnectionString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2.0")]
-        public string Version {
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LastItem {
             get {
-                return ((string)(this["Version"]));
+                return ((global::System.Guid)(this["LastItem"]));
             }
             set {
-                this["Version"] = value;
+                this["LastItem"] = value;
             }
         }
         
@@ -60,13 +49,13 @@ namespace CCC.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
-        public global::System.Guid LastItem {
+        [global::System.Configuration.DefaultSettingValueAttribute("2.0")]
+        public string Version {
             get {
-                return ((global::System.Guid)(this["LastItem"]));
+                return ((string)(this["Version"]));
             }
             set {
-                this["LastItem"] = value;
+                this["Version"] = value;
             }
         }
     }

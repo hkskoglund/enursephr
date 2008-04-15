@@ -1,7 +1,7 @@
-﻿<Window x:Class="CCC.UI.WindowMultiLanguageIntegrity"
+﻿<Window x:Class="eNurseCP.userInterfaceLayer.WindowMultiLanguageIntegrity"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-          xmlns:ui="clr-namespace:CCC.UI" 
+          xmlns:ui="clr-namespace:eNurseCP.userInterfaceLayer" 
 
         
     Title="Framework multi-language integrity" SizeToContent="WidthAndHeight"  Loaded="Window_Loaded" ResizeMode="CanMinimize">

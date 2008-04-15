@@ -11,9 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CCC.BusinessLayer;
+using eNurseCP.BusinessLayer;
 
-namespace CCC.UI
+namespace eNurseCP.userInterfaceLayer
 {
 
     public partial class WindowMain : Window
@@ -29,6 +29,13 @@ namespace CCC.UI
 
         private void MenuItemLanguageIntegrity_Click(object sender, RoutedEventArgs e)
         {
+
+            if (!healthDB["CCCReference"] || !healthDB["CCCFramework"])
+            {
+                MessageBox.Show("Attempt to run language integrity check, cannot proceed because something is wrong with database access", "Language integrity cannot proceed", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             try
             {
                 WindowMultiLanguageIntegrity winMultiLangIntegrity = new WindowMultiLanguageIntegrity();
@@ -52,7 +59,7 @@ namespace CCC.UI
                     App.cccFrameWork.FrameworkActual[0].Date.ToString();
             for (int i = 0; i < App.cccFrameWork.FrameworkActual.Count; i++)
             {
-                if (App.cccFrameWork.FrameworkActual[i].Language_Name == Properties.Settings.Default.LanguageName)
+                if (App.cccFrameWork.FrameworkActual[i].Language_Name == eNurseCP.userInterfaceLayer.Properties.Settings.Default.LanguageName)
                 {
                     cbLanguage.SelectedItem = App.cccFrameWork.FrameworkActual[i];
                     break;
@@ -122,6 +129,13 @@ namespace CCC.UI
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox tb = sender as TextBox;
+
+            if (App.cccFrameWork == null)
+            {
+                MessageBox.Show("Cannot search in the clinical care classification, because database is not loaded", "Cannot search", MessageBoxButton.OK, MessageBoxImage.Error);
+             
+                return;
+            }
 
             FilterSearch = tb.Text;
             if (FilterSearch == "")

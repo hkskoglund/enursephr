@@ -8,8 +8,8 @@
     <ProjectGuid>{99FCA78D-0153-4D92-BA47-8F357D2EC047}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CCC.UI</RootNamespace>
-    <AssemblyName>e-Nurse Care Planner</AssemblyName>
+    <RootNamespace>eNurseCP.userInterfaceLayer</RootNamespace>
+    <AssemblyName>eNurseCP</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,7 +39,6 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <WebPage>publish.htm</WebPage>
     <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -160,6 +159,11 @@
     <Compile Include="Converter\UpperCaseConverter.cs" />
     <Compile Include="Converter\ValidContentConverter.cs" />
     <Compile Include="AnnotationService.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ViewCarePlan.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -175,12 +179,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs" />
     <Compile Include="ViewCCCFrameWork.cs" />
     <Compile Include="WindowCopyright.xaml.cs">
       <DependentUpon>WindowCopyright.xaml</DependentUpon>
@@ -313,6 +311,9 @@
   <ItemGroup>
     <EmbeddedResource Include="J832\J832.Common.dll" />
     <EmbeddedResource Include="J832\J832.Wpf.BagOTricksLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\eNurse.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Video\" />
