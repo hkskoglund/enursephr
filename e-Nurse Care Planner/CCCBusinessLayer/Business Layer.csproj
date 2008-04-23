@@ -9,14 +9,10 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CCC.BusinessLayer</RootNamespace>
-    <AssemblyName>CCCBusinessLayer</AssemblyName>
+    <AssemblyName>e-Nurse Care Planner Businesslayer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -87,25 +83,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarePlan.cs" />
-    <Compile Include="CarePlanDB.Designer.cs">
+    <Compile Include="CarePlanEntitiesWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EF models\CarePlanDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CarePlanDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="CareplanTemplateDB1.Designer.cs">
+    <Compile Include="EF models\CareplanTemplateDB1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CareplanTemplateDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="CCCFramework.cs" />
-    <Compile Include="CCCFramework.Designer.cs">
+    <Compile Include="EF models\CCCFrameworkCompact.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CCCFramework.edmx</DependentUpon>
+      <DependentUpon>CCCFrameworkCompact.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedDiagnosis.cs" />
-    <Compile Include="LanguageFramework.cs" />
+    <Compile Include="EF models\CCCReferenceCompact.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CCCReferenceCompact.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF models\Extension\CommentOnDiagnosisAndIntervention.cs" />
+    <Compile Include="EF models\Extension\ComponentPattern.cs" />
+    <Compile Include="EF models\Extension\FriendlyHistory.cs" />
+    <Compile Include="EF models\Extension\FriendlyTag.cs" />
+    <Compile Include="EF models\Extension\SingleConceptOnActionType.cs" />
+    <Compile Include="enumActionOutcomeTypes.cs" />
+    <Compile Include="EF models\Extension\LanguageVerification.cs" />
     <Compile Include="myImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -114,19 +122,52 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="TagHandler.cs" />
+    <Compile Include="tagInCloud.cs" />
+    <Compile Include="TerminologyAnalysis\LanguageAnalysis.cs" />
+    <Compile Include="TerminologyAnalysis\LanguageFramework.cs" />
+    <Compile Include="TerminologyAnalysis\MActionType.cs" />
+    <Compile Include="TerminologyAnalysis\MCareComponent.cs" />
+    <Compile Include="TerminologyAnalysis\MNursingDiagnosis.cs" />
+    <Compile Include="TerminologyAnalysis\MNursingIntervention.cs" />
+    <Compile Include="TerminologyAnalysis\MOutcomeType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="bin\Debug\CareplanTemplateDB.csdl" />
-    <EmbeddedResource Include="bin\Debug\CareplanTemplateDB.msl" />
-    <EmbeddedResource Include="bin\Debug\CareplanTemplateDB.ssdl" />
-    <EmbeddedResource Include="bin\Debug\CCCFramework.csdl" />
-    <EmbeddedResource Include="bin\Debug\CCCFramework.msl" />
-    <EmbeddedResource Include="bin\Debug\CCCFramework.ssdl" />
-    <None Include="App.Config" />
-    <None Include="Business.cd" />
-    <EntityDeploy Include="CCCFramework.edmx">
+    <EntityDeploy Include="EF models\CCCFrameworkCompact.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CCCFramework.Designer.cs</LastGenOutput>
+      <LastGenOutput>CCCFrameworkCompact.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="EF models\CCCReferenceCompact.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CCCReferenceCompact.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.csdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.msl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CareplanTemplateDB.ssdl" />
+    <None Include="bin\Debug\EF models\CarePlanDB.csdl" />
+    <None Include="bin\Debug\EF models\CarePlanDB.msl" />
+    <None Include="bin\Debug\EF models\CarePlanDB.ssdl" />
+    <None Include="bin\Release\EF models\CarePlanDB.csdl" />
+    <None Include="bin\Release\EF models\CarePlanDB.msl" />
+    <None Include="bin\Release\EF models\CarePlanDB.ssdl" />
+    <None Include="bin\Release\EF models\CCCFrameworkCompact.csdl" />
+    <None Include="bin\Release\EF models\CCCFrameworkCompact.msl" />
+    <None Include="bin\Release\EF models\CCCFrameworkCompact.ssdl" />
+    <None Include="bin\Release\EF models\CCCReferenceCompact.csdl" />
+    <None Include="bin\Release\EF models\CCCReferenceCompact.msl" />
+    <None Include="bin\Release\EF models\CCCReferenceCompact.ssdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.csdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.ssdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.msl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCFrameworkCompact.ssdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.csdl" />
+    <EmbeddedResource Include="bin\Debug\EF models\CCCReferenceCompact.msl" />
+    <None Include="bin\Release\EF models\CareplanTemplateDB.csdl" />
+    <None Include="bin\Release\EF models\CareplanTemplateDB.ssdl" />
+    <None Include="bin\Release\EF models\CareplanTemplateDB.msl" />
+    <EntityDeploy Include="EF models\CarePlanDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CarePlanDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -169,22 +210,22 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="CarePlanDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CarePlanDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EmbeddedResource Include="bin\Debug\CarePlanDB.csdl" />
-    <EmbeddedResource Include="bin\Debug\CarePlanDB.msl" />
-    <EmbeddedResource Include="bin\Debug\CarePlanDB.ssdl" />
-    <EntityDeploy Include="CareplanTemplateDB.edmx">
+    <EntityDeploy Include="EF models\CareplanTemplateDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CareplanTemplateDB1.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CCC Framework.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Databases\CCC Framework.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Databases\CCC Terminology Reference.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\Databases\" />
+    <Folder Include="LanguageAnalysis\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

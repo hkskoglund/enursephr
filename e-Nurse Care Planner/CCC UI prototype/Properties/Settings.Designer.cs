@@ -34,18 +34,6 @@ namespace CCC.UI.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=\"C:\\Programfiler\\Microsoft SQL Server\\M" +
-            "SSQL.1\\MSSQL\\Data\\Pleieplan.mdf\";Integrated Security=True;Connect Timeout=30;Use" +
-            "r Instance=True")]
-        public string PleieplanConnectionString {
-            get {
-                return ((string)(this["PleieplanConnectionString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2.0")]
@@ -67,6 +55,18 @@ namespace CCC.UI.Properties {
             }
             set {
                 this["LanguageName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LastItem {
+            get {
+                return ((global::System.Guid)(this["LastItem"]));
+            }
+            set {
+                this["LastItem"] = value;
             }
         }
     }

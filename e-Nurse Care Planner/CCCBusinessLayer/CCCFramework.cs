@@ -13,19 +13,22 @@ namespace CCC.BusinessLayer
         private List<CarePattern> _patterns;
         private List<Care_component> _components;
        
-        private List<Nursing_Diagnosis> _diagnoses;
-        private List<Nursing_Intervention> _interventions;
-// NOT implemented yet        private List<ExpectedOutcome> _outcomes;
+        private List<FrameworkDiagnosis> _diagnoses;
+        private List<FrameworkIntervention> _interventions;
+        private List<FrameworkOutcomeType> _outcomes;
+        private List<ActionType> _actionTypes;
 
-       //Estatic private CCCDataContext _db;
-        static private CCCFrameworkEntities _db;
+        static private CCCFrameworkCompactEntities _db;
         
-
+        
         // Copyright information
 
         private string _name;
         private string _version;
         private string _authors;
+        private DateTime _lastupdate;
+        private string _logoURL;
+
 
         // Languages
 
@@ -36,27 +39,32 @@ namespace CCC.BusinessLayer
             get { return this._factual; }
         }
 
-       public CCC_Framework(string languageName)
+       public CCC_Framework(string languageName, string version)
         {
 
            
-           _db = new CCCFrameworkEntities();
+           _db = new CCCFrameworkCompactEntities();
 
-           loadFramework(languageName);  
+           loadFramework(languageName,version);  
          
  }
-       public void loadFramework(string languageName)
+       public void loadFramework(string languageName, string version)
        {
-          
-           this.Name = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == "2.0").First().Name;
-           this.Authors = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == "2.0").First().Authors;
-           this.Version = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == "2.0").First().Version;
+                    
+           // Get copyright information
+           this.Name = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Name;
+           this.Authors = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Authors;
+           this.Version = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Version;
+           this.LastUpdate = (DateTime)_db.Copyright.Where(c => c.Language_Name == languageName && c.Version == "2.0").First().LastUpdate;
+           this.LogoURL = _db.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().LogoURL;
 
-           this._patterns = _db.CarePattern.Where(p => p.Language_Name == languageName && p.Version == "2.0").ToList();
-           this._components = _db.Care_component.Where(p => p.Language_Name == languageName && p.Version == "2.0").ToList();
-           this._diagnoses = _db.Nursing_Diagnosis.Where(p => p.Language_Name == languageName && p.Version == "2.0").ToList();
-           this._interventions = _db.Nursing_Intervention.Where(p => p.Language_Name == languageName && p.Version == "2.0").ToList();
-           
+           this._patterns = _db.CarePattern.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+           this._components = _db.Care_component.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+           this._diagnoses = _db.Nursing_Diagnosis.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+           this._interventions = _db.Nursing_Intervention.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+           this._outcomes = _db.OutcomeType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+           this._actionTypes =  _db.ActionType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+
            // Load last languages found in analysis
 
            loadFrameworkAnalysis();
@@ -70,7 +78,7 @@ namespace CCC.BusinessLayer
                this._factual = _db.FrameworkActual.ToList();
        }
 
-    public CCCFrameworkEntities DB    
+    public CCCFrameworkCompactEntities DB    
     {
             get { return _db; }
         }
@@ -81,12 +89,12 @@ namespace CCC.BusinessLayer
             
         }
 
-        public List<Nursing_Diagnosis> Diagnoses
+        public List<FrameworkDiagnosis> Diagnoses
         {
             get { return this._diagnoses; }
         }
 
-        public List<Nursing_Intervention> Inteventions
+        public List<FrameworkIntervention> Inteventions
         {
             get { return this._interventions; }
         }
@@ -96,11 +104,16 @@ namespace CCC.BusinessLayer
             get { return this._patterns; }
         }
 
-        //public List<ExpectedOutcome> Outcomes
-        //{
-        //    get { return this._outcomes; }
-        //}
+        public List<FrameworkOutcomeType> Outcomes
+        {
+            get { return this._outcomes; }
+        }
 
+
+        public List<ActionType> ActionTypes
+        {
+            get { return this._actionTypes; }
+        }
 
         public string Name
         {
@@ -132,6 +145,27 @@ namespace CCC.BusinessLayer
                 OnPropertyChanged("Authors");
             }
         }
+
+        public DateTime LastUpdate
+        {
+            get { return this._lastupdate; }
+            set
+            {
+                this._lastupdate = value;
+                OnPropertyChanged("LastUpdate");
+            }
+        }
+
+        public string LogoURL
+        {
+            get { return this._logoURL; }
+            set
+            {
+                this._logoURL = value;
+                OnPropertyChanged("logoURL");
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         

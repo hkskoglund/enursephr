@@ -21,6 +21,9 @@ namespace CCC.UI
         public WindowCopyright()
         {
             InitializeComponent();
+
+            
+
         }
     }
 }

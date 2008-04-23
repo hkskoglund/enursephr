@@ -10,11 +10,11 @@
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Care_component_CarePattern", "CarePattern", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.CarePattern), "Care_component", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Care_component))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Nursing_Diagnosis_Care_component", "Care_component", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Care_component), "Nursing_Diagnosis", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Nursing_Diagnosis))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Nursing_Diagnosis_Care_component", "Care_component", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Care_component), "Nursing_Diagnosis", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.FrameworkDiagnosis))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("CCC.BusinessLayer", "FK_Nursing_Intervention_Care_component", "Care_component", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CCC.BusinessLayer.Care_component), "Nursing_Intervention", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CCC.BusinessLayer.Nursing_Intervention))]
 
 // Original file name:
-// Generation date: 21.01.2008 19:56:45
+// Generation date: 13.02.2008 23:50:23
 namespace CCC.BusinessLayer
 {
     
@@ -44,70 +44,6 @@ namespace CCC.BusinessLayer
                 base(connection, "CCCFrameworkEntities")
         {
         }
-        /// <summary>
-        /// There are no comments for ActionType in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<ActionType> ActionType
-        {
-            get
-            {
-                if ((this._ActionType == null))
-                {
-                    this._ActionType = base.CreateQuery<ActionType>("[ActionType]");
-                }
-                return this._ActionType;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<ActionType> _ActionType;
-        /// <summary>
-        /// There are no comments for Care_component in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<Care_component> Care_component
-        {
-            get
-            {
-                if ((this._Care_component == null))
-                {
-                    this._Care_component = base.CreateQuery<Care_component>("[Care_component]");
-                }
-                return this._Care_component;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Care_component> _Care_component;
-        /// <summary>
-        /// There are no comments for CarePattern in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<CarePattern> CarePattern
-        {
-            get
-            {
-                if ((this._CarePattern == null))
-                {
-                    this._CarePattern = base.CreateQuery<CarePattern>("[CarePattern]");
-                }
-                return this._CarePattern;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<CarePattern> _CarePattern;
-        /// <summary>
-        /// There are no comments for Copyright in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<Copyright> Copyright
-        {
-            get
-            {
-                if ((this._Copyright == null))
-                {
-                    this._Copyright = base.CreateQuery<Copyright>("[Copyright]");
-                }
-                return this._Copyright;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Copyright> _Copyright;
         /// <summary>
         /// There are no comments for Framework in the schema.
         /// </summary>
@@ -141,6 +77,86 @@ namespace CCC.BusinessLayer
         }
         private global::System.Data.Objects.ObjectQuery<FrameworkActual> _FrameworkActual;
         /// <summary>
+        /// There are no comments for Care_component in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.ObjectQuery<Care_component> Care_component
+        {
+            get
+            {
+                if ((this._Care_component == null))
+                {
+                    this._Care_component = base.CreateQuery<Care_component>("[Care_component]");
+                }
+                return this._Care_component;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Care_component> _Care_component;
+        /// <summary>
+        /// There are no comments for CarePattern in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.ObjectQuery<CarePattern> CarePattern
+        {
+            get
+            {
+                if ((this._CarePattern == null))
+                {
+                    this._CarePattern = base.CreateQuery<CarePattern>("[CarePattern]");
+                }
+                return this._CarePattern;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<CarePattern> _CarePattern;
+        /// <summary>
+        /// There are no comments for Nursing_Diagnosis in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.ObjectQuery<FrameworkDiagnosis> Nursing_Diagnosis
+        {
+            get
+            {
+                if ((this._Nursing_Diagnosis == null))
+                {
+                    this._Nursing_Diagnosis = base.CreateQuery<FrameworkDiagnosis>("[Nursing_Diagnosis]");
+                }
+                return this._Nursing_Diagnosis;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<FrameworkDiagnosis> _Nursing_Diagnosis;
+        /// <summary>
+        /// There are no comments for Nursing_Intervention in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.ObjectQuery<Nursing_Intervention> Nursing_Intervention
+        {
+            get
+            {
+                if ((this._Nursing_Intervention == null))
+                {
+                    this._Nursing_Intervention = base.CreateQuery<Nursing_Intervention>("[Nursing_Intervention]");
+                }
+                return this._Nursing_Intervention;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Nursing_Intervention> _Nursing_Intervention;
+        /// <summary>
+        /// There are no comments for ActionType in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.ObjectQuery<ActionType> ActionType
+        {
+            get
+            {
+                if ((this._ActionType == null))
+                {
+                    this._ActionType = base.CreateQuery<ActionType>("[ActionType]");
+                }
+                return this._ActionType;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<ActionType> _ActionType;
+        /// <summary>
         /// There are no comments for OutcomeType in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -157,43 +173,34 @@ namespace CCC.BusinessLayer
         }
         private global::System.Data.Objects.ObjectQuery<OutcomeType> _OutcomeType;
         /// <summary>
-        /// There are no comments for Nursing_DiagnosisSet in the schema.
+        /// There are no comments for Copyright in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<Nursing_Diagnosis> Nursing_DiagnosisSet
+        public global::System.Data.Objects.ObjectQuery<Copyright> Copyright
         {
             get
             {
-                if ((this._Nursing_DiagnosisSet == null))
+                if ((this._Copyright == null))
                 {
-                    this._Nursing_DiagnosisSet = base.CreateQuery<Nursing_Diagnosis>("[Nursing_DiagnosisSet]");
+                    this._Copyright = base.CreateQuery<Copyright>("[Copyright]");
                 }
-                return this._Nursing_DiagnosisSet;
+                return this._Copyright;
             }
         }
-        private global::System.Data.Objects.ObjectQuery<Nursing_Diagnosis> _Nursing_DiagnosisSet;
+        private global::System.Data.Objects.ObjectQuery<Copyright> _Copyright;
         /// <summary>
-        /// There are no comments for Nursing_InterventionSet in the schema.
+        /// There are no comments for Framework in the schema.
         /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.ObjectQuery<Nursing_Intervention> Nursing_InterventionSet
+        public void AddToFramework(Framework framework)
         {
-            get
-            {
-                if ((this._Nursing_InterventionSet == null))
-                {
-                    this._Nursing_InterventionSet = base.CreateQuery<Nursing_Intervention>("[Nursing_InterventionSet]");
-                }
-                return this._Nursing_InterventionSet;
-            }
+            base.AddObject("Framework", framework);
         }
-        private global::System.Data.Objects.ObjectQuery<Nursing_Intervention> _Nursing_InterventionSet;
         /// <summary>
-        /// There are no comments for ActionType in the schema.
+        /// There are no comments for FrameworkActual in the schema.
         /// </summary>
-        public void AddToActionType(ActionType actionType)
+        public void AddToFrameworkActual(FrameworkActual frameworkActual)
         {
-            base.AddObject("ActionType", actionType);
+            base.AddObject("FrameworkActual", frameworkActual);
         }
         /// <summary>
         /// There are no comments for Care_component in the schema.
@@ -210,25 +217,25 @@ namespace CCC.BusinessLayer
             base.AddObject("CarePattern", carePattern);
         }
         /// <summary>
-        /// There are no comments for Copyright in the schema.
+        /// There are no comments for Nursing_Diagnosis in the schema.
         /// </summary>
-        public void AddToCopyright(Copyright copyright)
+        public void AddToNursing_Diagnosis(FrameworkDiagnosis frameworkDiagnosis)
         {
-            base.AddObject("Copyright", copyright);
+            base.AddObject("Nursing_Diagnosis", frameworkDiagnosis);
         }
         /// <summary>
-        /// There are no comments for Framework in the schema.
+        /// There are no comments for Nursing_Intervention in the schema.
         /// </summary>
-        public void AddToFramework(Framework framework)
+        public void AddToNursing_Intervention(Nursing_Intervention nursing_Intervention)
         {
-            base.AddObject("Framework", framework);
+            base.AddObject("Nursing_Intervention", nursing_Intervention);
         }
         /// <summary>
-        /// There are no comments for FrameworkActual in the schema.
+        /// There are no comments for ActionType in the schema.
         /// </summary>
-        public void AddToFrameworkActual(FrameworkActual frameworkActual)
+        public void AddToActionType(ActionType actionType)
         {
-            base.AddObject("FrameworkActual", frameworkActual);
+            base.AddObject("ActionType", actionType);
         }
         /// <summary>
         /// There are no comments for OutcomeType in the schema.
@@ -238,616 +245,12 @@ namespace CCC.BusinessLayer
             base.AddObject("OutcomeType", outcomeType);
         }
         /// <summary>
-        /// There are no comments for Nursing_DiagnosisSet in the schema.
+        /// There are no comments for Copyright in the schema.
         /// </summary>
-        public void AddToNursing_DiagnosisSet(Nursing_Diagnosis nursing_Diagnosis)
+        public void AddToCopyright(Copyright copyright)
         {
-            base.AddObject("Nursing_DiagnosisSet", nursing_Diagnosis);
+            base.AddObject("Copyright", copyright);
         }
-        /// <summary>
-        /// There are no comments for Nursing_InterventionSet in the schema.
-        /// </summary>
-        public void AddToNursing_InterventionSet(Nursing_Intervention nursing_Intervention)
-        {
-            base.AddObject("Nursing_InterventionSet", nursing_Intervention);
-        }
-    }
-    /// <summary>
-    /// There are no comments for CCC.BusinessLayer.ActionType in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Language_Name
-    /// Code
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="ActionType")]
-    [global::System.Runtime.Serialization.DataContractAttribute()]
-    [global::System.Serializable()]
-    public partial class ActionType : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new ActionType object.
-        /// </summary>
-        /// <param name="language_Name">Initial value of Language_Name.</param>
-        /// <param name="code">Initial value of Code.</param>
-        public static ActionType CreateActionType(string language_Name, short code)
-        {
-            ActionType actionType = new ActionType();
-            actionType.Language_Name = language_Name;
-            actionType.Code = code;
-            return actionType;
-        }
-        /// <summary>
-        /// There are no comments for Property Language_Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Language_Name
-        {
-            get
-            {
-                return this._Language_Name;
-            }
-            set
-            {
-                this.OnLanguage_NameChanging(value);
-                this.ReportPropertyChanging("Language_Name");
-                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
-                this.ReportPropertyChanged("Language_Name");
-                this.OnLanguage_NameChanged();
-            }
-        }
-        private string _Language_Name;
-        partial void OnLanguage_NameChanging(string value);
-        partial void OnLanguage_NameChanged();
-        /// <summary>
-        /// There are no comments for Property Code in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public short Code
-        {
-            get
-            {
-                return this._Code;
-            }
-            set
-            {
-                this.OnCodeChanging(value);
-                this.ReportPropertyChanging("Code");
-                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Code");
-                this.OnCodeChanged();
-            }
-        }
-        private short _Code;
-        partial void OnCodeChanging(short value);
-        partial void OnCodeChanged();
-        /// <summary>
-        /// There are no comments for Property ActionType1 in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string ActionType1
-        {
-            get
-            {
-                return this._ActionType1;
-            }
-            set
-            {
-                this.OnActionType1Changing(value);
-                this.ReportPropertyChanging("ActionType1");
-                this._ActionType1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 50);
-                this.ReportPropertyChanged("ActionType1");
-                this.OnActionType1Changed();
-            }
-        }
-        private string _ActionType1;
-        partial void OnActionType1Changing(string value);
-        partial void OnActionType1Changed();
-        /// <summary>
-        /// There are no comments for Property Definition in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Definition
-        {
-            get
-            {
-                return this._Definition;
-            }
-            set
-            {
-                this.OnDefinitionChanging(value);
-                this.ReportPropertyChanging("Definition");
-                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 100);
-                this.ReportPropertyChanged("Definition");
-                this.OnDefinitionChanged();
-            }
-        }
-        private string _Definition;
-        partial void OnDefinitionChanging(string value);
-        partial void OnDefinitionChanged();
-    }
-    /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Care_component in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Language_Name
-    /// Code
-    /// PatternId
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Care_component")]
-    [global::System.Runtime.Serialization.DataContractAttribute()]
-    [global::System.Serializable()]
-    public partial class Care_component : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new Care_component object.
-        /// </summary>
-        /// <param name="language_Name">Initial value of Language_Name.</param>
-        /// <param name="code">Initial value of Code.</param>
-        /// <param name="patternId">Initial value of PatternId.</param>
-        /// <param name="pattern">Initial value of Pattern.</param>
-        public static Care_component CreateCare_component(string language_Name, string code, short patternId, string pattern)
-        {
-            Care_component care_component = new Care_component();
-            care_component.Language_Name = language_Name;
-            care_component.Code = code;
-            care_component.PatternId = patternId;
-            care_component.Pattern = pattern;
-            return care_component;
-        }
-        /// <summary>
-        /// There are no comments for Property Language_Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Language_Name
-        {
-            get
-            {
-                return this._Language_Name;
-            }
-            set
-            {
-                this.OnLanguage_NameChanging(value);
-                this.ReportPropertyChanging("Language_Name");
-                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
-                this.ReportPropertyChanged("Language_Name");
-                this.OnLanguage_NameChanged();
-            }
-        }
-        private string _Language_Name;
-        partial void OnLanguage_NameChanging(string value);
-        partial void OnLanguage_NameChanged();
-        /// <summary>
-        /// There are no comments for Property Code in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code
-        {
-            get
-            {
-                return this._Code;
-            }
-            set
-            {
-                this.OnCodeChanging(value);
-                this.ReportPropertyChanging("Code");
-                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 1);
-                this.ReportPropertyChanged("Code");
-                this.OnCodeChanged();
-            }
-        }
-        private string _Code;
-        partial void OnCodeChanging(string value);
-        partial void OnCodeChanged();
-        /// <summary>
-        /// There are no comments for Property PatternId in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public short PatternId
-        {
-            get
-            {
-                return this._PatternId;
-            }
-            set
-            {
-                this.OnPatternIdChanging(value);
-                this.ReportPropertyChanging("PatternId");
-                this._PatternId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PatternId");
-                this.OnPatternIdChanged();
-            }
-        }
-        private short _PatternId;
-        partial void OnPatternIdChanging(short value);
-        partial void OnPatternIdChanged();
-        /// <summary>
-        /// There are no comments for Property Pattern in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Pattern
-        {
-            get
-            {
-                return this._Pattern;
-            }
-            set
-            {
-                this.OnPatternChanging(value);
-                this.ReportPropertyChanging("Pattern");
-                this._Pattern = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 50);
-                this.ReportPropertyChanged("Pattern");
-                this.OnPatternChanged();
-            }
-        }
-        private string _Pattern;
-        partial void OnPatternChanging(string value);
-        partial void OnPatternChanged();
-        /// <summary>
-        /// There are no comments for Property Component in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Component
-        {
-            get
-            {
-                return this._Component;
-            }
-            set
-            {
-                this.OnComponentChanging(value);
-                this.ReportPropertyChanging("Component");
-                this._Component = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 50);
-                this.ReportPropertyChanged("Component");
-                this.OnComponentChanged();
-            }
-        }
-        private string _Component;
-        partial void OnComponentChanging(string value);
-        partial void OnComponentChanged();
-        /// <summary>
-        /// There are no comments for Property Definition in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Definition
-        {
-            get
-            {
-                return this._Definition;
-            }
-            set
-            {
-                this.OnDefinitionChanging(value);
-                this.ReportPropertyChanging("Definition");
-                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
-                this.ReportPropertyChanged("Definition");
-                this.OnDefinitionChanged();
-            }
-        }
-        private string _Definition;
-        partial void OnDefinitionChanging(string value);
-        partial void OnDefinitionChanged();
-        /// <summary>
-        /// There are no comments for CarePattern in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Care_component_CarePattern", "CarePattern")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public CarePattern CarePattern
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for CarePattern in the schema.
-        /// </summary>
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityReference<CarePattern> CarePatternReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Nursing_Diagnosis in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Nursing_Diagnosis_Care_component", "Nursing_Diagnosis")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Nursing_Diagnosis> Nursing_Diagnosis
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Nursing_Diagnosis>("CCC.BusinessLayer.FK_Nursing_Diagnosis_Care_component", "Nursing_Diagnosis");
-            }
-        }
-        /// <summary>
-        /// There are no comments for Nursing_Intervention in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Nursing_Intervention_Care_component", "Nursing_Intervention")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Nursing_Intervention> Nursing_Intervention
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Nursing_Intervention>("CCC.BusinessLayer.FK_Nursing_Intervention_Care_component", "Nursing_Intervention");
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for CCC.BusinessLayer.CarePattern in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Language_Name
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="CarePattern")]
-    [global::System.Runtime.Serialization.DataContractAttribute()]
-    [global::System.Serializable()]
-    public partial class CarePattern : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new CarePattern object.
-        /// </summary>
-        /// <param name="language_Name">Initial value of Language_Name.</param>
-        /// <param name="ID">Initial value of Id.</param>
-        /// <param name="pattern">Initial value of Pattern.</param>
-        public static CarePattern CreateCarePattern(string language_Name, short ID, string pattern)
-        {
-            CarePattern carePattern = new CarePattern();
-            carePattern.Language_Name = language_Name;
-            carePattern.Id = ID;
-            carePattern.Pattern = pattern;
-            return carePattern;
-        }
-        /// <summary>
-        /// There are no comments for Property Language_Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Language_Name
-        {
-            get
-            {
-                return this._Language_Name;
-            }
-            set
-            {
-                this.OnLanguage_NameChanging(value);
-                this.ReportPropertyChanging("Language_Name");
-                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
-                this.ReportPropertyChanged("Language_Name");
-                this.OnLanguage_NameChanged();
-            }
-        }
-        private string _Language_Name;
-        partial void OnLanguage_NameChanging(string value);
-        partial void OnLanguage_NameChanged();
-        /// <summary>
-        /// There are no comments for Property Id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public short Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this.ReportPropertyChanging("Id");
-                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Id");
-                this.OnIdChanged();
-            }
-        }
-        private short _Id;
-        partial void OnIdChanging(short value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// There are no comments for Property Pattern in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Pattern
-        {
-            get
-            {
-                return this._Pattern;
-            }
-            set
-            {
-                this.OnPatternChanging(value);
-                this.ReportPropertyChanging("Pattern");
-                this._Pattern = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 50);
-                this.ReportPropertyChanged("Pattern");
-                this.OnPatternChanged();
-            }
-        }
-        private string _Pattern;
-        partial void OnPatternChanging(string value);
-        partial void OnPatternChanged();
-        /// <summary>
-        /// There are no comments for Property Definition in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Definition
-        {
-            get
-            {
-                return this._Definition;
-            }
-            set
-            {
-                this.OnDefinitionChanging(value);
-                this.ReportPropertyChanging("Definition");
-                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
-                this.ReportPropertyChanged("Definition");
-                this.OnDefinitionChanged();
-            }
-        }
-        private string _Definition;
-        partial void OnDefinitionChanging(string value);
-        partial void OnDefinitionChanged();
-        /// <summary>
-        /// There are no comments for Care_component in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Care_component_CarePattern", "Care_component")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Care_component> Care_component
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Care_component>("CCC.BusinessLayer.FK_Care_component_CarePattern", "Care_component");
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Copyright in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Language_Name
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Copyright")]
-    [global::System.Runtime.Serialization.DataContractAttribute()]
-    [global::System.Serializable()]
-    public partial class Copyright : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new Copyright object.
-        /// </summary>
-        /// <param name="language_Name">Initial value of Language_Name.</param>
-        public static Copyright CreateCopyright(string language_Name)
-        {
-            Copyright copyright = new Copyright();
-            copyright.Language_Name = language_Name;
-            return copyright;
-        }
-        /// <summary>
-        /// There are no comments for Property Language_Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Language_Name
-        {
-            get
-            {
-                return this._Language_Name;
-            }
-            set
-            {
-                this.OnLanguage_NameChanging(value);
-                this.ReportPropertyChanging("Language_Name");
-                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
-                this.ReportPropertyChanged("Language_Name");
-                this.OnLanguage_NameChanged();
-            }
-        }
-        private string _Language_Name;
-        partial void OnLanguage_NameChanging(string value);
-        partial void OnLanguage_NameChanged();
-        /// <summary>
-        /// There are no comments for Property Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this.ReportPropertyChanging("Name");
-                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 70);
-                this.ReportPropertyChanged("Name");
-                this.OnNameChanged();
-            }
-        }
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// There are no comments for Property Version in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Version
-        {
-            get
-            {
-                return this._Version;
-            }
-            set
-            {
-                this.OnVersionChanging(value);
-                this.ReportPropertyChanging("Version");
-                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 50);
-                this.ReportPropertyChanged("Version");
-                this.OnVersionChanged();
-            }
-        }
-        private string _Version;
-        partial void OnVersionChanging(string value);
-        partial void OnVersionChanged();
-        /// <summary>
-        /// There are no comments for Property Authors in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Authors
-        {
-            get
-            {
-                return this._Authors;
-            }
-            set
-            {
-                this.OnAuthorsChanging(value);
-                this.ReportPropertyChanging("Authors");
-                this._Authors = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
-                this.ReportPropertyChanged("Authors");
-                this.OnAuthorsChanged();
-            }
-        }
-        private string _Authors;
-        partial void OnAuthorsChanging(string value);
-        partial void OnAuthorsChanged();
     }
     /// <summary>
     /// There are no comments for CCC.BusinessLayer.Framework in the schema.
@@ -1323,28 +726,36 @@ namespace CCC.BusinessLayer
         partial void OnDateChanged();
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.OutcomeType in the schema.
+    /// There are no comments for CCC.BusinessLayer.Care_component in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Language_Name
+    /// Version
     /// Code
+    /// PatternId
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="OutcomeType")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Care_component")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
-    public partial class OutcomeType : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class Care_component : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new OutcomeType object.
+        /// Create a new Care_component object.
         /// </summary>
         /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="version">Initial value of Version.</param>
         /// <param name="code">Initial value of Code.</param>
-        public static OutcomeType CreateOutcomeType(string language_Name, short code)
+        /// <param name="patternId">Initial value of PatternId.</param>
+        /// <param name="pattern">Initial value of Pattern.</param>
+        public static Care_component CreateCare_component(string language_Name, string version, string code, short patternId, string pattern)
         {
-            OutcomeType outcomeType = new OutcomeType();
-            outcomeType.Language_Name = language_Name;
-            outcomeType.Code = code;
-            return outcomeType;
+            Care_component care_component = new Care_component();
+            care_component.Language_Name = language_Name;
+            care_component.Version = version;
+            care_component.Code = code;
+            care_component.PatternId = patternId;
+            care_component.Pattern = pattern;
+            return care_component;
         }
         /// <summary>
         /// There are no comments for Property Language_Name in the schema.
@@ -1370,11 +781,34 @@ namespace CCC.BusinessLayer
         partial void OnLanguage_NameChanging(string value);
         partial void OnLanguage_NameChanged();
         /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
+        /// <summary>
         /// There are no comments for Property Code in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public short Code
+        public string Code
         {
             get
             {
@@ -1384,37 +818,83 @@ namespace CCC.BusinessLayer
             {
                 this.OnCodeChanging(value);
                 this.ReportPropertyChanging("Code");
-                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 1);
                 this.ReportPropertyChanged("Code");
                 this.OnCodeChanged();
             }
         }
-        private short _Code;
-        partial void OnCodeChanging(short value);
+        private string _Code;
+        partial void OnCodeChanging(string value);
         partial void OnCodeChanged();
         /// <summary>
-        /// There are no comments for Property Outcome in the schema.
+        /// There are no comments for Property PatternId in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Outcome
+        public short PatternId
         {
             get
             {
-                return this._Outcome;
+                return this._PatternId;
             }
             set
             {
-                this.OnOutcomeChanging(value);
-                this.ReportPropertyChanging("Outcome");
-                this._Outcome = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 30);
-                this.ReportPropertyChanged("Outcome");
-                this.OnOutcomeChanged();
+                this.OnPatternIdChanging(value);
+                this.ReportPropertyChanging("PatternId");
+                this._PatternId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PatternId");
+                this.OnPatternIdChanged();
             }
         }
-        private string _Outcome;
-        partial void OnOutcomeChanging(string value);
-        partial void OnOutcomeChanged();
+        private short _PatternId;
+        partial void OnPatternIdChanging(short value);
+        partial void OnPatternIdChanged();
+        /// <summary>
+        /// There are no comments for Property Pattern in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Pattern
+        {
+            get
+            {
+                return this._Pattern;
+            }
+            set
+            {
+                this.OnPatternChanging(value);
+                this.ReportPropertyChanging("Pattern");
+                this._Pattern = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 50);
+                this.ReportPropertyChanged("Pattern");
+                this.OnPatternChanged();
+            }
+        }
+        private string _Pattern;
+        partial void OnPatternChanging(string value);
+        partial void OnPatternChanged();
+        /// <summary>
+        /// There are no comments for Property Component in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Component
+        {
+            get
+            {
+                return this._Component;
+            }
+            set
+            {
+                this.OnComponentChanging(value);
+                this.ReportPropertyChanging("Component");
+                this._Component = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 50);
+                this.ReportPropertyChanged("Component");
+                this.OnComponentChanged();
+            }
+        }
+        private string _Component;
+        partial void OnComponentChanging(string value);
+        partial void OnComponentChanged();
         /// <summary>
         /// There are no comments for Property Definition in the schema.
         /// </summary>
@@ -1430,7 +910,7 @@ namespace CCC.BusinessLayer
             {
                 this.OnDefinitionChanging(value);
                 this.ReportPropertyChanging("Definition");
-                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 100);
+                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
                 this.ReportPropertyChanged("Definition");
                 this.OnDefinitionChanged();
             }
@@ -1438,40 +918,100 @@ namespace CCC.BusinessLayer
         private string _Definition;
         partial void OnDefinitionChanging(string value);
         partial void OnDefinitionChanged();
+        /// <summary>
+        /// There are no comments for CarePattern in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Care_component_CarePattern", "CarePattern")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public CarePattern CarePattern
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for CarePattern in the schema.
+        /// </summary>
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityReference<CarePattern> CarePatternReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CarePattern>("CCC.BusinessLayer.FK_Care_component_CarePattern", "CarePattern", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Nursing_Diagnosis in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Nursing_Diagnosis_Care_component", "Nursing_Diagnosis")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityCollection<FrameworkDiagnosis> Nursing_Diagnosis
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<FrameworkDiagnosis>("CCC.BusinessLayer.FK_Nursing_Diagnosis_Care_component", "Nursing_Diagnosis");
+            }
+        }
+        /// <summary>
+        /// There are no comments for Nursing_Intervention in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Nursing_Intervention_Care_component", "Nursing_Intervention")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Nursing_Intervention> Nursing_Intervention
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Nursing_Intervention>("CCC.BusinessLayer.FK_Nursing_Intervention_Care_component", "Nursing_Intervention");
+            }
+        }
     }
     /// <summary>
-    /// There are no comments for CCC.BusinessLayer.Nursing_Diagnosis in the schema.
+    /// There are no comments for CCC.BusinessLayer.CarePattern in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Language_Name
+    /// Version
     /// Id
-    /// PatternId
-    /// ComponentCode
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Nursing_Diagnosis")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="CarePattern")]
     [global::System.Runtime.Serialization.DataContractAttribute()]
     [global::System.Serializable()]
-    public partial class Nursing_Diagnosis : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class CarePattern : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new Nursing_Diagnosis object.
+        /// Create a new CarePattern object.
         /// </summary>
         /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="version">Initial value of Version.</param>
         /// <param name="ID">Initial value of Id.</param>
-        /// <param name="patternId">Initial value of PatternId.</param>
-        /// <param name="componentCode">Initial value of ComponentCode.</param>
-        /// <param name="majorCode">Initial value of MajorCode.</param>
-        /// <param name="concept">Initial value of Concept.</param>
-        public static Nursing_Diagnosis CreateNursing_Diagnosis(string language_Name, int ID, short patternId, string componentCode, decimal majorCode, string concept)
+        /// <param name="pattern">Initial value of Pattern.</param>
+        public static CarePattern CreateCarePattern(string language_Name, string version, short ID, string pattern)
         {
-            Nursing_Diagnosis nursing_Diagnosis = new Nursing_Diagnosis();
-            nursing_Diagnosis.Language_Name = language_Name;
-            nursing_Diagnosis.Id = ID;
-            nursing_Diagnosis.PatternId = patternId;
-            nursing_Diagnosis.ComponentCode = componentCode;
-            nursing_Diagnosis.MajorCode = majorCode;
-            nursing_Diagnosis.Concept = concept;
-            return nursing_Diagnosis;
+            CarePattern carePattern = new CarePattern();
+            carePattern.Language_Name = language_Name;
+            carePattern.Version = version;
+            carePattern.Id = ID;
+            carePattern.Pattern = pattern;
+            return carePattern;
         }
         /// <summary>
         /// There are no comments for Property Language_Name in the schema.
@@ -1496,6 +1036,196 @@ namespace CCC.BusinessLayer
         private string _Language_Name;
         partial void OnLanguage_NameChanging(string value);
         partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
+        /// <summary>
+        /// There are no comments for Property Id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public short Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
+            }
+        }
+        private short _Id;
+        partial void OnIdChanging(short value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property Pattern in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Pattern
+        {
+            get
+            {
+                return this._Pattern;
+            }
+            set
+            {
+                this.OnPatternChanging(value);
+                this.ReportPropertyChanging("Pattern");
+                this._Pattern = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 50);
+                this.ReportPropertyChanged("Pattern");
+                this.OnPatternChanged();
+            }
+        }
+        private string _Pattern;
+        partial void OnPatternChanging(string value);
+        partial void OnPatternChanged();
+        /// <summary>
+        /// There are no comments for Property Definition in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Definition
+        {
+            get
+            {
+                return this._Definition;
+            }
+            set
+            {
+                this.OnDefinitionChanging(value);
+                this.ReportPropertyChanging("Definition");
+                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
+                this.ReportPropertyChanged("Definition");
+                this.OnDefinitionChanged();
+            }
+        }
+        private string _Definition;
+        partial void OnDefinitionChanging(string value);
+        partial void OnDefinitionChanged();
+        /// <summary>
+        /// There are no comments for Care_component in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("CCC.BusinessLayer", "FK_Care_component_CarePattern", "Care_component")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Care_component> Care_component
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Care_component>("CCC.BusinessLayer.FK_Care_component_CarePattern", "Care_component");
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for CCC.BusinessLayer.FrameworkDiagnosis in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Language_Name
+    /// Version
+    /// Id
+    /// PatternId
+    /// ComponentCode
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="FrameworkDiagnosis")]
+    [global::System.Runtime.Serialization.DataContractAttribute()]
+    [global::System.Serializable()]
+    public partial class FrameworkDiagnosis : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new FrameworkDiagnosis object.
+        /// </summary>
+        /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="version">Initial value of Version.</param>
+        /// <param name="ID">Initial value of Id.</param>
+        /// <param name="patternId">Initial value of PatternId.</param>
+        /// <param name="componentCode">Initial value of ComponentCode.</param>
+        /// <param name="majorCode">Initial value of MajorCode.</param>
+        /// <param name="concept">Initial value of Concept.</param>
+        public static FrameworkDiagnosis CreateFrameworkDiagnosis(string language_Name, string version, int ID, short patternId, string componentCode, decimal majorCode, string concept)
+        {
+            FrameworkDiagnosis frameworkDiagnosis = new FrameworkDiagnosis();
+            frameworkDiagnosis.Language_Name = language_Name;
+            frameworkDiagnosis.Version = version;
+            frameworkDiagnosis.Id = ID;
+            frameworkDiagnosis.PatternId = patternId;
+            frameworkDiagnosis.ComponentCode = componentCode;
+            frameworkDiagnosis.MajorCode = majorCode;
+            frameworkDiagnosis.Concept = concept;
+            return frameworkDiagnosis;
+        }
+        /// <summary>
+        /// There are no comments for Property Language_Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Language_Name
+        {
+            get
+            {
+                return this._Language_Name;
+            }
+            set
+            {
+                this.OnLanguage_NameChanging(value);
+                this.ReportPropertyChanging("Language_Name");
+                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
+                this.ReportPropertyChanged("Language_Name");
+                this.OnLanguage_NameChanged();
+            }
+        }
+        private string _Language_Name;
+        partial void OnLanguage_NameChanging(string value);
+        partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
         /// <summary>
         /// There are no comments for Property Id in the schema.
         /// </summary>
@@ -1700,6 +1430,7 @@ namespace CCC.BusinessLayer
     /// </summary>
     /// <KeyProperties>
     /// Language_Name
+    /// Version
     /// ComponentCode
     /// Id
     /// PatternId
@@ -1713,15 +1444,17 @@ namespace CCC.BusinessLayer
         /// Create a new Nursing_Intervention object.
         /// </summary>
         /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="version">Initial value of Version.</param>
         /// <param name="componentCode">Initial value of ComponentCode.</param>
         /// <param name="ID">Initial value of Id.</param>
         /// <param name="patternId">Initial value of PatternId.</param>
         /// <param name="majorCode">Initial value of MajorCode.</param>
         /// <param name="concept">Initial value of Concept.</param>
-        public static Nursing_Intervention CreateNursing_Intervention(string language_Name, string componentCode, int ID, short patternId, decimal majorCode, string concept)
+        public static Nursing_Intervention CreateNursing_Intervention(string language_Name, string version, string componentCode, int ID, short patternId, decimal majorCode, string concept)
         {
             Nursing_Intervention nursing_Intervention = new Nursing_Intervention();
             nursing_Intervention.Language_Name = language_Name;
+            nursing_Intervention.Version = version;
             nursing_Intervention.ComponentCode = componentCode;
             nursing_Intervention.Id = ID;
             nursing_Intervention.PatternId = patternId;
@@ -1752,6 +1485,29 @@ namespace CCC.BusinessLayer
         private string _Language_Name;
         partial void OnLanguage_NameChanging(string value);
         partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
         /// <summary>
         /// There are no comments for Property ComponentCode in the schema.
         /// </summary>
@@ -1950,5 +1706,448 @@ namespace CCC.BusinessLayer
                 }
             }
         }
+    }
+    /// <summary>
+    /// There are no comments for CCC.BusinessLayer.ActionType in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Language_Name
+    /// Code
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="ActionType")]
+    [global::System.Runtime.Serialization.DataContractAttribute()]
+    [global::System.Serializable()]
+    public partial class ActionType : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new ActionType object.
+        /// </summary>
+        /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="code">Initial value of Code.</param>
+        public static ActionType CreateActionType(string language_Name, short code)
+        {
+            ActionType actionType = new ActionType();
+            actionType.Language_Name = language_Name;
+            actionType.Code = code;
+            return actionType;
+        }
+        /// <summary>
+        /// There are no comments for Property Language_Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Language_Name
+        {
+            get
+            {
+                return this._Language_Name;
+            }
+            set
+            {
+                this.OnLanguage_NameChanging(value);
+                this.ReportPropertyChanging("Language_Name");
+                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
+                this.ReportPropertyChanged("Language_Name");
+                this.OnLanguage_NameChanged();
+            }
+        }
+        private string _Language_Name;
+        partial void OnLanguage_NameChanging(string value);
+        partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
+        /// <summary>
+        /// There are no comments for Property Code in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public short Code
+        {
+            get
+            {
+                return this._Code;
+            }
+            set
+            {
+                this.OnCodeChanging(value);
+                this.ReportPropertyChanging("Code");
+                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Code");
+                this.OnCodeChanged();
+            }
+        }
+        private short _Code;
+        partial void OnCodeChanging(short value);
+        partial void OnCodeChanged();
+        /// <summary>
+        /// There are no comments for Property Concept in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Concept
+        {
+            get
+            {
+                return this._Concept;
+            }
+            set
+            {
+                this.OnConceptChanging(value);
+                this.ReportPropertyChanging("Concept");
+                this._Concept = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 50);
+                this.ReportPropertyChanged("Concept");
+                this.OnConceptChanged();
+            }
+        }
+        private string _Concept;
+        partial void OnConceptChanging(string value);
+        partial void OnConceptChanged();
+        /// <summary>
+        /// There are no comments for Property Definition in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Definition
+        {
+            get
+            {
+                return this._Definition;
+            }
+            set
+            {
+                this.OnDefinitionChanging(value);
+                this.ReportPropertyChanging("Definition");
+                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 100);
+                this.ReportPropertyChanged("Definition");
+                this.OnDefinitionChanged();
+            }
+        }
+        private string _Definition;
+        partial void OnDefinitionChanging(string value);
+        partial void OnDefinitionChanged();
+    }
+    /// <summary>
+    /// There are no comments for CCC.BusinessLayer.OutcomeType in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Language_Name
+    /// Code
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="OutcomeType")]
+    [global::System.Runtime.Serialization.DataContractAttribute()]
+    [global::System.Serializable()]
+    public partial class OutcomeType : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new OutcomeType object.
+        /// </summary>
+        /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="code">Initial value of Code.</param>
+        public static OutcomeType CreateOutcomeType(string language_Name, short code)
+        {
+            OutcomeType outcomeType = new OutcomeType();
+            outcomeType.Language_Name = language_Name;
+            outcomeType.Code = code;
+            return outcomeType;
+        }
+        /// <summary>
+        /// There are no comments for Property Language_Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Language_Name
+        {
+            get
+            {
+                return this._Language_Name;
+            }
+            set
+            {
+                this.OnLanguage_NameChanging(value);
+                this.ReportPropertyChanging("Language_Name");
+                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
+                this.ReportPropertyChanged("Language_Name");
+                this.OnLanguage_NameChanged();
+            }
+        }
+        private string _Language_Name;
+        partial void OnLanguage_NameChanging(string value);
+        partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
+        /// <summary>
+        /// There are no comments for Property Code in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public short Code
+        {
+            get
+            {
+                return this._Code;
+            }
+            set
+            {
+                this.OnCodeChanging(value);
+                this.ReportPropertyChanging("Code");
+                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Code");
+                this.OnCodeChanged();
+            }
+        }
+        private short _Code;
+        partial void OnCodeChanging(short value);
+        partial void OnCodeChanged();
+        /// <summary>
+        /// There are no comments for Property Concept in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Concept
+        {
+            get
+            {
+                return this._Concept;
+            }
+            set
+            {
+                this.OnConceptChanging(value);
+                this.ReportPropertyChanging("Concept");
+                this._Concept = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 30);
+                this.ReportPropertyChanged("Concept");
+                this.OnConceptChanged();
+            }
+        }
+        private string _Concept;
+        partial void OnConceptChanging(string value);
+        partial void OnConceptChanged();
+        /// <summary>
+        /// There are no comments for Property Definition in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Definition
+        {
+            get
+            {
+                return this._Definition;
+            }
+            set
+            {
+                this.OnDefinitionChanging(value);
+                this.ReportPropertyChanging("Definition");
+                this._Definition = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 100);
+                this.ReportPropertyChanged("Definition");
+                this.OnDefinitionChanged();
+            }
+        }
+        private string _Definition;
+        partial void OnDefinitionChanging(string value);
+        partial void OnDefinitionChanged();
+    }
+    /// <summary>
+    /// There are no comments for CCC.BusinessLayer.Copyright in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Language_Name
+    /// Version
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="CCC.BusinessLayer", Name="Copyright")]
+    [global::System.Runtime.Serialization.DataContractAttribute()]
+    [global::System.Serializable()]
+    public partial class Copyright : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Copyright object.
+        /// </summary>
+        /// <param name="language_Name">Initial value of Language_Name.</param>
+        /// <param name="version">Initial value of Version.</param>
+        public static Copyright CreateCopyright(string language_Name, string version)
+        {
+            Copyright copyright = new Copyright();
+            copyright.Language_Name = language_Name;
+            copyright.Version = version;
+            return copyright;
+        }
+        /// <summary>
+        /// There are no comments for Property Language_Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Language_Name
+        {
+            get
+            {
+                return this._Language_Name;
+            }
+            set
+            {
+                this.OnLanguage_NameChanging(value);
+                this.ReportPropertyChanging("Language_Name");
+                this._Language_Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 25);
+                this.ReportPropertyChanged("Language_Name");
+                this.OnLanguage_NameChanged();
+            }
+        }
+        private string _Language_Name;
+        partial void OnLanguage_NameChanging(string value);
+        partial void OnLanguage_NameChanged();
+        /// <summary>
+        /// There are no comments for Property Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this.ReportPropertyChanging("Name");
+                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 70);
+                this.ReportPropertyChanged("Name");
+                this.OnNameChanged();
+            }
+        }
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false, 10);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private string _Version;
+        partial void OnVersionChanging(string value);
+        partial void OnVersionChanged();
+        /// <summary>
+        /// There are no comments for Property LastUpdate in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> LastUpdate
+        {
+            get
+            {
+                return this._LastUpdate;
+            }
+            set
+            {
+                this.OnLastUpdateChanging(value);
+                this.ReportPropertyChanging("LastUpdate");
+                this._LastUpdate = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, global::System.DateTimeKind.Unspecified, true);
+                this.ReportPropertyChanged("LastUpdate");
+                this.OnLastUpdateChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _LastUpdate;
+        partial void OnLastUpdateChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnLastUpdateChanged();
+        /// <summary>
+        /// There are no comments for Property Authors in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Authors
+        {
+            get
+            {
+                return this._Authors;
+            }
+            set
+            {
+                this.OnAuthorsChanging(value);
+                this.ReportPropertyChanging("Authors");
+                this._Authors = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 255);
+                this.ReportPropertyChanged("Authors");
+                this.OnAuthorsChanged();
+            }
+        }
+        private string _Authors;
+        partial void OnAuthorsChanging(string value);
+        partial void OnAuthorsChanged();
+        /// <summary>
+        /// There are no comments for Property LogoURL in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogoURL
+        {
+            get
+            {
+                return this._LogoURL;
+            }
+            set
+            {
+                this.OnLogoURLChanging(value);
+                this.ReportPropertyChanging("LogoURL");
+                this._LogoURL = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true, 150);
+                this.ReportPropertyChanged("LogoURL");
+                this.OnLogoURLChanged();
+            }
+        }
+        private string _LogoURL;
+        partial void OnLogoURLChanging(string value);
+        partial void OnLogoURLChanged();
     }
 }

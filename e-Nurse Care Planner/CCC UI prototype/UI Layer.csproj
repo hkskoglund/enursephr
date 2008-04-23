@@ -21,13 +21,17 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <PublishUrl>\\Henning_pc\Recorded TV\</PublishUrl>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>C:\e-Nurse\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -35,9 +39,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -60,6 +63,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Download\wpfbagotricks\source\J832.Wpf.BagOTricksLibrary\bin\Debug\J832.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Download\wpfbagotricks\source\J832.Wpf.BagOTricksLibrary\bin\Debug\J832.Wpf.BagOTricksLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -94,10 +105,7 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WPFSamplesLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Download\WPFSamples - 2007-05-02\WPFSamples - 2007-05-02\Library\bin\Debug\WPFSamplesLib.dll</HintPath>
-    </Reference>
+    <Compile Include="ValidationRules\EmptyStringRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -120,19 +128,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowLangShallowAnalysis.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WindowCarePlan.xaml">
+    <Page Include="WindowCopyright.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowCopyright.xaml">
+    <Page Include="WindowMultiLanguageIntegrity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowNewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowOutcomes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowVideoShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -146,7 +162,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LanguageAnalysis.cs" />
+    <Compile Include="Converter\DateConverter.cs" />
+    <Compile Include="Converter\DateTimeConverter.cs" />
+    <Compile Include="Converter\MajorCodeConverter.cs" />
+    <Compile Include="Converter\RemoveParentesisOutcomeConcept.cs" />
+    <Compile Include="Converter\TitleConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\UpperCaseConverter.cs" />
+    <Compile Include="ViewCarePlan.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WindowDatabaseError.xaml.cs">
       <DependentUpon>WindowDatabaseError.xaml</DependentUpon>
     </Compile>
@@ -154,7 +180,6 @@
       <DependentUpon>WindowImageShow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="myAnnotationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,11 +194,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="ViewCarePlan.cs" />
     <Compile Include="ViewCCCFrameWork.cs" />
-    <Compile Include="WindowCarePlan.xaml.cs">
-      <DependentUpon>WindowCarePlan.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WindowChangeConflict.xaml.cs">
       <DependentUpon>WindowChangeConflict.xaml</DependentUpon>
     </Compile>
@@ -183,11 +204,20 @@
     <Compile Include="WindowCopyright.xaml.cs">
       <DependentUpon>WindowCopyright.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowLangShallowAnalysis.xaml.cs">
-      <DependentUpon>WindowLangShallowAnalysis.xaml</DependentUpon>
+    <Compile Include="WindowMain - explorer.cs" />
+    <Compile Include="WindowMultiLanguageIntegrity.xaml.cs">
+      <DependentUpon>WindowMultiLanguageIntegrity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowNewItem.xaml.cs">
+      <DependentUpon>WindowNewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowOutcomes.xaml.cs">
+      <DependentUpon>WindowOutcomes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowVideoShow.xaml.cs">
+      <DependentUpon>WindowVideoShow.xaml</DependentUpon>
     </Compile>
     <None Include="App.Config" />
-    <None Include="UI.cd" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -225,6 +255,11 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
@@ -238,8 +273,8 @@
     <Resource Include="Images\old woman.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\arrow-down-red_benji_par_01.png" />
-    <Resource Include="Images\arrow-up-green_benji_par_01.png" />
+    <Resource Include="Outcome Types\Worsened.png" />
+    <Resource Include="Outcome Types\Improved.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Flags\nb-NO.gif" />
@@ -255,6 +290,28 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ERROR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\New.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Outcome Types\Stabilized.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Action Types\Monitor.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ArrowBack.png" />
+    <Resource Include="Images\ArrowForward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Video\" />
