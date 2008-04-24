@@ -21,7 +21,7 @@ namespace CCC.UI
     /// </summary>
     public partial class WindowMultiLanguageIntegrity : Window
     {
-         BackgroundWorker worker;
+        BackgroundWorker worker;
         string version;
         string languageName;
         CCCFrameworkLanguageAnalysis langAnalysis;

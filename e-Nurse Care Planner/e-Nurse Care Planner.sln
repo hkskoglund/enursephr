@@ -1,23 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI Layer", "CCC UI prototype\UI Layer.csproj", "{99FCA78D-0153-4D92-BA47-8F357D2EC047}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business Layer", "CCCBusinessLayer\Business Layer.csproj", "{081A088E-EC70-4679-8DBA-124FB6C5788F}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs06.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = CCC\u0020UI\u0020prototype\\UI\u0020Layer.csproj
-		SccProjectName1 = CCC\u0020UI\u0020prototype
-		SccLocalPath1 = CCC\u0020UI\u0020prototype
-		SccProjectUniqueName2 = CCCBusinessLayer\\Business\u0020Layer.csproj
-		SccProjectName2 = CCCBusinessLayer
-		SccLocalPath2 = CCCBusinessLayer
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ReferenceFrameworkModel.Store" Alias="Self" ProviderManifestToken="3.5" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+  <EntityContainer Name="App">
+    <EntitySet Name="ActionType" EntityType="ReferenceFrameworkModel.Store.ActionType" />
+    <EntitySet Name="Care Component" EntityType="ReferenceFrameworkModel.Store.Care Component" />
+    <EntitySet Name="Nursing Diagnosis" EntityType="ReferenceFrameworkModel.Store.Nursing Diagnosis" />
+    <EntitySet Name="Nursing Intervention" EntityType="ReferenceFrameworkModel.Store.Nursing Intervention" />
+    <EntitySet Name="OutcomeType" EntityType="ReferenceFrameworkModel.Store.OutcomeType" />
+  </EntityContainer>
+  <EntityType Name="ActionType">
+    <Key>
+      <PropertyRef Name="TagGuid" />
+    </Key>
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="Code" Type="smallint" Nullable="false" />
+    <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Definition" Type="nvarchar" MaxLength="255" />
+    <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Care Component">
+    <Key>
+      <PropertyRef Name="TagGuid" />
+    </Key>
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="Code" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Nursing Diagnosis">
+    <Key>
+      <PropertyRef Name="TagGuid" />
+    </Key>
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="ComponentCode" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="MajorCode" Type="smallint" Nullable="false" />
+    <Property Name="MinorCode" Type="smallint" />
+    <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Nursing Intervention">
+    <Key>
+      <PropertyRef Name="TagGuid" />
+    </Key>
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="ComponentCode" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="MajorCode" Type="smallint" Nullable="false" />
+    <Property Name="MinorCode" Type="smallint" />
+    <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OutcomeType">
+    <Key>
+      <PropertyRef Name="TagGuid" />
+    </Key>
+    <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="Code" Type="smallint" Nullable="false" />
+    <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Definition" Type="nvarchar" MaxLength="255" />
+    <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+</Schema>

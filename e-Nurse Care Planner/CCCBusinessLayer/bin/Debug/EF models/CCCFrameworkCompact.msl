@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+  <EntityContainerMapping StorageEntityContainer="App" CdmEntityContainer="CCCFrameworkCompactEntities">
+    <EntitySetMapping Name="ActionType">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.ActionType)">
+        <MappingFragment StoreEntitySet="ActionType">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Care_component">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Care_component)">
+        <MappingFragment StoreEntitySet="Care component">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+          <ScalarProperty Name="Component" ColumnName="Component" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarePattern">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.CarePattern)">
+        <MappingFragment StoreEntitySet="CarePattern">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Pattern" ColumnName="Pattern" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Copyright">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Copyright)">
+        <MappingFragment StoreEntitySet="Copyright">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="Authors" ColumnName="Authors" />
+          <ScalarProperty Name="LogoURL" ColumnName="LogoURL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Framework">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.Framework)">
+        <MappingFragment StoreEntitySet="Framework">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ExpectedNumberOfCarePatterns" ColumnName="ExpectedNumberOfCarePatterns" />
+          <ScalarProperty Name="ExpectedNumerOfCareComponents" ColumnName="ExpectedNumerOfCareComponents" />
+          <ScalarProperty Name="ExpectedNumberOfDiagnoses" ColumnName="ExpectedNumberOfDiagnoses" />
+          <ScalarProperty Name="ExpectedNumberOfInterventions" ColumnName="ExpectedNumberOfInterventions" />
+          <ScalarProperty Name="ExpectedNumberOfOutcomeTypes" ColumnName="ExpectedNumberOfOutcomeTypes" />
+          <ScalarProperty Name="ExpectedNumberOfActionTypes" ColumnName="ExpectedNumberOfActionTypes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FrameworkActual">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.FrameworkActual)">
+        <MappingFragment StoreEntitySet="FrameworkActual">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ValidShallow" ColumnName="ValidShallow" />
+          <ScalarProperty Name="ValidDeep" ColumnName="ValidDeep" />
+          <ScalarProperty Name="CarePattern" ColumnName="CarePattern" />
+          <ScalarProperty Name="CareComponent" ColumnName="CareComponent" />
+          <ScalarProperty Name="NursingDiagnosis" ColumnName="NursingDiagnosis" />
+          <ScalarProperty Name="NursingIntervention" ColumnName="NursingIntervention" />
+          <ScalarProperty Name="OutcomeTypes" ColumnName="OutcomeTypes" />
+          <ScalarProperty Name="ActionTypes" ColumnName="ActionTypes" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Nursing_Diagnosis">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.FrameworkDiagnosis)">
+        <MappingFragment StoreEntitySet="Nursing Diagnosis">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+          <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+          <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Nursing_Intervention">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.FrameworkIntervention)">
+        <MappingFragment StoreEntitySet="Nursing Intervention">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+          <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+          <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+          <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutcomeType">
+      <EntityTypeMapping TypeName="IsTypeOf(CCC.BusinessLayer.FrameworkOutcomeType)">
+        <MappingFragment StoreEntitySet="OutcomeType">
+          <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Concept" ColumnName="Concept" />
+          <ScalarProperty Name="Definition" ColumnName="Definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_CareComponent_CarePattern" TypeName="CCC.BusinessLayer.FK_CareComponent_CarePattern" StoreEntitySet="Care component">
+      <EndProperty Name="CarePattern">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="Id" ColumnName="PatternId" />
+      </EndProperty>
+      <EndProperty Name="Care_component">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="Code" ColumnName="Code" />
+        <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_NursingDiagnosis_CareComponent" TypeName="CCC.BusinessLayer.FK_NursingDiagnosis_CareComponent" StoreEntitySet="Nursing Diagnosis">
+      <EndProperty Name="Care_component">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="Code" ColumnName="ComponentCode" />
+        <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+      </EndProperty>
+      <EndProperty Name="Nursing_Diagnosis">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+        <ScalarProperty Name="Concept" ColumnName="Concept" />
+        <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+        <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+        <ScalarProperty Name="Definition" ColumnName="Definition" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_NursingIntervention_CareComponent" TypeName="CCC.BusinessLayer.FK_NursingIntervention_CareComponent" StoreEntitySet="Nursing Intervention">
+      <EndProperty Name="Care_component">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="Code" ColumnName="ComponentCode" />
+        <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+      </EndProperty>
+      <EndProperty Name="Nursing_Intervention">
+        <ScalarProperty Name="Language_Name" ColumnName="Language Name" />
+        <ScalarProperty Name="Version" ColumnName="Version" />
+        <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+        <ScalarProperty Name="Concept" ColumnName="Concept" />
+        <ScalarProperty Name="PatternId" ColumnName="PatternId" />
+        <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+        <ScalarProperty Name="Definition" ColumnName="Definition" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

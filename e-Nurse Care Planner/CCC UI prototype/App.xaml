@@ -3,10 +3,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     StartupUri="WindowMain.xaml" SessionEnding="Application_SessionEnding">
     <Application.Resources>
+        
+        <LinearGradientBrush x:Key="TagsBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        		<GradientStop Color="#FF2100FF" Offset="0.17"/>
+        		<GradientStop Color="#FFFFFFFF" Offset="1"/>
+        	</LinearGradientBrush>
+      
         <LinearGradientBrush x:Key="BlueTheme" EndPoint="1,0.5" StartPoint="0,0.5">
             <GradientStop Color="#FFF5F5F8" Offset="0"/>
             <GradientStop Color="#FF0038FB" Offset="1"/>
         </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="DiagnosisItem" Color="#FF18A618"/>
+
+		<SolidColorBrush x:Key="DiagnosisColor" Color="Green" />
+		<SolidColorBrush x:Key="InterventionColor" Color="Blue" />
+		<SolidColorBrush x:Key="CareComponentColor" Color="Magenta" />
+
+		<LinearGradientBrush x:Key="InterventionItem" EndPoint="1,1" StartPoint="0,0">
+            <GradientStop Color="Blue"  Offset="0"/>
+            <GradientStop Color="#FF0800FF" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ItemTitleBackground" EndPoint="1,0.5" StartPoint="0,0.5">
+        	<GradientStop Color="#FF839B68" Offset="0"/>
+        	<GradientStop Color="#FF839B68" Offset="1"/>
+        	<GradientStop Color="#FFCEEBBA" Offset="0.495"/>
+        </LinearGradientBrush>
+        
+    	<LinearGradientBrush x:Key="BrushCombinedDiagnosisIntervention" EndPoint="1,1" StartPoint="0,0">
+    		<GradientStop Color="#FF469F47" Offset="0.094881122753976532"/>
+    		<GradientStop Color="#FF38089B" Offset="1"/>
+    	</LinearGradientBrush>
+    	
+    	<LinearGradientBrush x:Key="BrushFrameworkDiagnosis" EndPoint="0.5,1" StartPoint="0.5,0">
+    		<GradientStop Color="#FF4BAF37" Offset="0.465"/>
+    		<GradientStop Color="#FFFFFFFF" Offset="1"/>
+    	</LinearGradientBrush>
+    	
+    	<LinearGradientBrush x:Key="BrushFrameworkCareComponent" EndPoint="0.5,1" StartPoint="0.5,0">
+    		<GradientStop Color="#FFC12E73" Offset="0.5"/>
+    		<GradientStop Color="#FFFFFFFF" Offset="1"/>
+    	</LinearGradientBrush>
+    	
+    	<LinearGradientBrush x:Key="BrushFrameworkIntervention" EndPoint="1,0.5" StartPoint="0,0.5">
+    		<GradientStop Color="#FF0041F8" Offset="0.485"/>
+    		<GradientStop Color="#FFFFFFFF" Offset="1"/>
+    	</LinearGradientBrush>
+
 
     </Application.Resources>
 </Application>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Data;
 using System.Data.Linq;
+using System.Data.Objects.DataClasses;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,9 +19,35 @@ using System.Windows.Shapes;
 using System.Windows.Threading; // DispatcherTimer
 using CCC.BusinessLayer;
 using System.ComponentModel;
+// Copyright (c) 2007 Kevin Moore j832.com
 using Microsoft.Samples.KMoore.WPFSamples.DateControls;
 using System.Windows.Annotations;
+using System.IO;
+using System.Data.Objects;
 
+
+//Copyright (c) 2008 Henning Knut Skoglund
+
+//Permission is hereby granted, free of charge, to any person
+//obtaining a copy of this software and associated documentation
+//files (the "Software"), to deal in the Software without
+//restriction, including without limitation the rights to use,
+//copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the
+//Software is furnished to do so, subject to the following
+//conditions:
+
+//The above copyright notice and this permission notice shall be
+//included in all copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+//OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+//HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+//OTHER DEALINGS IN THE SOFTWARE.
 
 namespace CCC.UI
 {
@@ -26,79 +55,39 @@ namespace CCC.UI
     public partial class WindowMain : Window
         {
 
-            myAnnotationService annotationservice;
+        ObservableCollection<Tag> careplanTags;
+        //EntityCollection<Tag> careplanTags = new EntityCollection<Tag>();
+        ListCollectionView cvCareplanTags;
 
-            char FilterCode;
-            string FilterSearch;
+      
+        Dictionary<string, Guid> dictItemBlog;
 
-            //bool dont = false; // true if selection in listbox, and not update combo
-           // Diagnosi changeDiagnosis = null;
+        public TagHandler tagHandler = new TagHandler();
 
-            DispatcherTimer timer;
-            //DispatcherTimer annotationTimer;
-
-            static List<myImage> coll = new List<myImage>();
-            ListCollectionView lcoll = new ListCollectionView(coll);
+        ListCollectionView cvItemTags;
 
 
-            ListCollectionView lcollviewDiagnosisEntities;
-
-            public WindowMain()
+        public WindowMain()
             {
-                InitializeComponent();
+                    InitializeComponent();
+                
+               
             }
 
-            private void updateDatabase(object sender, EventArgs e)
-            {
-                
-                
-                tbUserName.Text = DateTime.Now.ToString();
-                
-                carePlanSubmitHandler();
+      public void showException(Exception ex)
+        {
+            WindowDatabaseError wDatabaseError = new WindowDatabaseError();
+            //  wDatabaseError.tbDatabaseError.Text = "Cannot access database server : " + conn.DataSource;
+            wDatabaseError.tbDatabaseErrorDetail.Text = ex.Source + ": " + ex.Message + "\n";
+            if (ex.InnerException != null)
+                wDatabaseError.tbDatabaseErrorDetail.Text += ex.InnerException.Source + ": " + ex.InnerException.Message + "\n";
+            wDatabaseError.tbDatabaseErrorDetail.Text += ex.StackTrace;
 
-                //Keep grouping and sorting please...
+            wDatabaseError.ShowDialog();
 
-                bool previousgroupByComponentName = App.carePlan.GroupByComponentName;
-              
-                int careplanid = App.carePlan.Id;
-                App.carePlan.DB.Dispose();
-              
-                App.carePlan = new ViewCarePlan(careplanid,App.cccFrameWork.DB);
-
-                
-                /*
-                // Gjenoppfrisker dataene ved å lage en ny datakontekst
-                System.Data.Common.DbConnection conn = App.carePlan.DB.Connection;
-               //E App.carePlan.DB.Dispose();
-               //E  App.carePlan.DB = new CarePlanDBDataContext(
-
-                App.carePlan.DB = new PleieplanEntitiesv2(conn.ConnectionString);
-
-                App.carePlan.Diagnoses = App.carePlan.DB.Diagnosis.Where(d => d.CarePlan.Id == App.carePlan.Id).ToList();
-                */
-
-                tbUserName.Text = "Read "+App.carePlan.DB.Diagnosis.Count().ToString()+" diagnoses"+" at "+DateTime.Now.ToLongTimeString();
-                App.carePlan.updateExtendedData(App.cccFrameWork.DB);
-             
-                lbCarePlanDiagnoses.ItemsSource = null;
-             
-                  
-                //EApp.carePlan.cvDiagnoses = new ListCollectionView(App.carePlan.Diagnoses);
-                App.carePlan.cvDiagnoses = new ListCollectionView(App.carePlan._diagnoses);
-                App.carePlan.GroupByComponentName = previousgroupByComponentName;
-                App.carePlan.cvDiagnoses.Refresh();
-                lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
-                
-
-                 App.carePlan.PrettyCarePlan_Update(lcoll);
-
-                 annotationservice.stopAnnotationService();
-                 annotationservice.startAnnotationService(fdReaderPrettyCarePlan, lbAnnotations, App.carePlan);
-             
-
-                }
-
-            private void showDatabaseError(Exception ex)
+        }
+            
+            public void showUpdateException(UpdateException ex)
             {
 
                 WindowDatabaseError wDatabaseError = new WindowDatabaseError();
@@ -114,50 +103,82 @@ namespace CCC.UI
 
             private void Window_Loaded(object sender, RoutedEventArgs e)
             {
+                // Enable sharing of properties across layers
 
+                App.Current.Properties["Version"] = Properties.Settings.Default.Version;
+                App.Current.Properties["LanguageName"] = Properties.Settings.Default.LanguageName;
+
+                
                 // Load CCC Framework 
 
                 try
                 {
-                    App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
+                    App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName,
+                        Properties.Settings.Default.Version);
+                   
                 }
                 catch (Exception exception)
                 {
-                    showDatabaseError(exception);
-                    App.Current.Shutdown();
+                    
+                    showException(exception);
+                    App.Current.Shutdown(1);
                   
                 }
 
+                refreshCCCFramework();
 
                 // Load a test care plan
 
-                App.carePlan = new ViewCarePlan(1, App.cccFrameWork.DB);
-                 
+                try
+                {
+                    App.carePlan = new ViewCarePlan();
+                    App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.First();
+                }
+                catch (Exception exception)
+                {
+                    showException(exception);
+                    MessageBox.Show("Could not load careplan, application will end now", "Loading of careplan failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                    this.Close();
+                }
                 
-                // LANGAUGE attrib
-                // Norwegian : av
-                // English : by
+                
+                // Setup care blog items
+                if (!App.carePlan.ActiveCarePlan.Item.IsLoaded)
+                    App.carePlan.ActiveCarePlan.Item.Load();
+
+                Item lastItem = null;
+
+               
+                foreach (Item i in App.carePlan.ActiveCarePlan.Item)
+                {// Load related history and tags
+                    i.HistoryReference.Load();
+                    i.Tag.Load();
+                    i.Tag.AssociationChanged += new CollectionChangeEventHandler(Tag_AssociationChanged);
+                    inferContentFromTags(i); // Find content from tags, contains diagnoses, interventions, care component?
+                
+                    if (i.Id == Properties.Settings.Default.LastItem) // Point to last item selected
+                        lastItem = i;
+                }
+                
+                
+                App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
+                Item_AssociationChanged(this, null);
+
 
               
-                fdReaderPrettyCarePlan.Document = App.carePlan.fdPrettyCarePlan;
+                if (lastItem != null)
+                    lvCareBlog.SelectedItem = lastItem;
 
-                lcoll.SortDescriptions.Add(new SortDescription("DateTaken", ListSortDirection.Ascending));
+                // Show all tags for the current careplan
+                buildAllTags(App.carePlan.ActiveCarePlan);
+
                 
-                MenuItemOm_Click(this, null);
-
-                timer = new DispatcherTimer();
-                timer.Tick += new EventHandler(updateDatabase);
-                timer.Interval = new TimeSpan(0,1,0);
-                timer.Start();
-
-                annotationservice = new myAnnotationService(fdReaderPrettyCarePlan, App.carePlan, lbAnnotations,timer, myInk);
-
                 /* LANGUAGE attrib change */
                 tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName + " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
 
 
-                refreshCCCFramework();                
-               
+                
                 // Setup careplan templates sub-UI
 
                 //E CarePlanTemplateDBDataContext templateDB = new CarePlanTemplateDBDataContext();
@@ -183,806 +204,603 @@ namespace CCC.UI
                 //lbCarePlanTemplates.ItemsSource = cvCarePlanTemplate;
 
 
-                //// Test entity framework
-
-                //lcollviewDiagnosisEntities = new ListCollectionView(App.carePlan.DB.Diagnosis.ToList());
-                //lbCarePlanDiagnosesEntities.ItemsSource = lcollviewDiagnosisEntities;
                
-
-                
-
-                //  cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
-                //    cvcarePlanInterventions.SortDescriptions.Add(new SortDescription("ComponentName", ListSortDirection.Ascending));
-
-                //     lbCarePlanDiagnoses.GroupStyle.Add(new GroupStyle());
-
-                //lbCarePlanDiagnoses.ItemsSource = App.cvcarePlanDiagnoses;
-                //          int tall = lbCarePlanDiagnoses.Items.Count;
-                //        cvcarePlanDiagnoses.Refresh();
-
-                // Make sure that an AnnotationService isn’t already enabled.
-
-
-                
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-
             }
 
-           
-            public void refreshCCCFramework()
+            void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
             {
-
-                cbLanguage.ItemsSource = App.cccFrameWork.FrameworkActual;
-                if (App.cccFrameWork.FrameworkActual != null)
-                    cbLanguage.ToolTip = "Last language integrity check was run on " +
-                        App.cccFrameWork.FrameworkActual[0].Date.ToString();
-                for (int i = 0; i < App.cccFrameWork.FrameworkActual.Count; i++)
-                {
-                    if (App.cccFrameWork.FrameworkActual[i].Language_Name == Properties.Settings.Default.LanguageName)
-                    {
-                        cbLanguage.SelectedItem = App.cccFrameWork.FrameworkActual[i];
-                        break;
-                    }
-                }
-
-                tbFrameworkAuthors.DataContext = App.cccFrameWork;
-                tbFrameworkName.DataContext = App.cccFrameWork;
-                tbFrameworkVersion.DataContext = App.cccFrameWork;
-
-                //lbCareComponent.GroupStyle.Add(new GroupStyle());
-                lbCareComponent.ItemsSource = App.cccFrameWork.cvComponents;
-                lbCareComponent.SelectedIndex = 1; // Default to selfcare
-
-                lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
-
+               
+                lvCareBlog.ItemsSource = App.carePlan.ActiveCarePlan.Item.OrderBy(i => i.History.LastUpdate);
             }
 
-            private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+            public void inferContentFromTags(Item i)
             {
-                TextBox tb = sender as TextBox;
 
-                FilterSearch = tb.Text;
-                if (FilterSearch == "")
-                {
-                    spCareComponent.Visibility = Visibility.Visible;
-                    App.cccFrameWork.cvComponents.Filter = null;
+                i.ContainsDiagnosis = false;
+                i.ContainsIntervention = false;
+                i.ContainsCareComponent = false;
+                i.ContainsFolksonomy = false;
+                
+                if (!i.Tag.IsLoaded)
+                    i.Tag.Load();
 
-                    lbCareComponent.SelectedIndex = 1; // Default to selfcare-component
+
+                if (i.Tag.Count == 0)
                     return;
-                }
 
-                //   spCareComponent.Visibility = Visibility.Collapsed;
+                foreach (Tag t in i.Tag)
+               {
+                   if (t.TaxonomyType.Contains("CCC/NursingDiagnosis"))
+                      i.ContainsDiagnosis = true;
+                   else if (t.TaxonomyType.Contains("CCC/NursingIntervention"))
+                      i.ContainsIntervention = true;
+                   else if (t.TaxonomyType.Contains("CCC/CareComponent"))
+                      i.ContainsCareComponent = true;
+                
+               }
 
-
-                App.cccFrameWork.cvComponents.Filter = new Predicate<object>(FilterOutComponentsSearch);
-                App.cccFrameWork.cvComponents.Refresh();
-                if (App.cccFrameWork.cvComponents.Count == 0)
-                {
-                    lblNoMatchCareComponent.Visibility = Visibility.Visible;
-                    spCareComponent.Visibility = Visibility.Hidden;
-
-                }
-                else
-                {
-                    lblNoMatchCareComponent.Visibility = Visibility.Collapsed;
-                    spCareComponent.Visibility = Visibility.Visible;
-                }
-
-                App.cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnosesSearch);
-                App.cccFrameWork.cvDiagnoses.Refresh();
-
-                if (App.cccFrameWork.cvDiagnoses.Count == 0)
-                {
-                    lblNoMatchNursingDiagnoses.Visibility = Visibility.Visible;
-                    spNursingDiagnoses.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    lblNoMatchNursingDiagnoses.Visibility = Visibility.Collapsed;
-                    spNursingDiagnoses.Visibility = Visibility.Visible;
-                }
-
-                lbNursingDiagnosis.ItemsSource = App.cccFrameWork.cvDiagnoses;
-                lbNursingDiagnosis.SelectedIndex = 0;
-
-                App.cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventionsSearch);
-                App.cccFrameWork.cvInterventions.Refresh();
-
-                if (App.cccFrameWork.cvInterventions.Count == 0)
-                {
-                    lblNoMatchNursingInterventions.Visibility = Visibility.Visible;
-                    spNursingInterventions.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    lblNoMatchNursingInterventions.Visibility = Visibility.Collapsed;
-                    spNursingInterventions.Visibility = Visibility.Visible;
-                }
-
-                lbNursingInterventions.ItemsSource = App.cccFrameWork.cvInterventions;
-                lbNursingInterventions.SelectedIndex = 0;
-            }
-
-            private bool FilterOutDiagnosesSearch(object item)
-            { // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
-
-                if (nd == null)
-                    return false;
-
-                if (nd.Concept.ToLower().Contains(FilterSearch.ToLower()) || nd.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                    return true;
-                else
-                    return false;
-
-
+               //try
+               //{
+               //    int upd = App.carePlan.DB.SaveChanges();
+               //}
+               //catch (UpdateException ex)
+               //{
+                   
+               //    showUpdateException(ex);
+               //}
 
             }
 
-            private bool FilterOutInterventionsSearch(object item)
-            {// Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                Nursing_Intervention nd = item as Nursing_Intervention;
+            void buildAllTags(CarePlan cp)
+            {
+                string version = Properties.Settings.Default.Version;
+                string languageName = Properties.Settings.Default.LanguageName;
 
-                if (nd == null)
-                    return false;
+                careplanTags = new ObservableCollection<Tag>();
 
-                if (nd.Concept.ToLower().Contains(FilterSearch.ToLower()) || nd.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                    return true;
-                else
-                    return false;
+                foreach (Item item in cp.Item)
+                  foreach (Tag tag in item.Tag)
+                    {
+                        
+                       tagHandler.updateTag(App.cccFrameWork.DB,tag, languageName, version); // Find Concept and CareComponent for tag
+                       careplanTags.Add(tag);
+                    }
 
-
-
+                cvCareplanTags = new ListCollectionView(careplanTags);
+              
+                cvCareplanTags.GroupDescriptions.Add(new PropertyGroupDescription("CareComponentConcept"));
+                cvCareplanTags.SortDescriptions.Add(new SortDescription("CareComponentConcept",ListSortDirection.Ascending));
+                cvCareplanTags.SortDescriptions.Add(new SortDescription("Concept", ListSortDirection.Ascending));
+                lbTaxonomy.ItemsSource = cvCareplanTags; 
+               
             }
 
-            private bool FilterOutComponentsSearch(object item)
-            {// Based on example from Beatrize Costa blog, accessed 25 november 2007
+            
+           
+           public void refreshOutcomes(Tag tag)
+           {
+               Outcome latest;
 
-                Care_component cc = item as Care_component;
+               if (!tag.Outcome.IsLoaded)
+                   tag.Outcome.Load();
 
-                if (cc == null)
-                    return false;
+               // Find latest outcome that is not evaluated yet
+               var qOutcome = tag.Outcome.Where(o => o.ActualDate == null).OrderBy(o => o.ExpectedDate);
+               if (qOutcome.Count<Outcome>() > 0)
+               {
+                   latest = (Outcome)qOutcome.Take(1).First();
+                   tag.LatestOutcome = latest.ExpectedOutcome;
+                   tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where(o => o.Code == latest.ExpectedOutcome &&
+                       o.Version == Properties.Settings.Default.Version && o.Language_Name == Properties.Settings.Default.LanguageName).First().Concept;
+               }
 
-                if (cc.Component.ToLower().Contains(FilterSearch.ToLower()) || cc.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                    return true;
-                else
-                    return false;
+               else
+               {
+                   tag.LatestOutcome = null;
+                   tag.LatestOutcomeModifier = null;
+               }
 
+           }
 
+            public void refreshTags()
+            {
 
+               string version = Properties.Settings.Default.Version;
+               string languageName = Properties.Settings.Default.LanguageName;
+   
+                Item selItem = lvCareBlog.SelectedItem as Item;
+                if (selItem == null)
+                    return;
+
+                foreach (Tag tag in selItem.Tag)
+                {
+                    refreshOutcomes(tag);
+
+                    if (!tag.ActionTReference.IsLoaded)
+                        tag.ActionTReference.Load();
+
+                    tagHandler.updateTag(App.cccFrameWork.DB,tag,languageName,version);
+                    
+                }
+
+               Tag_AssociationChanged(this, null);
             }
 
+            public void  Tag_AssociationChanged(object sender, CollectionChangeEventArgs e)
+            {
+                Item selItem = lvCareBlog.SelectedItem as Item;
+                if (selItem == null)
+                    return;
+               
+                App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+                 
+                inferContentFromTags(selItem);
+
+                cvItemTags = new ListCollectionView(selItem.Tag.OrderBy(t => t.CareComponentConcept).ThenBy(t => t.Concept).ToList());
+                cvItemTags.GroupDescriptions.Add(new PropertyGroupDescription("CareComponentConcept"));
+                cvItemTags.Refresh();
+                lbTags.ItemsSource = cvItemTags;
+
+                if (cvCareplanTags != null)
+                    cvCareplanTags.Refresh();                
+            }
+           
+        
             private void MenuItemOm_Click(object sender, RoutedEventArgs e)
             {
                 WindowCopyright wc = new WindowCopyright();
                 wc.ShowDialog();
             }
 
-            private void lbCareComponent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                if (tbSearch.Text != "")
-                    return; // Make sure were not filtering diagnoses while search is active
-
-                ListBox lb = sender as ListBox;
-
-                if (lb.SelectedIndex == -1) // Tom selected item-liste
-                    return;
-
-                Care_component cc = lb.SelectedItem as Care_component;
-                FilterCode = cc.Code.ToCharArray()[0];
-
-                App.cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnoses);
-                App.cccFrameWork.cvDiagnoses.Refresh();
-
-                App.cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventions);
-                App.cccFrameWork.cvInterventions.Refresh();
-
-
-                lbNursingDiagnosis.ItemsSource = App.cccFrameWork.cvDiagnoses;
-                lbNursingInterventions.ItemsSource = App.cccFrameWork.cvInterventions;
-
-
-            }
-
-            private bool FilterOutDiagnoses(object item)
-            { // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
-
-
-                if (nd == null)
-                    return false;
-                
-               
-                int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
-
-                if (result == 0) return true;
-
-                return false;
-
-                
-            }
-
-            private bool FilterOutInterventions(object item)
-            {
-                // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-                Nursing_Intervention nd = item as Nursing_Intervention;
-
-
-                if (nd == null)
-                    return false;
-
-                int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
-
-                if (result == 0) return true;
-
-                return false;
-
-                }
-
-            private void lbNursingDiagnosis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                /*
-               ListBox lb = sender as ListBox;
-               Nursing_Diagnosi nd = lb.SelectedItem as Nursing_Diagnosi;
-
-               ccNursingDiagnosis.Content = nd; FLYTTET TIL PLEIEPLAN */
-            }
-
-            private void lbNursingDiagnosis_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-
-                ListBox lb = sender as ListBox;
-                Nursing_Diagnosis nursingDiagnosis = lb.SelectedItem as Nursing_Diagnosis;
-
-                // Create new Diagnosis object
-
-                //E Diagnosi diag = new Diagnosi();
-
-                Diagnosi diag = new Diagnosi();
-
-                //App.carePlan.DB.AddToDiagnosis(diag); // Kaller AddObject på objekt-modellen
-
-               // App.carePlan.DB.AddToDiagnosis(diag);
-                // Copy from framework diagnosis to careplan diagnosis
-               
-                //Ediag.CarePlan.Id = 1; // Må endres etterhvert !!!!
-
-                diag.CarePlan = App.carePlan.DB.CarePlan.First(c => c.Id == 1);
-               //E diag.CarePlan.Id = 1;
-                diag.cccId = nursingDiagnosis.Id;
-                diag.Concept = nursingDiagnosis.Concept;
-                diag.ComponentName = nursingDiagnosis.Care_component.Component;
-                diag.CreationDate = DateTime.Now;
-                diag.CreationDateString = diag.CreationDate.Value.ToLongDateString();
-                diag.Definition = nursingDiagnosis.Definition;
-
-               
-                App.carePlan.InsertDiagnosis(diag);
-
-                App.carePlan.cvDiagnoses.Refresh();
-
-
-                /*
-                diag.ComponentCode = nursingDiagnosis.ComponentCode;
-                diag.MajorCode = nursingDiagnosis.MajorCode;
-                if (nursingDiagnosis.MinorCode != null)
-                    diag.MinorCode = (short)nursingDiagnosis.MinorCode;
-                else
-                    diag.MinorCode = 0;
-
-               //+reasondiagnosis!!
            
-                
-                
-                
-                
-            //        myNursingDiagnosis my = new myNursingDiagnosis(nursingDiagnosis.Care_component.Component,
-            //        nursingDiagnosis.Concept, cccFrameWork.Outcomes);
-
-                //carePlan.Diagnoses.Add(diag);
-            
-            
-                cvcarePlanDiagnoses.Refresh();
-
-
-                lbCarePlanDiagnoses.ItemsSource = cvcarePlanDiagnoses; */
-                lbCarePlanDiagnoses.Visibility = Visibility.Visible;
-
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-
-
-            }
-
-            private void lbCarePlanDiagnoses_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-
-              
-                App.carePlan.cvDiagnoses.Refresh();
-
-                if (App.carePlan.DB.Diagnosis.Count() == 0)
-                    lbCarePlanDiagnoses.Visibility = Visibility.Collapsed;
-
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-
-
-            }
-
-            private void lbNursingInterventions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-                ListBox lb = sender as ListBox;
-                Nursing_Intervention nursingIntervention = lb.SelectedItem as Nursing_Intervention;
-                /*
-                            if (lbCarePlanDiagnoses.SelectedIndex == -1) // User has not selected diagnose to add intervention to
-                                return;
-
-                            myNursingIntervention my = new myNursingIntervention(nursingIntervention.Care_component.Component,
-                                nursingIntervention.Concept);
-
-                            ((myNursingDiagnosis)lbCarePlanDiagnoses.SelectedItem).Intervention.Add(my);
-
-                            carePlan.Interventions.Add(my);
-                            cvcarePlanInterventions.Refresh();
-
-
-                            lbCarePlanInterventions.ItemsSource = cvcarePlanInterventions;
-                            lbCarePlanInterventions.Visibility = Visibility.Visible;
-
-                            PrettyCarePlan_Update();
-                            */
-            }
-
-            private void lbCarePlanInterventions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-                /*          carePlan.Interventions.Remove((myNursingIntervention)cvcarePlanInterventions.CurrentItem);
-                          cvcarePlanInterventions.Refresh();
-
-                          if (carePlan.Interventions.Count == 0)
-                              lbCarePlanInterventions.Visibility = Visibility.Collapsed;
-                 */
-            }
-
-            private void lbCarePlanDiagnoses_LostFocus(object sender, RoutedEventArgs e)
-            {
-                //lbCarePlanDiagnoses.SelectedIndex = -1;
-            }
            
-            private void rbGroupByComponents_Checked(object sender, RoutedEventArgs e)
-            {
-
-                if (cbGroupByTime != null)
-                  cbGroupByTime.IsChecked = false;
-
-                if (App.carePlan != null)
-                {
-                    App.carePlan.GroupByComponentName = true;
-
-
-                    /*
-                    cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
-                    cvcarePlanInterventions.Refresh(); */
-                    App.carePlan.PrettyCarePlan_Update(lcoll);
-                }
-
-            }
-
-            private void rbGroupByComponents_Unchecked(object sender, RoutedEventArgs e)
-            {
-                App.carePlan.GroupByComponentName = false;
-                /////*
-                //cvcarePlanInterventions.GroupDescriptions.Clear();
-                //cvcarePlanInterventions.Refresh(); */
-            
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-
-            }
-
-            private void menuDeleteDiagnosis_Click(object sender, RoutedEventArgs e)
-            {
-                Diagnosi deleteDiagnosis = (Diagnosi)App.carePlan.cvDiagnoses.CurrentItem;
-
-                App.carePlan.PrettyCarePlanDeleteDiagnosis(deleteDiagnosis.FlowDiagnosis);
-                App.carePlan.DeleteDiagnosis(deleteDiagnosis);
-                App.carePlan.cvDiagnoses.Refresh();
-
-
-                
-                lbCarePlanDiagnoses.SelectedIndex = -1; // Unselect diagnoses
-
-                if (App.carePlan.DB.Diagnosis.Count() == 0)
-                    lbCarePlanDiagnoses.Visibility = Visibility.Collapsed;
-
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-
-            }
-
-            private void menuChangeDiagnosis_Click(object sender, RoutedEventArgs e)
-            {
-                timer.Stop();
-                borderNursingDiagnosisDetailChange.Visibility = Visibility.Visible;
-           //     borderNursingDiagnosisDetail.Visibility = Visibility.Collapsed;
-            //   cbMoreDiagnosisInformation.IsChecked = false;
-                ccNursingDiagnosisChange.Visibility = Visibility.Visible;
-                //changeDiagnosis = (Diagnosi)lbCarePlanDiagnoses.SelectedItem;
-                //ccNursingDiagnosis.Content = changeDiagnosis;
-              
-
-            }
-
-            private void prettyCarePlanPrint_Click(object sender, RoutedEventArgs e)
-            {
-                
-                PrintDialog pd = new PrintDialog();
-                if (pd.ShowDialog() == true)
-                    pd.PrintDocument(((IDocumentPaginatorSource)App.carePlan.fdPrettyCarePlan).DocumentPaginator, "Pretty careplan");
-
-            }
-
-            private void lbCarePlanDiagnoses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-             //   cbMoreDiagnosisInformation.ToolTip = null;
-                  
-                ListBox lb = sender as ListBox;
-                if (lb.SelectedItem != null)
-                {
-                    Diagnosi md = lb.SelectedItem as Diagnosi;
-                    //ccNursingDiagnosis.Content = md;
-                    ccNursingDiagnosisChange.Content = md;
-                }
-                //else
-                //{
-                //    ccNursingDiagnosisChange.Visibility = Visibility.Collapsed;
-                //    ccNursingDiagnosis.Visibility = Visibility.Collapsed;
-                //}
-            }
-
-            private void btnStoreNursingDiagnosisDetails_Click(object sender, RoutedEventArgs e)
-            {
-                carePlanSubmitHandler();
-                Section flowDiag = ((Diagnosi)App.carePlan.cvDiagnoses.CurrentItem).FlowDiagnosis;
-              
-                //ccNursingDiagnosisChange.Visibility = Visibility.Collapsed;
-                // lbCarePlanDiagnoses.Visibility = Visibility.Visible;
-                App.carePlan.cvDiagnoses.Refresh();
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-                timer.Start(); // Stopped in change diagnosis dialog
-            }
-
-            private void cbOutCome_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                /*
-                if (dont == true)
-                {
-                    dont = false;
-                    return;
-                }
-
-                  changeDiagnosis.Outcome = Convert.ToInt16((sender as ComboBox).SelectedValue.ToString());
-                cvcarePlanDiagnoses.Refresh();
-                PrettyCarePlan_Update();
-                 */
-            }
-
-            private void dpOutComeEvalDate_ValueChanged(object sender, RoutedEventArgs e)
-            {
-                /*
-                DatePicker dp = sender as DatePicker;
-                changeDiagnosis.OutcomeEvalDate = (System.DateTime)dp.Value;
-                cvcarePlanDiagnoses.Refresh();
-                PrettyCarePlan_Update(); */
-            }
-
-            //private void cbMoreDiagnosisInformation_Checked(object sender, RoutedEventArgs e)
-            //{
-            //    if (lbCarePlanDiagnoses.SelectedItem != null)
-            //    {
-            //        cbMoreDiagnosisInformation.ToolTip = null;
-            //        borderNursingDiagnosisDetail.Visibility = Visibility.Visible;
-            //    }
-            //    else
-            //    {
-            //        cbMoreDiagnosisInformation.IsChecked = false;
-            //        cbMoreDiagnosisInformation.ToolTip = "Ingen diagnose er valgt!";
-            //    }
-            //}
-
-            //private void cbMoreDiagnosisInformation_Unchecked(object sender, RoutedEventArgs e)
-            //{
-            //    borderNursingDiagnosisDetail.Visibility = Visibility.Collapsed;
-            //}
-
-            private void lbAnnotations_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                Annotation a = (Annotation)(sender as ListBox).SelectedItem;
-                if (a != null)
-                {
-                    IAnchorInfo info;
-
-                    info = AnnotationHelper.GetAnchorInfo(annotationservice.service, a);
-                   
-
-                    if (info == null)
-                    {
-                        /* LANGAUGE attrib change 
-                         Norwegian: "Fant ikke anker (tekstområde) informasjon. Ankeret ligger trolig utenfor nåværende pleieplan etter at informasjon er blitt fjernet.", "Annotasjon anker feil"
-                         English : "Did not find the anchor (textarea) information. It us probably outside the current care plan after information was removed", "Annotation anchor error"
-                                                    
-                         */
-
-                        MessageBox.Show("Did not find the anchor (textarea) information. It us probably outside the current care plan after information was removed", "Annotation anchor error");
-                            
-                        return;
-                    }
-                    TextAnchor resolvedAnchor = info.ResolvedAnchor as TextAnchor;
-                    TextPointer pointerStart = (TextPointer)resolvedAnchor.BoundingStart;
-                    TextPointer pointerEnd = (TextPointer)resolvedAnchor.BoundingEnd;
-                   
-                   
-
-                    pointerStart.Paragraph.BringIntoView();
-               //     pointerStart.Paragraph.FontSize = 20;
-                  //  pointerStart.GetCharacterRect(LogicalDirection.Backward);
-                    ccAnnotations.Text = "Ingenting foreløpig!";
-                }
-            }
-
-            private void carePlanSubmitHandler()
-            {
-                try
-                {
-                    //E ChangeSet cset = App.carePlan.DB.GetChangeSet();
-
-                    int added = App.carePlan.DB.ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Added).Count();
-                    int deleted = App.carePlan.DB.ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Deleted).Count();
-                    int updated = App.carePlan.DB.ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Modified).Count();
-
-                    //E tbUserName.Text = "Setter inn :"+ cset.Inserts.Count()+" Sletter : "+cset.Deletes.Count()+" Oppdaterer : "+cset.Updates.Count();
-
-                    /* LANGUAGE attrib change 
-                     Norwegian :"Setter inn :" + added + " Sletter : " + deleted + " Oppdaterer : " + updated;
-                     English : "Inserts :" + added + " Deletes : " + deleted + " Updates : " + updated;
-                     */
-                    tbUserName.Text = "Inserts :" + added + " Deletes : " + deleted + " Updates : " + updated;
-
-                    //E  App.carePlan.DB.SubmitChanges(ConflictMode.ContinueOnConflict);
-                    App.carePlan.DB.SaveChanges();
-
-                }
-                catch (System.Data.Linq.ChangeConflictException ee) // Concurrency control for LINQ to SQL
-                {
-                    /*
-                    foreach (ObjectChangeConflict conflict in App.carePlan.DB.ChangeConflicts)
-                    {
-
-                        // conflict.Object is null when object could not be converted
-                        Annot a = conflict.Object as Annot;
-                        Diagnosi d = conflict.Object as Diagnosi;
-
-                        if (conflict.IsDeleted)
-                        {
-
-                            if (a != null)
-                            {
-                                WindowChangeConflict wc = new WindowChangeConflict();
-                                wc.ShowException("Noen har slettet denne annotasjonen", ee, conflict);
-                                bool result = (bool)wc.ShowDialog();
-                                conflict.Resolve(RefreshMode.OverwriteCurrentValues, true);
-                                annotationservice.stopAnnotationService();
-                                annotationservice.startAnnotationService(fdReaderPrettyCarePlan, lbAnnotations);
-                               
-                            }
-
-                            if (d != null)
-                            {
-                                WindowChangeConflict wc = new WindowChangeConflict();
-                                wc.ShowException("Noen har slettet denne diagnosen", ee, conflict);
-                                bool result = (bool)wc.ShowDialog();
-                                conflict.Resolve(RefreshMode.OverwriteCurrentValues, true);
-                                App.carePlan.Diagnoses.Remove(d);
-                                App.carePlan.cvDiagnoses.Refresh();
-                            }
-                        }
-                        else
-                        {
-                            WindowChangeConflict wc = new WindowChangeConflict();
-                            wc.ShowException("Noen endret dataene", ee, conflict);
-                            wc.ShowDialog();
-                            
-                        } 
-                    } */
-                    //EApp.carePlan.DB.SubmitChanges(ConflictMode.FailOnFirstConflict);
-                    App.carePlan.DB.SaveChanges();
-                }
-                catch (System.Data.OptimisticConcurrencyException ex) // Concurrency handling for entity framework
-                {
-                    WindowConcurrencyException wc = new WindowConcurrencyException();
-                    wc.ShowException(ex);
-                    wc.ShowDialog();
-
-
-
-
-                }
-                
-            }
-
             private void Window_Closing(object sender, CancelEventArgs e)
             {
-                timer.IsEnabled = false;
+               // timer.IsEnabled = false;
                 //annotationTimer.IsEnabled = false;
-                carePlanSubmitHandler();
-                annotationservice.stopAnnotationService();
+                //carePlanSubmitHandler();
+                //annotationservice.stopAnnotationService();
+                foreach (Window w in App.Current.MainWindow.OwnedWindows) // Close explorer window if open
+                    w.Close();
+
 
             }
 
-            private void cbGroupByTime_Checked(object sender, RoutedEventArgs e)
+            #region Careplan handling
+
+            private void btnNewItem_Click(object sender, RoutedEventArgs e)
             {
-                rbGroupByComponents.IsChecked = false; // Toggle only allow one grouping
-                App.carePlan.cvDiagnoses.GroupDescriptions.Clear();
-                App.carePlan.cvDiagnoses.GroupDescriptions.Add(new PropertyGroupDescription("CreationDate"));
-                App.carePlan.cvDiagnoses.Refresh();
-
-                /*
-                cvcarePlanInterventions.GroupDescriptions.Add(new PropertyGroupDescription("ComponentName"));
-                cvcarePlanInterventions.Refresh(); */
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-            }
-
-            private void cbGroupByTime_Unchecked(object sender, RoutedEventArgs e)
-            {
-                rbGroupByComponents_Unchecked(sender, e);
-
-            }
-
-            private void lbImage_Drop(object sender, DragEventArgs e)
-            {
-                IDataObject data = e.Data;
-
-                string[] filenames;
-
-                if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                {
-
-                    filenames = (string[])data.GetData(DataFormats.FileDrop);
-
-                    foreach (string filename in filenames)
-                    {
-                        BitmapImage img = new BitmapImage();
-                        BitmapSource imgsource = BitmapFrame.Create(new Uri(filename));
-                        BitmapMetadata imgmeta = (BitmapMetadata)imgsource.Metadata;
-                           
-                        img.BeginInit();
-                        img.UriSource = new Uri(filename);
-                        img.DecodePixelHeight = 64; // Tip; only choose width or height to conserve aspect ratio
-                        img.EndInit();
-
-
-                        myImage myimg = new myImage();
-                        myimg.Img = img;
-
-                        myimg.FileName = filename;
-                        myimg.Description = "Description";
-                        myimg.Meta = imgmeta;
-                        
-                        if (imgmeta != null)
-                        {
-                            if (imgmeta.DateTaken != null)
-                                myimg.DateTaken = imgmeta.DateTaken;
-                            else
-                                /* LANGUAGE attrib
-                                 Norwegian : "Ukjent dato"
-                                 English : "Unknown date"
-                                 */ 
-                                myimg.DateTaken = "Unknown date";
-
-                            if (imgmeta.CameraModel != null && imgmeta.CameraManufacturer != null)
-                                myimg.Camera = imgmeta.CameraManufacturer + " " + imgmeta.CameraModel;
-                            else
-                                /* LANGUAGE attrib
-                                Norwegian : "Ukjent kamera"
-                                English : "Unknown camera"
-                                */ 
-                               
-                                myimg.Camera = "Unknown camera";
-                        }
-                        else
-                        {
-                            /* LANGUAGE attrib */
-                               
-                            myimg.DateTaken = "Unknown date";
-                            myimg.Camera = "Unknown camera";
-                        }
-                       //BitmapMetadataBlob b = new BitmapMetadataBlob(myimg.Meta.ToArray<Byte>());
-                        
-                       
-                       
-
-                        coll.Add(myimg);
-
-
-                    } // For each
-
-                    e.Handled = true;
-                    lcoll.Refresh();
-                    App.carePlan.PrettyCarePlan_Update(lcoll);
-                }
-
                
-                lcoll.Refresh();
+                WindowNewItem wndNewItem = new WindowNewItem();
+                wndNewItem.ShowDialog();
+             
+                App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
+               
+             }
 
-                lbImage.ItemsSource = lcoll;
+           private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
+           {
+               
+               Item selItem = (Item)lvCareBlog.SelectedItem;
+               if (selItem == null)
+               {
+                   MessageBox.Show("No item is selected to delete, please select an item first", "No item selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                   return;
+               }
 
-            }
-
-
-            private void lbImage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-
-            }
-
-
-            private void miDelete_Click(object sender, RoutedEventArgs e)
-            {
-                foreach (myImage img in lbImage.SelectedItems)
-                    coll.Remove(img);
-                lcoll.Refresh();
-                App.carePlan.PrettyCarePlan_Update(lcoll);
-            }
-
-
-            private void miZoom_Click(object sender, RoutedEventArgs e)
-            {
-                foreach (myImage img in lbImage.SelectedItems)
-                {
-                    ImageShow winImageFull = new ImageShow();
-                    winImageFull.showImage(img);
-                    winImageFull.Show();
-                }
-
-            }
-
-            private void lbImage_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-            {
-                e.Handled = true; // Necessary to not unselect item, tip taken from the web
-            }
-
-            private void MenuItemLanguageIntegrity_Click(object sender, RoutedEventArgs e)
-            {
-                try
-                {
-                    WindowMultiLanguageIntegrity  winMultiLangIntegrity = new WindowMultiLanguageIntegrity();
-                    winMultiLangIntegrity.ShowDialog();
-                    App.cccFrameWork.loadFrameworkAnalysis();
-                    refreshCCCFramework();
-                }
-                catch (Exception exception)
-                {
-                    showDatabaseError(exception);
-                }
-            }
-
-            private void cbLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                FrameworkActual selItem = (FrameworkActual)(sender as ComboBox).SelectedItem;
-                if (selItem != null)
+               if (MessageBox.Show("Delete \""+selItem.Title+"\", are you sure ?", "Delete "+selItem.Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+               {
+                  
+                 
+                   try
                    {
-                       if (selItem.Language_Name != Properties.Settings.Default.LanguageName)
-                       {
-                           Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
-                           Properties.Settings.Default.Save();
+                       //if (!selItem.Tag.IsLoaded)
+                       //    selItem.Tag.Load();
 
-                           App.cccFrameWork.DB.Dispose();
-                           App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName);
-                           refreshCCCFramework();
-                       }
+                       selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Disable tag association
+                      
+                       App.carePlan.DB.DeleteObject(selItem.History);
+                      
+                       App.carePlan.DB.DeleteObject(selItem);
+
+                       SaveCarePlan();
+                       
+                      
+                   }
+                   catch (UpdateException ee)
+                   {
+                     showUpdateException(ee);
+                   }
+                   finally
+                   {
+                       lbTags.ItemsSource = null;
+                       fdReaderCareBlog.Document = null;
+                       fdReaderCareBlog.Visibility = Visibility.Collapsed;
+                       buildAllTags(App.carePlan.ActiveCarePlan);
+
+                   }
+
+               }
+           }
+
+           
+            private void lvCareBlog_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+              //  ListView lv = sender as ListView;
+                ComboBox lv = sender as ComboBox;
+
+                Item selItem = (Item)lv.SelectedItem;
+                if (selItem == null)
+                    return; // Empty selection
+
+                // Keep record of latest item selected
+                Properties.Settings.Default.LastItem = selItem.Id;
+                Properties.Settings.Default.Save();
+
+                refreshTags();
+
+                // Build flowdocument
+
+                //Section sItem = new Section();
+                //BlockUIContainer bui = new BlockUIContainer();
+                //StackPanel spPanel = new StackPanel();
+                //Paragraph pTitle = new Paragraph();
+                //pTitle.FontSize = 15;
+                //pTitle.Inlines.Add(new Bold(new Run(selItem.Title)));
+                ////spPanel.Children.Add(pTitle);
+                //sItem.Blocks.Add(pTitle);
+
+
+                App.carePlan.showCareplanItem(fdReaderCareBlog,selItem,tagHandler);
+
+                //spPanel.Children.Add(fdview);
+
+                //bui.Child = spPanel;
+                //sItem.Blocks.Add(bui);
+                //fdCareBlog.Blocks.Add(sItem);
+
+                //lvCareBlog.ScrollIntoView(selItem);
+            }
+
+           
+                    
+           
+           
+            private void lvCareBlog_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+            {
+                Item selItem = (Item)(sender as ComboBox).SelectedItem;
+                
+                if (selItem == null)
+                    return;
+
+                WindowNewItem wndUpdateItem = new WindowNewItem();
+                wndUpdateItem.UpdateItem = true;
+                wndUpdateItem.CurrentItem = selItem;
+                wndUpdateItem.ShowDialog();
+         
+                App.carePlan.showCareplanItem(fdReaderCareBlog,selItem,tagHandler);
+            }
+
+            #endregion
+
+
+            
+            private void lbTags_Drop(object sender, DragEventArgs e)
+            {
+                IDataObject transfer = e.Data;
+                Item selItem = lvCareBlog.SelectedItem as Item;
+                
+                string taxonomyType = null;
+                Guid taxonomyGuid = Guid.Empty;
+                Guid taxonomyOutcomeAttachmentGuid = Guid.Empty;
+                Guid taxonomyActionTypeAttachmentGuid = Guid.Empty;
+
+                FrameworkOutcomeType fOutcomeType = null;
+                ActionType fActionType = null;
+
+               string comment = null;
+
+
+                if (selItem == null)
+                {
+                    MessageBox.Show("You have not selected an careplan item to attach this tag to", "No careplan item selected");
+                    return;
+                }
+
+                 
+                if (transfer.GetDataPresent("CCC/CareComponent"))
+                {
+                    taxonomyType = "CCC/CareComponent";
+                    Care_component component = (Care_component)transfer.GetData("CCC/CareComponent");
+                    taxonomyGuid = tagHandler.getTaxonomyGuidCareComponent(component.Code, Properties.Settings.Default.Version);
+                 
+                }
+
+                if (transfer.GetDataPresent("CCC/OutcomeType"))
+                {
+                    fOutcomeType = (FrameworkOutcomeType)transfer.GetData("CCC/OutcomeType");
+                    // Find guid in reference terminology
+                    taxonomyOutcomeAttachmentGuid = tagHandler.getTaxonomyGuidOutcomeType(fOutcomeType.Code, Properties.Settings.Default.Version);
+                }
+
+                if (transfer.GetDataPresent("CCC/NursingDiagnosis"))
+                {
+                    taxonomyType = "CCC/NursingDiagnosis";
+                    FrameworkDiagnosis fDiag = (FrameworkDiagnosis)transfer.GetData("CCC/NursingDiagnosis");
+                    comment = fDiag.Comment;
+                    // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
+                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, Properties.Settings.Default.Version);
+
+                }
+
+                if (transfer.GetDataPresent("CCC/ActionType"))
+                {
+                    taxonomyType = "CCC/ActionType";
+                    fActionType = (ActionType)transfer.GetData("CCC/ActionType");
+                    taxonomyActionTypeAttachmentGuid = tagHandler.getTaxonomyGuidActionType(fActionType.Code, Properties.Settings.Default.Version);
+                   
+                }
+
+                if (transfer.GetDataPresent("CCC/NursingIntervention"))
+                    {
+                    taxonomyType = "CCC/NursingIntervention";
+                    FrameworkIntervention fInterv = (FrameworkIntervention)transfer.GetData("CCC/NursingIntervention");
+
+                    comment = fInterv.Comment;
+                    // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
+                    taxonomyGuid = tagHandler.getTaxonomyGuidNursingIntervention(fInterv.ComponentCode, fInterv.MajorCode, fInterv.MinorCode, Properties.Settings.Default.Version);
+                   
+                   
+                }
+
+
+                 
+                // Add tag, if found in taxonomy
+
+                if (taxonomyType == "CCC/NursingDiagnosis" || taxonomyType == "CCC/NursingIntervention")
+                {
+                    selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Remove event handling now
+                    Tag newTag = CCC.BusinessLayer.Tag.CreateTag(taxonomyType, Guid.NewGuid(), taxonomyGuid);
+                    newTag.Item = selItem;
+                    newTag.Comment = comment;
+
+                    History tagHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
+                    newTag.History = tagHistory;
+                   
+
+                    App.carePlan.DB.AddToTag(newTag);
+                    App.carePlan.DB.AddToHistory(tagHistory);
+                    
+                    if (taxonomyOutcomeAttachmentGuid != Guid.Empty) // Check if we also have to deal with an outcome
+                    {
+                       
+                        Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), fOutcomeType.Code, taxonomyOutcomeAttachmentGuid);
+                        newOutcome.Tag = newTag;  // Setup referende to tag
+
+                        History outcomeHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
+                        newOutcome.History = outcomeHistory;
+                        App.carePlan.DB.AddToHistory(outcomeHistory);
+                        App.carePlan.DB.AddToOutcome(newOutcome);
 
                     }
 
+                    if (taxonomyActionTypeAttachmentGuid != Guid.Empty)
+                    {
+
+                        ActionT newActionType = ActionT.CreateActionT(fActionType.Code, tbConceptActionType.Text, taxonomyActionTypeAttachmentGuid, newTag.Id);
+                        newActionType.Tag = newTag;
+
+                   
+                        History actionHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
+                        newActionType.History = actionHistory;
+                        App.carePlan.DB.AddToHistory(actionHistory);
+                        App.carePlan.DB.AddToActionT(newActionType);
+                    }
+
+                    SaveCarePlan();
+
+                    selItem.Tag.AssociationChanged +=new CollectionChangeEventHandler(Tag_AssociationChanged);
+                    Tag_AssociationChanged(this, null);
+                    careplanTags.Add(newTag);
+                    inferContentFromTags(selItem); // Update content status
+                    refreshTags();
+                }
             }
 
+            private void lbTaxonomy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                Tag selTag = (Tag)(sender as ListBox).SelectedItem;
+                if (selTag == null)
+                    return;
+              
+                lvCareBlog.SelectedItem = selTag.Item; // Keep care plan blog synchronized with tag from taxonomy/CCC
+                
+            }
+
+            private void lvCareBlog_Drop(object sender, DragEventArgs e)
+            {
+                IDataObject transfer = e.Data;
+                // Add diagnosis concept as title and automatic tag
+                Item i = new Item();
+                i.Id = Guid.NewGuid();
+                i.Title = "Not implemented yet!";
+                History h = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
+                i.History = h;
+                
+                //items.Add(i);
+
+
+            }
+
+            private void miCarePlanBlog_Click(object sender, RoutedEventArgs e)
+            {
+                App.carePlan.generateCareBlog(fdReaderCareBlog, App.carePlan.ActiveCarePlan,tagHandler,true);
+                exTags.IsExpanded = false;
+                exTaxonomy.IsExpanded = true;
+            }
+
+            private void lbTags_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                Tag selTag = (Tag)lbTags.SelectedItem;
+                if (selTag == null)
+                    return;
+                
+                if (!selTag.Outcome.IsLoaded)
+                    selTag.Outcome.Load();
+
+                
+            }
+
+       
+
+            private void miDeleteTag_Click(object sender, RoutedEventArgs e)
+            {
+                Tag selTag = (Tag)lbTags.SelectedItem;
+                if (selTag == null)
+                {
+                    MessageBox.Show("No tag selected to delete", "No tag selected", MessageBoxButton.OK);
+                    return;
+                }
+
+                MessageBoxResult result = MessageBox.Show("Tag " + selTag.Concept + " will be deleted, are you sure?", "Delete "+selTag.Concept, MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                    return;
+
+                 App.carePlan.DB.DeleteObject(selTag);
+                 if (SaveCarePlan() != -1)
+                    careplanTags.Remove(selTag);
+                
+
+            }
+
+            private void miManageOutcomes_Click(object sender, RoutedEventArgs e)
+            {
+                // Load outcome history
+                Tag selTag = (Tag)lbTags.SelectedItem;
+                foreach (Outcome o in selTag.Outcome)
+                    if (!o.HistoryReference.IsLoaded)
+                        o.HistoryReference.Load();
+
+                WindowOutcomes wndOutcomes = new WindowOutcomes();
+                wndOutcomes.DataContext = selTag;
+                wndOutcomes.lvOutcome.ItemsSource = selTag.Outcome;
+                wndOutcomes.ccOutcome.Content = selTag.Outcome;
+                wndOutcomes.ShowDialog();
+                refreshOutcomes(selTag);
+                Tag_AssociationChanged(this, null);
+            }
+
+            private void miViewActiveCarePlanTags_Click(object sender, RoutedEventArgs e)
+            {
+
+                if (exTaxonomy.Visibility == Visibility.Visible)
+                    exTaxonomy.Visibility = Visibility.Collapsed;
+                else
+                    exTaxonomy.Visibility = Visibility.Visible;
+
+            }
+
+            private void tbReasonDiagnosis_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                FrameworkDiagnosis selDiag = lbNursingDiagnosis.SelectedItem as FrameworkDiagnosis;
+                if (selDiag == null)
+                    return;
+
+                selDiag.Comment = tbReasonDiagnosis.Text;
+
+            }
+
+            private void tbReasonIntervention_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                FrameworkIntervention selInterv = lbNursingInterventions.SelectedItem as FrameworkIntervention;
+                if (selInterv == null)
+                    return;
+
+                selInterv.Comment = tbReasonIntervention.Text;
+               
+
+            }
+
+
+            public int SaveCarePlan()
+            {
+                try
+                {
+                    int upd = App.carePlan.DB.SaveChanges();
+                }
+                catch (UpdateException uex)
+                {
+                    showUpdateException(uex);
+                    return -1;
+                }
+                catch (Exception ex)
+                {
+                    showException(ex);
+                    return -1;
+                }
+
+                return 0;
+
+
+            }
+
+            private void tbTagComment_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                btnSaveTagComments.Visibility = Visibility.Visible;
+                
+                
+            }
+
+            private void btnSaveTagComments_Click(object sender, RoutedEventArgs e)
+            {
+                SaveCarePlan();
+               // App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
+                btnSaveTagComments.Visibility = Visibility.Collapsed;
+                cvCareplanTags.Refresh();
+                
+            }
+
+            private void btnBack_Click(object sender, RoutedEventArgs e)
+            {
+                int selIndex = lvCareBlog.SelectedIndex;
+
+                if (selIndex > 0)
+                    selIndex--;
+                else
+                    selIndex = lvCareBlog.Items.Count - 1;
+
+                lvCareBlog.SelectedIndex = selIndex;
+            }
+
+            private void btnForward_Click(object sender, RoutedEventArgs e)
+            {
+                int selIndex = lvCareBlog.SelectedIndex;
+
+                if (selIndex < (lvCareBlog.Items.Count - 1))
+                    selIndex++;
+                else
+                    selIndex = 0;
+
+                lvCareBlog.SelectedIndex = selIndex;
+            }
+
+            private void btnHome_Click(object sender, RoutedEventArgs e)
+            {
+                App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
+            }
+           
+
+         
+            
+
+           
+
+            
+           
+            
+            
+           
         }
 }
 

@@ -23,7 +23,7 @@ namespace CCC.BusinessLayer
         private int _expectedNumberOfOutcomeTypes;
         private int _expectedNumberOfActionTypes;
               
-        static CCCFrameworkEntities db = new CCCFrameworkEntities();
+        static CCCFrameworkCompactEntities db = new CCCFrameworkCompactEntities();
 
         private List<langFramework> _langframeworkList = new List<langFramework>();
 
@@ -256,7 +256,7 @@ namespace CCC.BusinessLayer
 
         private ReferenceFrameworkEntities ctx = new ReferenceFrameworkEntities();
 
-        private CCCFrameworkEntities ctxverify = new CCCFrameworkEntities();
+        private CCCFrameworkCompactEntities ctxverify = new CCCFrameworkCompactEntities();
 
         private MCareComponent _fCareComponent = new MCareComponent();
         public MCareComponent FCareComponent
@@ -453,7 +453,7 @@ namespace CCC.BusinessLayer
             foreach (ReferenceFrameworkModel.Nursing_Diagnosis verifyDiag in referenceNursingDiagnosis)
             {
 
-                List<CCC.BusinessLayer.Nursing_Diagnosis> verifyNursingDiagnosis = new List<CCC.BusinessLayer.Nursing_Diagnosis>();
+                List<CCC.BusinessLayer.FrameworkDiagnosis> verifyNursingDiagnosis = new List<CCC.BusinessLayer.FrameworkDiagnosis>();
 
                 if (verifyDiag.MinorCode != null)
                     verifyNursingDiagnosis = (from
@@ -500,7 +500,7 @@ namespace CCC.BusinessLayer
             foreach (ReferenceFrameworkModel.Nursing_Intervention verifyInterv in referenceNursingIntervention)
             {
 
-                List<CCC.BusinessLayer.Nursing_Intervention> verifyNursingIntervention = new List<CCC.BusinessLayer.Nursing_Intervention>();
+                List<FrameworkIntervention> verifyNursingIntervention = new List<FrameworkIntervention>();
 
                 if (verifyInterv.MinorCode != null)
                     verifyNursingIntervention = (from

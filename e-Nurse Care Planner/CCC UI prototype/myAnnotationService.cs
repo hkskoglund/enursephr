@@ -27,7 +27,7 @@ namespace CCC.UI
 
         DispatcherTimer timer;
 
-        private List<Annot> _annotlist = new List<Annot>();
+        private List<CarePlanAnnotation> _annotlist = new List<CarePlanAnnotation>();
 
         InkCanvas inkyes;
         
@@ -79,7 +79,7 @@ namespace CCC.UI
 
                 _annotlist = q.ToList();
 
-                foreach (Annot a in q)
+                foreach (CarePlanAnnotation a in q)
                 {
                    MemoryStream smallStream = new MemoryStream();
 
@@ -210,14 +210,14 @@ namespace CCC.UI
             
 
            
-            Annot myAnnot = null;
-                foreach (Annot ann in _annotlist)
+            CarePlanAnnotation myAnnot = null;
+                foreach (CarePlanAnnotation ann in _annotlist)
                     if (ann.Id == a.Id)
                         myAnnot = ann;
                // myAnnot = cp.DB.Annots.Single(an => an.Id == a.Id);
                 if (myAnnot == null)
                 {
-                    myAnnot = new Annot();
+                    myAnnot = new CarePlanAnnotation();
                     myAnnot.Id = a.Id;
                    //E myAnnot.CarePlanId = cp.Id;
                     myAnnot.CarePlan = App.carePlan.DB.CarePlan.First(c => c.Id == cp.Id);
@@ -246,7 +246,7 @@ namespace CCC.UI
        
         private void storeAnnotation(Annotation a, StoreContentAction action)
         {
-            Annot targetAnnot;
+            CarePlanAnnotation targetAnnot;
 
 
             if (action == StoreContentAction.Deleted)
