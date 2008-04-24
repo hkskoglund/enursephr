@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99FCA78D-0153-4D92-BA47-8F357D2EC047}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eNursePHR.userInterfaceLayer</RootNamespace>
+    <AssemblyName>eNursePHR</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ManifestCertificateThumbprint>35E6F54A1FA7428D2C1BD2DAE988A0B202F8CFCF</ManifestCertificateThumbprint>
+    <ManifestKeyFile>CCC UI prototype_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>C:\e-Nurse\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AvalonControlsLibrary, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>AvalonControlLibrary\AvalonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Compile Include="ValidationRules\EmptyStringRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="WindowDatabaseError.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowInsertHyperlink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowCopyright.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMultiLanguageIntegrity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowNewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowOutcomes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blood Pressure\AverageSBPChart.cs" />
+    <Compile Include="Blood Pressure\BloodPressureChart.cs" />
+    <Compile Include="Blood Pressure\GoogleChart.cs" />
+    <Compile Include="Converter\AnnotationToolTipConverter.cs" />
+    <Compile Include="Converter\DateConverter.cs" />
+    <Compile Include="Converter\DateTimeConverter.cs" />
+    <Compile Include="Converter\HighlightTextConverter.cs" />
+    <Compile Include="Converter\MajorCodeConverter.cs" />
+    <Compile Include="Converter\RemoveParentesisOutcomeConcept.cs" />
+    <Compile Include="Converter\RoundSliderConverter.cs" />
+    <Compile Include="Converter\StatementContentConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\StatementContentTypeConverter.cs" />
+    <Compile Include="Converter\TitleConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\UpperCaseConverter.cs" />
+    <Compile Include="Converter\ValidContentConverter.cs" />
+    <Compile Include="AnnotationService.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ViewCarePlan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewInformationAcqusition.cs" />
+    <Compile Include="WindowDatabaseError.xaml.cs">
+      <DependentUpon>WindowDatabaseError.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewCCCFrameWork.cs" />
+    <Compile Include="WindowCopyright.xaml.cs">
+      <DependentUpon>WindowCopyright.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowInsertHyperlink.xaml.cs">
+      <DependentUpon>WindowInsertHyperlink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMultiLanguageIntegrity.xaml.cs">
+      <DependentUpon>WindowMultiLanguageIntegrity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowNewItem.xaml.cs">
+      <DependentUpon>WindowNewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowOutcomes.xaml.cs">
+      <DependentUpon>WindowOutcomes.xaml</DependentUpon>
+    </Compile>
+    <None Include="App.Config" />
+    <None Include="Images\License agreement.rtf" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Business Layer\Business Layer.csproj">
+      <Project>{081A088E-EC70-4679-8DBA-124FB6C5788F}</Project>
+      <Name>Business Layer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Outcome Types\Worsened.png" />
+    <Resource Include="Outcome Types\Improved.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\nb-NO.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\en-US.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Flags\ko-KR.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ERROR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\New.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Outcome Types\Stabilized.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ArrowBack.png" />
+    <Resource Include="Images\ArrowForward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\URL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OpenFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FullScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="J832\J832.Common.dll" />
+    <EmbeddedResource Include="J832\J832.Wpf.BagOTricksLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\eNurse.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AvalonControlLibrary\AvalonControlsLibrary.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

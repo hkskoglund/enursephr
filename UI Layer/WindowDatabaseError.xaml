@@ -1,0 +1,10 @@
+﻿<Window x:Class="eNursePHR.userInterfaceLayer.WindowDatabaseError"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Database Error" SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <TextBlock  x:Name="tbDatabaseError" TextWrapping="Wrap" Margin="0,0,10,0" />
+        <TextBlock x:Name="tbDatabaseErrorDetail" TextWrapping="Wrap" Margin="0,10,10,0"/>
+        
+    </StackPanel>
+</Window>

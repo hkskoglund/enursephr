@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:ReverseEngineer />
+    <edmx:Diagrams ><Diagram Name="MeasurementsDB"><EntityTypeShape EntityType="eNursePHR.BusinessLayer.BloodPressure" PointX="0.75" PointY="0.75" Width="1.5" Height="2.085348307291667" IsExpanded="true" /><EntityTypeShape EntityType="eNursePHR.BusinessLayer.Respiration" PointX="2.75" PointY="0.75" Width="1.5" Height="1.7566536458333331" IsExpanded="true" /><EntityTypeShape EntityType="eNursePHR.BusinessLayer.Temperature" PointX="0.75" PointY="3.75" Width="1.5" Height="1.7566536458333335" IsExpanded="true" /></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+  <edmx:Runtime>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="eNursePHR.BusinessLayer" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="MeasurementsEntities">
+          <EntitySet Name="BloodPressure" EntityType="eNursePHR.BusinessLayer.BloodPressure" />
+          <EntitySet Name="Respiration" EntityType="eNursePHR.BusinessLayer.Respiration" />
+          <EntitySet Name="Temperature" EntityType="eNursePHR.BusinessLayer.Temperature" />
+        </EntityContainer>
+        <EntityType Name="BloodPressure">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="Guid" />
+          <Property Name="SystolicBP" Type="Int32" />
+          <Property Name="DiastolicBP" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="CarePlanId" Type="Guid" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="255" />
+          <Property Name="Pulse" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Respiration">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="Guid" />
+          <Property Name="SaO2" Type="Double" />
+          <Property Name="Frequency" Type="Int16" />
+          <Property Name="Comment" Type="String" MaxLength="255" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Temperature">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="Guid" />
+          <Property Name="Temp" Type="Double" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="LocationCode" Type="Int16" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="255" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Alias="Self" ProviderManifestToken="3.5" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="App">
+          <EntitySet Name="BloodPressure" EntityType="Model.Store.BloodPressure" />
+          <EntitySet Name="Respiration" EntityType="Model.Store.Respiration" />
+          <EntitySet Name="Temperature" EntityType="Model.Store.Temperature" />
+        </EntityContainer>
+        <EntityType Name="BloodPressure">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" />
+          <Property Name="SystolicBP" Type="int" />
+          <Property Name="DiastolicBP" Type="int" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="CarePlanId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
+          <Property Name="Pulse" Type="int" />
+        </EntityType>
+        <EntityType Name="Respiration">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" />
+          <Property Name="SaO2" Type="float" />
+          <Property Name="Frequency" Type="smallint" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Temperature">
+          <Key>
+            <PropertyRef Name="Time" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" />
+          <Property Name="Temp" Type="float" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="LocationCode" Type="smallint" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="App" CdmEntityContainer="MeasurementsEntities">
+          <EntitySetMapping Name="BloodPressure">
+            <EntityTypeMapping TypeName="IsTypeOf(eNursePHR.BusinessLayer.BloodPressure)">
+              <MappingFragment StoreEntitySet="BloodPressure">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SystolicBP" ColumnName="SystolicBP" />
+                <ScalarProperty Name="DiastolicBP" ColumnName="DiastolicBP" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="CarePlanId" ColumnName="CarePlanId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Respiration">
+            <EntityTypeMapping TypeName="IsTypeOf(eNursePHR.BusinessLayer.Respiration)">
+              <MappingFragment StoreEntitySet="Respiration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SaO2" ColumnName="SaO2" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Temperature">
+            <EntityTypeMapping TypeName="IsTypeOf(eNursePHR.BusinessLayer.Temperature)">
+              <MappingFragment StoreEntitySet="Temperature">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Temp" ColumnName="Temp" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="LocationCode" ColumnName="LocationCode" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+</edmx:Edmx>
