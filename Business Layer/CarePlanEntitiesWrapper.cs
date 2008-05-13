@@ -11,14 +11,14 @@ namespace eNursePHR.BusinessLayer
     public class CarePlanEntitesWrapper
     {
 
-        private CarePlanEntities _db; 
+        private PHREntities _db; 
 
-        public CarePlanEntities DB
+        public PHREntities DB
         {
             get
             {
                 if (_db == null)
-                    _db = new CarePlanEntities();
+                    _db = new PHREntities();
                 return this._db;
             }
             set { this._db = value; }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30428</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{081A088E-EC70-4679-8DBA-124FB6C5788F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -90,26 +90,16 @@
     <Compile Include="ContentType.cs" />
     <Compile Include="ConverterByteString.cs" />
     <Compile Include="databaseHealth.cs" />
-    <Compile Include="EF models\CarePlanDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CarePlanDB.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF models\CareplanTemplateDB1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CareplanTemplateDB.edmx</DependentUpon>
-    </Compile>
     <Compile Include="CCCFramework.cs" />
-    <Compile Include="EF models\CCCFrameworkCompact.Designer.cs">
+    <Compile Include="EF models\CCCReference.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CCCFrameworkCompact.edmx</DependentUpon>
+      <DependentUpon>CCCReference.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EF models\CCCReferenceCompact.Designer.cs">
+    <Compile Include="EF models\ClinicalCareClassificationV2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CCCReferenceCompact.edmx</DependentUpon>
+      <DependentUpon>ClinicalCareClassificationV2.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF models\Extension\CommentOnDiagnosisAndIntervention.cs" />
     <Compile Include="EF models\Extension\ComponentPattern.cs" />
@@ -117,10 +107,15 @@
     <Compile Include="EF models\Extension\FriendlyTag.cs" />
     <Compile Include="EF models\Extension\SingleConceptOnActionType.cs" />
     <Compile Include="EF models\Extension\LanguageVerification.cs" />
-    <Compile Include="EF models\MeasurementsDB.Designer.cs">
+    <Compile Include="EF models\Measurements.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MeasurementsDB.edmx</DependentUpon>
+      <DependentUpon>Measurements.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF models\PHR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PHR.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -138,23 +133,6 @@
     <Compile Include="TerminologyAnalysis\MOutcomeType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="EF models\CCCFrameworkCompact.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CCCFrameworkCompact.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="EF models\CCCReferenceCompact.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CCCReferenceCompact.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="bin\Debug\EF models\CarePlanDB.csdl" />
-    <None Include="bin\Debug\EF models\CarePlanDB.msl" />
-    <None Include="bin\Debug\EF models\CarePlanDB.ssdl" />
-    <None Include="bin\Debug\EF models\CareplanTemplateDB.csdl" />
-    <None Include="bin\Debug\EF models\CareplanTemplateDB.msl" />
-    <None Include="bin\Debug\EF models\CareplanTemplateDB.ssdl" />
-    <None Include="bin\Release\EF models\CarePlanDB.csdl" />
-    <None Include="bin\Release\EF models\CarePlanDB.msl" />
-    <None Include="bin\Release\EF models\CarePlanDB.ssdl" />
     <None Include="bin\Release\EF models\CCCFrameworkCompact.csdl" />
     <None Include="bin\Release\EF models\CCCFrameworkCompact.msl" />
     <None Include="bin\Release\EF models\CCCFrameworkCompact.ssdl" />
@@ -167,16 +145,21 @@
     <None Include="bin\Debug\EF models\CCCFrameworkCompact.ssdl" />
     <None Include="bin\Debug\EF models\CCCReferenceCompact.csdl" />
     <None Include="bin\Debug\EF models\CCCReferenceCompact.msl" />
-    <None Include="bin\Release\EF models\CareplanTemplateDB.csdl" />
-    <None Include="bin\Release\EF models\CareplanTemplateDB.ssdl" />
-    <None Include="bin\Release\EF models\CareplanTemplateDB.msl" />
-    <EntityDeploy Include="EF models\CarePlanDB.edmx">
+    <EntityDeploy Include="EF models\PHR.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CarePlanDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>PHR.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <EntityDeploy Include="EF models\MeasurementsDB.edmx">
+    <EntityDeploy Include="EF models\ClinicalCareClassificationV2.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MeasurementsDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>ClinicalCareClassificationV2.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="EF models\CCCReference.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CCCReference.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="EF models\Measurements.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Measurements.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -185,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{C8F2D6AC-F9F4-4E40-A399-22F9A9A5CBD2}" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -219,23 +203,21 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="EF models\CareplanTemplateDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CareplanTemplateDB1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Databases\CCC Framework.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\CCC Terminology Reference.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\COPYRIGHT.txt" />
-    <Content Include="Databases\CarePlan.sdf">
+    <Content Include="Databases\PHR.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\Family.sdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Databases\Measurements.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

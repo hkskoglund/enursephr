@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ReferenceFrameworkModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="Application">
+          <EntitySet Name="ActionType" EntityType="ReferenceFrameworkModel.Store.ActionType" store:Type="Tables" />
+          <EntitySet Name="Care Component" EntityType="ReferenceFrameworkModel.Store.Care Component" store:Type="Tables" />
+          <EntitySet Name="Nursing Diagnosis" EntityType="ReferenceFrameworkModel.Store.Nursing Diagnosis" store:Type="Tables" />
+          <EntitySet Name="Nursing Intervention" EntityType="ReferenceFrameworkModel.Store.Nursing Intervention" store:Type="Tables" />
+          <EntitySet Name="OutcomeType" EntityType="ReferenceFrameworkModel.Store.OutcomeType" store:Type="Tables" />
+        </EntityContainer>
+        <EntityType Name="ActionType">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="Code" Type="smallint" Nullable="false" />
+          <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Definition" Type="nvarchar" MaxLength="255" />
+          <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Care Component">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="Code" Type="nchar" Nullable="false" MaxLength="1" />
+          <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nursing Diagnosis">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="ComponentCode" Type="nchar" Nullable="false" MaxLength="1" />
+          <Property Name="MajorCode" Type="smallint" Nullable="false" />
+          <Property Name="MinorCode" Type="smallint" />
+          <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nursing Intervention">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="ComponentCode" Type="nchar" Nullable="false" MaxLength="1" />
+          <Property Name="MajorCode" Type="smallint" Nullable="false" />
+          <Property Name="MinorCode" Type="smallint" />
+          <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Definition" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OutcomeType">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="Code" Type="smallint" Nullable="false" />
+          <Property Name="Concept" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Definition" Type="nvarchar" MaxLength="255" />
+          <Property Name="TagGuid" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ReferenceFrameworkModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="ReferenceFrameworkEntities">
+          <EntitySet Name="ActionType" EntityType="ReferenceFrameworkModel.ActionType" />
+          <EntitySet Name="Care_Component" EntityType="ReferenceFrameworkModel.Care_Component" />
+          <EntitySet Name="Nursing_Diagnosis" EntityType="ReferenceFrameworkModel.Nursing_Diagnosis" />
+          <EntitySet Name="Nursing_Intervention" EntityType="ReferenceFrameworkModel.Nursing_Intervention" />
+          <EntitySet Name="OutcomeType" EntityType="ReferenceFrameworkModel.OutcomeType" />
+        </EntityContainer>
+        <EntityType Name="ActionType">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Code" Type="Int16" Nullable="false" />
+          <Property Name="Concept" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Definition" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TagGuid" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Care_Component">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+          <Property Name="Concept" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Definition" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TagGuid" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nursing_Diagnosis">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="ComponentCode" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+          <Property Name="MajorCode" Type="Int16" Nullable="false" />
+          <Property Name="MinorCode" Type="Int16" />
+          <Property Name="Concept" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Definition" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TagGuid" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nursing_Intervention">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="ComponentCode" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+          <Property Name="MajorCode" Type="Int16" Nullable="false" />
+          <Property Name="MinorCode" Type="Int16" />
+          <Property Name="Concept" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Definition" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TagGuid" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OutcomeType">
+          <Key>
+            <PropertyRef Name="TagGuid" />
+          </Key>
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Code" Type="Int16" Nullable="false" />
+          <Property Name="Concept" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Definition" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TagGuid" Type="Guid" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="Application" CdmEntityContainer="ReferenceFrameworkEntities">
+          <EntitySetMapping Name="ActionType">
+            <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.ActionType)">
+              <MappingFragment StoreEntitySet="ActionType">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="Definition" ColumnName="Definition" />
+                <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Care_Component">
+            <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Care_Component)">
+              <MappingFragment StoreEntitySet="Care Component">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="Definition" ColumnName="Definition" />
+                <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nursing_Diagnosis">
+            <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Nursing_Diagnosis)">
+              <MappingFragment StoreEntitySet="Nursing Diagnosis">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+                <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+                <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="Definition" ColumnName="Definition" />
+                <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nursing_Intervention">
+            <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.Nursing_Intervention)">
+              <MappingFragment StoreEntitySet="Nursing Intervention">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="ComponentCode" ColumnName="ComponentCode" />
+                <ScalarProperty Name="MajorCode" ColumnName="MajorCode" />
+                <ScalarProperty Name="MinorCode" ColumnName="MinorCode" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="Definition" ColumnName="Definition" />
+                <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OutcomeType">
+            <EntityTypeMapping TypeName="IsTypeOf(ReferenceFrameworkModel.OutcomeType)">
+              <MappingFragment StoreEntitySet="OutcomeType">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Concept" ColumnName="Concept" />
+                <ScalarProperty Name="Definition" ColumnName="Definition" />
+                <ScalarProperty Name="TagGuid" ColumnName="TagGuid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:Diagrams >
+<Diagram Name="CCCReference">
+<EntityTypeShape EntityType="ReferenceFrameworkModel.ActionType" PointX="0.75" PointY="0.75" Width="1.5" Height="1.7566536458333331" IsExpanded="true" />
+<EntityTypeShape EntityType="ReferenceFrameworkModel.Care_Component" PointX="2.75" PointY="0.75" Width="1.5" Height="1.7566536458333331" IsExpanded="true" />
+<EntityTypeShape EntityType="ReferenceFrameworkModel.Nursing_Diagnosis" PointX="0.75" PointY="3.75" Width="1.5" Height="2.0853483072916674" IsExpanded="true" />
+<EntityTypeShape EntityType="ReferenceFrameworkModel.Nursing_Intervention" PointX="2.75" PointY="3.75" Width="1.5" Height="2.0853483072916674" IsExpanded="true" />
+<EntityTypeShape EntityType="ReferenceFrameworkModel.OutcomeType" PointX="4.75" PointY="0.75" Width="1.5" Height="1.7566536458333333" IsExpanded="true" /></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

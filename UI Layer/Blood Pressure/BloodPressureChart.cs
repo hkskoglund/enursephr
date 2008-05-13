@@ -20,7 +20,7 @@ namespace eNursePHR.userInterfaceLayer
         const uint highWHODBP = 90; // WHO limit for diastolic high blood pressure
 
         private MeasurementsEntities ctxBP;
-        private CarePlanEntities ctxCarePlan;
+        private PHREntities ctxCarePlan;
 
         
        
@@ -299,7 +299,7 @@ namespace eNursePHR.userInterfaceLayer
 
             try
             {
-                ctxCarePlan = new CarePlanEntities();
+                ctxCarePlan = new PHREntities();
             }
             catch (Exception ex)
             {

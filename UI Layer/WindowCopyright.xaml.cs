@@ -72,7 +72,7 @@ namespace eNursePHR.userInterfaceLayer
             try
             {
                 string conn;
-                CarePlanEntities ctxCarePlan = new CarePlanEntities();
+                PHREntities ctxCarePlan = new PHREntities();
                 ctxCarePlan.Connection.Open();
                 //healthDB.Add("PHR", true);
                 
