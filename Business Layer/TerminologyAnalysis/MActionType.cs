@@ -8,7 +8,7 @@ namespace eNursePHR.BusinessLayer
 {
     public class MActionType
     {
-        public MActionType(List<ReferenceFrameworkModel.ActionType> mat)
+        public MActionType(List<eNursePHR.BusinessLayer.CCC_Terminology.ActionType> mat)
         {
             this.FrameworkElement = "Action Type";
             this.MissingList = mat;
@@ -26,8 +26,8 @@ namespace eNursePHR.BusinessLayer
             set { this._frameworkElement = value; }
         }
 
-        List<ReferenceFrameworkModel.ActionType> _missingActionTypes;
-        public List<ReferenceFrameworkModel.ActionType> MissingList
+        List<eNursePHR.BusinessLayer.CCC_Terminology.ActionType> _missingActionTypes;
+        public List<eNursePHR.BusinessLayer.CCC_Terminology.ActionType> MissingList
         {
             get { return this._missingActionTypes; }
             set { this._missingActionTypes = value; }

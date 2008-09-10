@@ -13,13 +13,16 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.Threading;
-using eNursePHR.BusinessLayer;
 using System.Collections.ObjectModel;
-using ReferenceFrameworkModel;
 using System.Data.EntityClient;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Globalization;
+
+using eNursePHR.BusinessLayer.CCC_Terminology;
+using eNursePHR.BusinessLayer.CCC_Translations;
+using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.userInterfaceLayer
 {
@@ -120,7 +123,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 string conn;
                 // Open database
-                CCCFrameworkCompactEntities ctxCCCFrameworkDB = new CCCFrameworkCompactEntities();
+                CCC_FrameworkEntities ctxCCCFrameworkDB = new CCC_FrameworkEntities();
                 ctxCCCFrameworkDB.Connection.Open();
                 //healthDB.Add("CCCFramework", true);
                 conn = "DataSource=" + "\"" + ctxCCCFrameworkDB.Connection.DataSource + "\"";
@@ -161,7 +164,7 @@ namespace eNursePHR.userInterfaceLayer
             try
             {
                 string conn;
-               ReferenceFrameworkEntities ctxCCCReferenceDB = new ReferenceFrameworkEntities();
+               CCC_Terminology_ReferenceEntities ctxCCCReferenceDB = new CCC_Terminology_ReferenceEntities();
                ctxCCCReferenceDB.Connection.Open();
                //healthDB.Add("CCCReference", true);
                conn = "DataSource=" + "\"" + ctxCCCReferenceDB.Connection.DataSource + "\"";

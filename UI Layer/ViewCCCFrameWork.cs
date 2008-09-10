@@ -21,6 +21,7 @@ namespace eNursePHR.userInterfaceLayer
         public ViewCCCFrameWork(string languageName, string version)
             : base(languageName, version)
         {
+            
             this.cvComponents = new ListCollectionView(this.Components);
             this.cvDiagnoses = new ListCollectionView(this.Diagnoses);
             this.cvInterventions = new ListCollectionView(this.Inteventions);

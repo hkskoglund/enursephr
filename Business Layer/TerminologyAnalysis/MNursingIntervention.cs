@@ -7,7 +7,7 @@ namespace eNursePHR.BusinessLayer
 {
     public class MNursingIntervention
     {
-        public MNursingIntervention(List<ReferenceFrameworkModel.Nursing_Intervention> mnd)
+        public MNursingIntervention(List<eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention> mnd)
         {
             this.FrameworkElement = "Nursing Intervention";
             this.MissingList = mnd;
@@ -25,8 +25,8 @@ namespace eNursePHR.BusinessLayer
             set { this._frameworkElement = value; }
         }
 
-        List<ReferenceFrameworkModel.Nursing_Intervention> _missingNursingInterventions;
-        public List<ReferenceFrameworkModel.Nursing_Intervention> MissingList
+        List<eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention> _missingNursingInterventions;
+        public List<eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention> MissingList
         {
             get { return this._missingNursingInterventions; }
             set { this._missingNursingInterventions = value; }

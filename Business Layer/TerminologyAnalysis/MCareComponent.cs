@@ -7,7 +7,7 @@ namespace eNursePHR.BusinessLayer
 {
     public class MCareComponent
     {
-        public MCareComponent(List<ReferenceFrameworkModel.Care_Component> mcc)
+        public MCareComponent(List<eNursePHR.BusinessLayer.CCC_Terminology.Care_Component> mcc)
         {
             this.FrameworkElement = "Care Component";
             this.MissingList = mcc;
@@ -25,8 +25,8 @@ namespace eNursePHR.BusinessLayer
             set { this._frameworkElement = value; }
         }
 
-        List<ReferenceFrameworkModel.Care_Component> _missingCareComponents;
-        public List<ReferenceFrameworkModel.Care_Component> MissingList
+        List<eNursePHR.BusinessLayer.CCC_Terminology.Care_Component> _missingCareComponents;
+        public List<eNursePHR.BusinessLayer.CCC_Terminology.Care_Component> MissingList
         {
             get { return this._missingCareComponents; }
             set { this._missingCareComponents = value; }

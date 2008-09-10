@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Data.SqlServerCe;
 using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.PHR;
 
 
 namespace eNursePHR.userInterfaceLayer

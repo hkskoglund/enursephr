@@ -105,14 +105,21 @@
                                 <DataTemplate>
                                     <Image x:Name="imgFlag" Height="22" ToolTip="{Binding Path=MetaInfo}" />
                                     <DataTemplate.Triggers>
+                                        
                                         <DataTrigger Binding="{Binding Path=LanguageName}" Value="nb-NO">
                                             <Setter Property="Source" Value="Flags/nb-No.gif" TargetName="imgFlag" />
                                         </DataTrigger>
+                                        
                                         <DataTrigger Binding="{Binding Path=LanguageName}" Value="en-US">
                                             <Setter Property="Source" Value="Flags/en-US.gif" TargetName="imgFlag" />
                                         </DataTrigger>
+                                        
                                         <DataTrigger Binding="{Binding Path=LanguageName}" Value="ko-KR">
                                             <Setter Property="Source" Value="Flags/ko-KR.gif" TargetName="imgFlag" />
+                                        </DataTrigger>
+                                        
+                                        <DataTrigger Binding="{Binding Path=LanguageName}" Value="tr-TR">
+                                            <Setter Property="Source" Value="Flags/tr-TR.gif" TargetName="imgFlag" />
                                         </DataTrigger>
 
                                     </DataTemplate.Triggers>

@@ -59,6 +59,7 @@ Recommended use at the moment: research/testing-purposes
     Closing="Window_Closing" 
     WindowStyle="SingleBorderWindow" Height="423.383" Width="1108"
     WindowStartupLocation="CenterScreen"
+    
     x:Name="wndMain" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" >
@@ -607,19 +608,32 @@ Recommended use at the moment: research/testing-purposes
 							   <!--<Image x:Name="imgPassed" Margin="5,0,0,0" Width="10" VerticalAlignment="Center" />-->
 							  </StackPanel>
 							<DataTemplate.Triggers>
+                                
+                                <!-- Norwegian -->
 								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="nb-NO">
 									<Setter Property="Source" Value="Flags/nb-No.gif" TargetName="imgFlagCombo" />
 	                             
 								</DataTrigger>
+                                
+                                <!-- American -->
 								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="en-US">
 									<Setter Property="Source" Value="Flags/en-US.gif" TargetName="imgFlagCombo" />
 	                               
 								</DataTrigger>
-								<DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="ko-KR">
+								
+                                <!-- Korean -->
+                                <DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="ko-KR">
 									<Setter Property="Source" Value="Flags/ko-KR.gif" TargetName="imgFlagCombo" />
 	                             
 								</DataTrigger>
-								 <DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="True">
+
+                                <!-- Turkish -->
+                                <DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="tr-TR">
+                                    <Setter Property="Source" Value="Flags/tr-TR.gif" TargetName="imgFlagCombo" />
+
+                                </DataTrigger>
+                                
+                                <DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="True">
 									<Setter Property="ToolTip" Value="Passed language integrity shallow test" TargetName="imgFlagCombo" />
 								  <!--<Setter Property="Source" Value="Images/OK.png" TargetName="imgPassed" />-->
 	                           

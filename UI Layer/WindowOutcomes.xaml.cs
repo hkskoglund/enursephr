@@ -10,8 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using eNursePHR.BusinessLayer;
 using Microsoft.Samples.KMoore.WPFSamples.DateControls;
+
+using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.userInterfaceLayer
 {

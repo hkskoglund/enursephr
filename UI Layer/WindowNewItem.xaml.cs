@@ -12,13 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
-using eNursePHR.BusinessLayer;
 using System.Data;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Windows.Markup;
 using System.Data.EntityClient;
+
+using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.userInterfaceLayer
 {

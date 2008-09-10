@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -27,6 +28,7 @@ namespace eNursePHR.userInterfaceLayer
         {
 
             mainWindow = new WindowMain();
+          
             App.Current.MainWindow = mainWindow;
             mainWindow.Show();
            

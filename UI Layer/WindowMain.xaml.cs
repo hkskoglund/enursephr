@@ -1,4 +1,12 @@
-﻿using System;
+﻿// Introduced this directive for code targetet at SP 1 release version of SQL COMPACT SERVER
+// that unfortunately contains an error in construction of queries with parameters for LINQ
+// One way to work around this is to rewrite to queries by using entity SQL instead as suggested
+// on request for "query processor error" thread in MSDN forum for SQL Server Compact.
+
+#define  SQL_SERVER_COMPACT_SP1_WORKAROUND
+
+
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +25,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading; // DispatcherTimer
-using eNursePHR.BusinessLayer;
 using System.ComponentModel;
 // Copyright (c) 2007 Kevin Moore j832.com
 using Microsoft.Samples.KMoore.WPFSamples.DateControls;
@@ -26,6 +33,12 @@ using System.IO;
 using System.Data.Objects;
 using System.Xml;
 using System.Diagnostics;
+
+using Microsoft.Win32;
+
+using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.CCC_Translations;
+using eNursePHR.BusinessLayer.PHR;
 
 // MIT Licence
 //
@@ -52,12 +65,20 @@ using System.Diagnostics;
 //FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //OTHER DEALINGS IN THE SOFTWARE.
 
+// Note: Current application is dependent upon SQL Server Compact
+
 
 namespace eNursePHR.userInterfaceLayer
 {
 
     public partial class WindowMain : Window
         {
+
+        private string _netVersion = Environment.Version.ToString();
+        public string NETVersion 
+        {
+            get { return _netVersion; }
+        }
 
         public const int EXIT_LOAD_FRAMEWORK = 1;
         public const int EXIT_LOAD_CAREPLAN = 2;
@@ -102,11 +123,61 @@ namespace eNursePHR.userInterfaceLayer
 
 
 
+    private string _SQLCompactVersion;
 
 
+        /// <summary>
+        /// Gets version information from registry for SQL Server Compact
+        /// </summary>
+        private bool getSQLCompactVersion()
+        {
+            // Info. resource
+            // SQL Server Compact : http://blogs.msdn.com/sqlservercompact/archive/2008/02/08/sql-server-compact-release-versions.aspx
+            // Registry editing : http://www.csharphelp.com/archives2/archive430.html
+            // Accessed : 10 sept. 2008
+
+            RegistryKey OurKey = Registry.LocalMachine;
+            OurKey = OurKey.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server Compact Edition\v3.5\ENU");
+
+            this._SQLCompactVersion = OurKey.GetValue("DesktopRuntimeVersion").ToString();
+            
+            string spack = OurKey.GetValue("DesktopRuntimeServicePackLevel").ToString();
+
+            // require latest v 3.5 Sp 1
+            if (this._SQLCompactVersion == "3.5.5692.0" && spack == "1")
+                return true;
+            else
+                return false;
+
+           
+                
+        }
 
         public WindowMain()
+    {
+
+        #region Test code
+
+
+        //CCC_FrameworkEntities ctx = new CCC_FrameworkEntities();
+                //string test = ctx.Copyright.Where(c => c.Language_Name == "tr-TR" && c.Version == "2.0").First().Name;
+
+             //   CCC_Framework cf = new CCC_Framework("tr-TR", "2.0");
+            
+            
+
+#endregion // End test
+
+            // Verify database intallation
+
+        if (!getSQLCompactVersion())
             {
+            MessageBox.Show("You have not installed SQL Server Compact V 3.5 SP 1, please install before using application again", "SQL Server Compact v3.5 SP 1 not installed",MessageBoxButton.OK,MessageBoxImage.Stop);
+            App.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            App.Current.Shutdown();
+
+            }  else {
+
                     wndCopyright = new WindowCopyright();
                    healthDB = wndCopyright.checkDatabasesHealth();  // Perform health check on the databases
                     wndCopyright.Show();
@@ -129,7 +200,7 @@ namespace eNursePHR.userInterfaceLayer
                         exFramework.IsEnabled = false;
                         tbSearch.IsEnabled = false;
                     }
-               
+        }
             }
 
       public void showException(Exception ex)
@@ -337,8 +408,13 @@ namespace eNursePHR.userInterfaceLayer
                     if (testPlan)
                         App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.First();
                     else
-                        App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where(cp => cp.Id == carePlanID).First();
-                }
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                         App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where(cp => cp.Id == carePlanID).First();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                        //SP 1 workaround
+                        App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where("it.Id = '"+ carePlanID+"'").First();
+#endif
+                    }
                 catch (Exception exception)
                 {
                     showException(exception);
@@ -464,13 +540,25 @@ namespace eNursePHR.userInterfaceLayer
                    tag.Outcome.Load();
 
                // Find latest outcome that is not evaluated yet
-               var qOutcome = tag.Outcome.Where(o => o.ActualDate == null).OrderBy(o => o.ExpectedDate);
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+              var qOutcome = tag.Outcome.Where(o => o.ActualDate == null).OrderBy(o => o.ExpectedDate);
+               // Sp 1 workaround
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+               // CHECK THIS LATER.....
+               var qOutcome = tag.Outcome.Where(a => a.ActualDate == null).OrderBy(o => o.ExpectedDate);
+#endif
+               
                if (qOutcome.Count<Outcome>() > 0)
                {
                    latest = (Outcome)qOutcome.Take(1).First();
                    tag.LatestOutcome = latest.ExpectedOutcome;
-                   tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where(o => o.Code == latest.ExpectedOutcome &&
-                       o.Version == eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version && o.Language_Name == eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName).First().Concept;
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                    tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where(o => o.Code == latest.ExpectedOutcome &&
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                   tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where("it.Code = "+ latest.ExpectedOutcome + " AND it.Version = '"+
+
+                   eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version + "'AND it.Language_Name = '"+ eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName+"'").First().Concept;
+#endif
                }
 
                else
@@ -699,8 +787,8 @@ namespace eNursePHR.userInterfaceLayer
                 Guid taxonomyOutcomeAttachmentGuid = Guid.Empty;
                 Guid taxonomyActionTypeAttachmentGuid = Guid.Empty;
 
-                FrameworkOutcomeType fOutcomeType = null;
-                ActionType fActionType = null;
+                eNursePHR.BusinessLayer.CCC_Translations.OutcomeType fOutcomeType = null;
+                eNursePHR.BusinessLayer.CCC_Translations.ActionType fActionType = null;
 
                string comment = null;
 
@@ -723,7 +811,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 if (transfer.GetDataPresent("CCC/OutcomeType"))
                 {
-                    fOutcomeType = (FrameworkOutcomeType)transfer.GetData("CCC/OutcomeType");
+                    fOutcomeType = (eNursePHR.BusinessLayer.CCC_Translations.OutcomeType)transfer.GetData("CCC/OutcomeType");
                     // Find guid in reference terminology
                     taxonomyOutcomeAttachmentGuid = tagHandler.getTaxonomyGuidOutcomeType(fOutcomeType.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
                 }
@@ -731,7 +819,7 @@ namespace eNursePHR.userInterfaceLayer
                 if (transfer.GetDataPresent("CCC/NursingDiagnosis"))
                 {
                     taxonomyType = "CCC/NursingDiagnosis";
-                    FrameworkDiagnosis fDiag = (FrameworkDiagnosis)transfer.GetData("CCC/NursingDiagnosis");
+                    eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis fDiag = (eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis)transfer.GetData("CCC/NursingDiagnosis");
                     comment = fDiag.Comment;
                     // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
                     taxonomyGuid = tagHandler.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
@@ -749,7 +837,7 @@ namespace eNursePHR.userInterfaceLayer
                 if (transfer.GetDataPresent("CCC/NursingIntervention"))
                     {
                     taxonomyType = "CCC/NursingIntervention";
-                    FrameworkIntervention fInterv = (FrameworkIntervention)transfer.GetData("CCC/NursingIntervention");
+                    Nursing_Intervention fInterv = (Nursing_Intervention)transfer.GetData("CCC/NursingIntervention");
 
                     comment = fInterv.Comment;
                     // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
@@ -765,7 +853,7 @@ namespace eNursePHR.userInterfaceLayer
                 if (taxonomyType == "CCC/NursingDiagnosis" || taxonomyType == "CCC/NursingIntervention")
                 {
                     selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Remove event handling now
-                    Tag newTag = eNursePHR.BusinessLayer.Tag.CreateTag(Guid.NewGuid(), taxonomyType, taxonomyGuid);
+                    Tag newTag = eNursePHR.BusinessLayer.PHR.Tag.CreateTag(Guid.NewGuid(), taxonomyType, taxonomyGuid);
                   
                     newTag.Item = selItem;
                     newTag.Comment = comment;
@@ -917,7 +1005,7 @@ namespace eNursePHR.userInterfaceLayer
 
             private void tbReasonDiagnosis_TextChanged(object sender, TextChangedEventArgs e)
             {
-                FrameworkDiagnosis selDiag = lbNursingDiagnosis.SelectedItem as FrameworkDiagnosis;
+                Nursing_Diagnosis selDiag = lbNursingDiagnosis.SelectedItem as Nursing_Diagnosis;
                 if (selDiag == null)
                     return;
 
@@ -927,7 +1015,7 @@ namespace eNursePHR.userInterfaceLayer
 
             private void tbReasonIntervention_TextChanged(object sender, TextChangedEventArgs e)
             {
-                FrameworkIntervention selInterv = lbNursingInterventions.SelectedItem as FrameworkIntervention;
+                Nursing_Intervention selInterv = lbNursingInterventions.SelectedItem as Nursing_Intervention;
                 if (selInterv == null)
                     return;
 
@@ -1526,7 +1614,7 @@ namespace eNursePHR.userInterfaceLayer
             private bool FilterOutDiagnosesSearch(object item)
             { // Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                FrameworkDiagnosis nd = item as FrameworkDiagnosis;
+                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
 
                 if (nd == null)
                     return false;
@@ -1543,7 +1631,7 @@ namespace eNursePHR.userInterfaceLayer
             private bool FilterOutInterventionsSearch(object item)
             {// Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                FrameworkIntervention nd = item as FrameworkIntervention;
+                Nursing_Intervention nd = item as Nursing_Intervention;
 
                 if (nd == null)
                     return false;
@@ -1578,7 +1666,7 @@ namespace eNursePHR.userInterfaceLayer
             private bool FilterOutDiagnoses(object item)
             { // Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                FrameworkDiagnosis nd = item as FrameworkDiagnosis;
+                Nursing_Diagnosis nd = item as Nursing_Diagnosis;
 
 
                 if (nd == null)
@@ -1598,7 +1686,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 // Based on example from Beatrize Costa blog, accessed 25 november 2007
 
-                FrameworkIntervention nd = item as FrameworkIntervention;
+                Nursing_Intervention nd = item as Nursing_Intervention;
 
 
                 if (nd == null)
@@ -1677,7 +1765,7 @@ namespace eNursePHR.userInterfaceLayer
             {
 
                 ListBox lb = sender as ListBox;
-                FrameworkDiagnosis nd = lb.SelectedItem as FrameworkDiagnosis;
+                Nursing_Diagnosis nd = lb.SelectedItem as Nursing_Diagnosis;
 
                 ccNursingDiagnosis.Content = nd; // Update detail view
 
@@ -1737,8 +1825,8 @@ namespace eNursePHR.userInterfaceLayer
                 bool hasOutcomeAttached = (bool)cbAttachToDiagnosis.IsChecked;
                 bool hasMinorDiagnosis;
 
-                FrameworkDiagnosis selectedNursingDiagnosis = (FrameworkDiagnosis)ccNursingDiagnosis.Content;
-                FrameworkOutcomeType selectedOutcomeType = (FrameworkOutcomeType)lbOutcomeType.SelectedItem;
+                Nursing_Diagnosis selectedNursingDiagnosis = (Nursing_Diagnosis)ccNursingDiagnosis.Content;
+                OutcomeType selectedOutcomeType = (OutcomeType)lbOutcomeType.SelectedItem;
 
                 if (selectedNursingDiagnosis != null)
                 {
@@ -1795,7 +1883,7 @@ namespace eNursePHR.userInterfaceLayer
                 bool hasActionTypeAttached = (bool)cbAttachToIntervention.IsChecked;
 
 
-                FrameworkIntervention selectedNursingIntervention = (FrameworkIntervention)lbNursingInterventions.SelectedItem;
+                Nursing_Intervention selectedNursingIntervention = (Nursing_Intervention)lbNursingInterventions.SelectedItem;
                 ActionType selectedActionType = (ActionType)lbActionType.SelectedItem;
 
                 if (selectedNursingIntervention != null)
@@ -1836,7 +1924,7 @@ namespace eNursePHR.userInterfaceLayer
             private void lbNursingInterventions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
             {
                 ListBox lb = sender as ListBox;
-                FrameworkIntervention nursingIntervention = lb.SelectedItem as FrameworkIntervention;
+                Nursing_Intervention nursingIntervention = lb.SelectedItem as Nursing_Intervention;
                 /*
                             if (lbCarePlanDiagnoses.SelectedIndex == -1) // User has not selected diagnose to add intervention to
                                 return;
@@ -1865,7 +1953,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 ListBox lb = sender as ListBox;
 
-                FrameworkIntervention fi = (FrameworkIntervention)lb.SelectedItem;
+                Nursing_Intervention fi = (Nursing_Intervention)lb.SelectedItem;
                 if (fi == null)
                     return;
 
@@ -1926,7 +2014,7 @@ namespace eNursePHR.userInterfaceLayer
 
             private void lbOutcomeType_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
-                FrameworkOutcomeType selOutcomeType = (FrameworkOutcomeType)lbOutcomeType.SelectedItem;
+                OutcomeType selOutcomeType = (OutcomeType)lbOutcomeType.SelectedItem;
 
 
                 string imgFileName = null;
@@ -1977,7 +2065,7 @@ namespace eNursePHR.userInterfaceLayer
                 tbNursingInterventionActionModifier.Visibility = Visibility.Visible;
                 tbConceptActionType.Text = cbActionType.Text;
                 tbNursingInterventionActionModifier.Text = cbActionType.Text;
-                tbNursingInterventionConcept.Text = ((FrameworkIntervention)(lbNursingInterventions.SelectedItem)).Concept;
+                tbNursingInterventionConcept.Text = ((Nursing_Intervention)(lbNursingInterventions.SelectedItem)).Concept;
             }
 
             //private TextBlock getActionTypeCP()
@@ -1999,7 +2087,7 @@ namespace eNursePHR.userInterfaceLayer
                 tbNursingInterventionActionModifier.Visibility = Visibility.Collapsed;
                 tbConceptActionType.Text = ((ActionType)(lbActionType.SelectedItem)).Concept;
                 tbNursingInterventionActionModifier.Text = null;
-                tbNursingInterventionConcept.Text = ((FrameworkIntervention)lbNursingInterventions.SelectedItem).Concept;
+                tbNursingInterventionConcept.Text = ((Nursing_Intervention)lbNursingInterventions.SelectedItem).Concept;
             }
 
 
@@ -2010,7 +2098,7 @@ namespace eNursePHR.userInterfaceLayer
                     {
                         tbConceptActionType.Text = cbActionType.SelectedValue.ToString();
                         tbNursingInterventionActionModifier.Text = tbConceptActionType.Text;
-                        tbNursingInterventionConcept.Text = ((FrameworkIntervention)(lbNursingInterventions.SelectedItem)).Concept;
+                        tbNursingInterventionConcept.Text = ((Nursing_Intervention)(lbNursingInterventions.SelectedItem)).Concept;
                     }
 
             }

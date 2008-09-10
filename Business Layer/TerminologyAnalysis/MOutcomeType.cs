@@ -8,7 +8,7 @@ namespace eNursePHR.BusinessLayer
     
     public class MOutcomeType
     {
-        public MOutcomeType(List<ReferenceFrameworkModel.OutcomeType> mot)
+        public MOutcomeType(List<eNursePHR.BusinessLayer.CCC_Terminology.OutcomeType> mot)
         {
             this.FrameworkElement = "Outcome Type";
             this.MissingList = mot;
@@ -26,8 +26,8 @@ namespace eNursePHR.BusinessLayer
             set { this._frameworkElement = value; }
         }
 
-        List<ReferenceFrameworkModel.OutcomeType> _missingOutcomeTypes;
-        public List<ReferenceFrameworkModel.OutcomeType> MissingList
+        List<eNursePHR.BusinessLayer.CCC_Terminology.OutcomeType> _missingOutcomeTypes;
+        public List<eNursePHR.BusinessLayer.CCC_Terminology.OutcomeType> MissingList
         {
             get { return this._missingOutcomeTypes; }
             set { this._missingOutcomeTypes = value; }

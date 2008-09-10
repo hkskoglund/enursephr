@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define SQL_SERVER_COMPACT_SP1_WORKAROUND
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,10 @@ using System.Windows.Annotations;
 using System.Windows.Annotations.Storage;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using eNursePHR.BusinessLayer;
 using System.Xml.Linq;
 using System.Xml;
+
+using eNursePHR.BusinessLayer.PHR;
 
 // Code based on info. from Derek Mehlhorn blog http://blogs.msdn.com/mehlhorn/archive/2006/03/11/549132.aspx
 
@@ -79,7 +82,14 @@ namespace eNursePHR.userInterfaceLayer
 
         public CPAnnotation annotationInDB(Guid aGuid)
         {
+
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            // Sp 1 Beta
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == aGuid);
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            // Sp 1 workaround
+            var q = App.carePlan.DB.Annotation.Where("it.Id = GUID '"+aGuid+"'");
+#endif      
             if (q.Count() == 0)
                 return null;
 
@@ -122,7 +132,14 @@ namespace eNursePHR.userInterfaceLayer
 
         private void deleteAnnotation(Annotation annotation)
         {
+
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            // Sp 1 BETA
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == annotation.Id);
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)           
+            // SP 1 workaround
+            var q = App.carePlan.DB.Annotation.Where("it.Id = GUID '"+ annotation.Id+"'");
+#endif
             if (q.Count() == 1)
             {
                 App.carePlan.DB.DeleteObject((CPAnnotation)q.First());

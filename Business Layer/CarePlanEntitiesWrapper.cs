@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.BusinessLayer
 {

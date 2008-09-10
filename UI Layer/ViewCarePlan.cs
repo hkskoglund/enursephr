@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define SQL_SERVER_COMPACT_SP1_WORKAROUND
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +13,14 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
-using eNursePHR.BusinessLayer;
 using System.IO;
 using System.Windows.Shapes;
 
+
 using System.Windows.Media.Imaging;
+
+using eNursePHR.BusinessLayer;
+using eNursePHR.BusinessLayer.PHR;
 
 
 namespace eNursePHR.userInterfaceLayer
@@ -326,7 +331,15 @@ namespace eNursePHR.userInterfaceLayer
                        tbActionModifier.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("InterventionColor");
                        tbActionModifier.FontSize = 12;
                        tbActionModifier.VerticalAlignment = VerticalAlignment.Center;
+
+                       // SP 1 Beta
+
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
                        string definition = App.cccFrameWork.DB.ActionType.Where(a => a.Code == tag.ActionT.Code && a.Language_Name == Properties.Settings.Default.LanguageName && a.Version == Properties.Settings.Default.Version).First().Definition;
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                       // SP 1 workaround
+                       string definition = App.cccFrameWork.DB.ActionType.Where("it.Code = '"+  tag.ActionT.Code + "' AND it.Language_Name ='"+ Properties.Settings.Default.LanguageName + "' AND it.Version = '"+ Properties.Settings.Default.Version+"'").First().Definition;
+#endif                       
                        if (definition != null)
                            tbActionModifier.ToolTip = definition;
                        else

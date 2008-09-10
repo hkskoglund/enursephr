@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30428</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{081A088E-EC70-4679-8DBA-124FB6C5788F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -87,32 +87,32 @@
     <Compile Include="CarePlanEntitiesWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CCC Terminology\CCC Terminology.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CCC Terminology.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CCC Translations\CCCV2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CCCV2.edmx</DependentUpon>
+    </Compile>
     <Compile Include="ContentType.cs" />
     <Compile Include="ConverterByteString.cs" />
     <Compile Include="databaseHealth.cs" />
     <Compile Include="CCCFramework.cs" />
-    <Compile Include="EF models\CCCReference.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CCCReference.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF models\ClinicalCareClassificationV2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ClinicalCareClassificationV2.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF models\Extension\CommentOnDiagnosisAndIntervention.cs" />
-    <Compile Include="EF models\Extension\ComponentPattern.cs" />
-    <Compile Include="EF models\Extension\FriendlyHistory.cs" />
-    <Compile Include="EF models\Extension\FriendlyTag.cs" />
-    <Compile Include="EF models\Extension\SingleConceptOnActionType.cs" />
-    <Compile Include="EF models\Extension\LanguageVerification.cs" />
+    <Compile Include="CCC Translations\Extensions\CommentOnDiagnosisAndIntervention.cs" />
+    <Compile Include="CCC Translations\Extensions\ComponentPattern.cs" />
+    <Compile Include="PHR\Extensions\FriendlyHistory.cs" />
+    <Compile Include="PHR\Extensions\FriendlyTag.cs" />
+    <Compile Include="CCC Terminology\Extensions\SingleConceptOnActionType.cs" />
+    <Compile Include="CCC Terminology\Extensions\LanguageVerification.cs" />
     <Compile Include="EF models\Measurements.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Measurements.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EF models\PHR.Designer.cs">
+    <Compile Include="PHR\PHR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PHR.edmx</DependentUpon>
@@ -133,34 +133,23 @@
     <Compile Include="TerminologyAnalysis\MOutcomeType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Release\EF models\CCCFrameworkCompact.csdl" />
-    <None Include="bin\Release\EF models\CCCFrameworkCompact.msl" />
-    <None Include="bin\Release\EF models\CCCFrameworkCompact.ssdl" />
-    <None Include="bin\Release\EF models\CCCReferenceCompact.csdl" />
-    <None Include="bin\Release\EF models\CCCReferenceCompact.msl" />
-    <None Include="bin\Release\EF models\CCCReferenceCompact.ssdl" />
-    <None Include="bin\Debug\EF models\CCCFrameworkCompact.csdl" />
-    <None Include="bin\Debug\EF models\CCCReferenceCompact.ssdl" />
-    <None Include="bin\Debug\EF models\CCCFrameworkCompact.msl" />
-    <None Include="bin\Debug\EF models\CCCFrameworkCompact.ssdl" />
-    <None Include="bin\Debug\EF models\CCCReferenceCompact.csdl" />
-    <None Include="bin\Debug\EF models\CCCReferenceCompact.msl" />
-    <EntityDeploy Include="EF models\PHR.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PHR.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="EF models\ClinicalCareClassificationV2.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ClinicalCareClassificationV2.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="EF models\CCCReference.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CCCReference.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <EntityDeploy Include="EF models\Measurements.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Measurements.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="PHR\PHR.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PHR.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="CCC Terminology\CCC Terminology.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CCC Terminology.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="CCC Translations\CCCV2.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CCCV2.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -221,7 +210,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\CCC Terminology\" />
+    <Folder Include="bin\Debug\CCC Translations\" />
     <Folder Include="bin\Debug\Databases\" />
+    <Folder Include="bin\Debug\EF models\" />
+    <Folder Include="bin\Release\CCC Terminology\" />
+    <Folder Include="bin\Release\CCC Translations\" />
+    <Folder Include="bin\Release\EF models\" />
+    <Folder Include="bin\Release\PHR\" />
+    <Folder Include="EF models\Extension\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
