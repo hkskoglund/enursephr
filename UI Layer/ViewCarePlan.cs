@@ -227,214 +227,256 @@ namespace eNursePHR.userInterfaceLayer
             (sender as Section).BorderBrush = null;
         }
 
+        /// <summary>
+        /// This method generate a textblock for a care component, it will not generate the care component
+        /// more than once if the next care component is the same (its necessary to have an ordered list by care component)
+        /// </summary>
+        /// <param name="prevCareComponent"></param>
+        /// <param name="tag"></param>
+        /// <param name="pTags"></param>
+        private TextBlock generateCareComponent(ref string prevCareComponent, Tag tag, ref Paragraph pTags)
+        {
+            // Care Component Concept
+            TextBlock tbCareComponent = null;
+            string currentCareComponent = tag.CareComponentConcept.Trim().ToUpperInvariant();
+            if (prevCareComponent != currentCareComponent)
+            {
+                tbCareComponent = new TextBlock(new Run(currentCareComponent));
+                tbCareComponent.FontSize = 14;
+                tbCareComponent.FontWeight = FontWeights.UltraBold;
+                tbCareComponent.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareComponentColor");
+                tbCareComponent.Margin = new Thickness(10, 0, 10, 0);
+                tbCareComponent.VerticalAlignment = VerticalAlignment.Center;
+                prevCareComponent = currentCareComponent;
+            }
+
+            return tbCareComponent;
+
+        }
+
+        private TextBlock generateComment(Tag tag)
+        {
+            TextBlock tbComment = null;
+
+    
+            // Check for a tag with a comment (reason for diagnosis, etc.)
+            if (tag.Comment == null)
+                if (tag.Comment.Length == 0)
+                    return null;
+
+
+            tbComment = new TextBlock(new Run(tag.Comment));
+            tbComment.ToolTip = tag.Concept;
+            tbComment.Width = 200;
+            tbComment.TextWrapping = TextWrapping.Wrap;
+            tbComment.VerticalAlignment = VerticalAlignment.Center;
+                    //switch (tag.TaxonomyType)
+                    //{
+                    //    case "CCC/NursingDiagnosis": tbComment.Foreground = Brushes.Green; break;
+                    //    case "CCC/NursingIntervention": tbComment.Foreground = Brushes.Blue; break;
+                    //}
+
+                    // pTags.Inlines.Add(tbComment);
+                    // startParentesis = "(";
+
+            return tbComment;
+
+               
+        }
+
+        private TextBlock generateActionType(Tag tag)
+        {
+             TextBlock tbActionModifier = null;
+            
+                // Make sure action type is loaded
+                if (!tag.ActionTReference.IsLoaded)
+                    tag.ActionTReference.Load();
+
+
+                bool hasActionType = (tag.ActionT == null) ? false : true;
+
+
+                if (hasActionType)
+                {
+                    tbActionModifier = new TextBlock(new Run(/*startParentesis+*/tag.ActionT.SingleConcept));
+                    tbActionModifier.Margin = new Thickness(0, 0, 5, 0);
+                    //startParentesis = String.Empty;
+                    tbActionModifier.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("InterventionColor");
+                    tbActionModifier.FontSize = 12;
+                    tbActionModifier.VerticalAlignment = VerticalAlignment.Center;
+
+                    // SP 1 Beta
+
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                       string definition = App.cccFrameWork.DB.ActionType.Where(a => a.Code == tag.ActionT.Code && a.Language_Name == Properties.Settings.Default.LanguageName && a.Version == Properties.Settings.Default.Version).First().Definition;
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                    // SP 1 workaround
+                    string definition = App.cccFrameWork.DB.ActionType.Where("it.Code = '" + tag.ActionT.Code + "' AND it.Language_Name ='" + Properties.Settings.Default.LanguageName + "' AND it.Version = '" + Properties.Settings.Default.Version + "'").First().Definition;
+#endif
+                    if (definition != null)
+                        tbActionModifier.ToolTip = definition;
+                    else
+                        tbActionModifier.ToolTip = "Definition for action type was not found";
+
+                }
+
+            return tbActionModifier;
+
+        }
+
+
 
         private Paragraph generateTags(TagHandler tagHandler,Item item)
         {
-            
-            bool hasComment;
-            bool hasActionType;
-
+          
+            // Check for a journal entry that has no associated tags --> unnecessary to generate paragraph for tags
             if (item.Tag.Count == 0)
                 return null;
 
-            IOrderedEnumerable<Tag> orderedTags = item.Tag.OrderBy(t => t.CareComponentConcept).ThenBy(t => t.Concept);
-            Tag lastTag = orderedTags.Last();
+            // Order tags by care component (important) then by concept
+            IOrderedEnumerable<Tag> orderedByCareComponentTags = item.Tag.OrderBy(t => t.CareComponentConcept).ThenBy(t => t.Concept);
+            Tag lastTag = orderedByCareComponentTags.Last();
 
+            // Setup paragraph layout
             Paragraph pTags = new Paragraph();
             pTags.FontSize = 9;
             pTags.TextAlignment = TextAlignment.Left;
             
 
             string prevCareComponent = null;
-            string currentCareComponent;
-
+        
            // pTags.Inlines.Add("Tags : ");
-            foreach (Tag tag in orderedTags)
+
+            foreach (Tag tag in orderedByCareComponentTags)
             {
 
 
                 tagHandler.updateTag(App.cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, Properties.Settings.Default.Version);
                 ((WindowMain)App.Current.MainWindow).refreshOutcomes(tag);
 
-                // Care Component Concept
-                TextBlock tbCareComponent;
-                currentCareComponent = tag.CareComponentConcept.Trim().ToUpperInvariant();
-                if (prevCareComponent != currentCareComponent)
-                {
-                    tbCareComponent = new TextBlock(new Run(currentCareComponent));
-                    tbCareComponent.FontSize = 14;
-                    tbCareComponent.FontWeight = FontWeights.UltraBold;
-                    tbCareComponent.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareComponentColor");
-                    tbCareComponent.Margin = new Thickness(10, 0, 10, 0);
-                    tbCareComponent.VerticalAlignment = VerticalAlignment.Center;
+                // Generate care component textblock an add it to the paragraph
+                TextBlock tbCareComponent = generateCareComponent(ref prevCareComponent, tag, ref pTags); // Refactored 12 september 08
+                if (tbCareComponent != null)
                     pTags.Inlines.Add(tbCareComponent);
-                    prevCareComponent = currentCareComponent;
-                }
 
-                //string delimiter = ", ";
-                //if (tag == lastTag)
-                //    delimiter = null;
+                TextBlock tbComment = generateComment(tag);
 
-                
-               //string startParentesis = String.Empty;
-               //string endParentesis = String.Empty;
+                StackPanel spTagContainer = new StackPanel();
+                spTagContainer.Width = 220;
+                spTagContainer.Margin = new Thickness(5, 5, 5, 0);
 
-                TextBlock tbComment = null;
-               hasComment = false;
-               if (tag.Comment != null)
-                   if (tag.Comment.Length > 0)
-                   {
-                       hasComment = true;
-                       tbComment = new TextBlock(new Run(tag.Comment));
-                       tbComment.ToolTip = tag.Concept;
-                       tbComment.Width = 200;
-                       tbComment.TextWrapping = TextWrapping.Wrap;
-                       tbComment.VerticalAlignment = VerticalAlignment.Center;
-                       //switch (tag.TaxonomyType)
-                       //{
-                       //    case "CCC/NursingDiagnosis": tbComment.Foreground = Brushes.Green; break;
-                       //    case "CCC/NursingIntervention": tbComment.Foreground = Brushes.Blue; break;
-                       //}
-                      
-                      // pTags.Inlines.Add(tbComment);
-                      // startParentesis = "(";
-                   }
+
+                StackPanel spTagDiagInterv = new StackPanel();
+                spTagDiagInterv.Orientation = Orientation.Horizontal;
 
                 
-               //if (!hasComment)
-               //{
-
-                   InlineUIContainer tagContainer = new InlineUIContainer();
-                   StackPanel spTagContainer = new StackPanel();
-                   spTagContainer.Width = 220;
-                   spTagContainer.Margin = new Thickness(5,5,5,0);
-                   
-
-                   StackPanel spTagDiagInterv = new StackPanel();
-                   spTagDiagInterv.Orientation = Orientation.Horizontal;
-
-                   // Make sure action type is loaded
-                   if (!tag.ActionTReference.IsLoaded)
-                       tag.ActionTReference.Load();
-
-             
-                   hasActionType = (tag.ActionT == null) ? false : true;
-
-                   
-                   TextBlock tbActionModifier;
-
-                   if (hasActionType)
-                   {
-                       tbActionModifier = new TextBlock(new Run(/*startParentesis+*/tag.ActionT.SingleConcept));
-                       tbActionModifier.Margin = new Thickness(0, 0, 5, 0);
-                       //startParentesis = String.Empty;
-                       tbActionModifier.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("InterventionColor");
-                       tbActionModifier.FontSize = 12;
-                       tbActionModifier.VerticalAlignment = VerticalAlignment.Center;
-
-                       // SP 1 Beta
-
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                       string definition = App.cccFrameWork.DB.ActionType.Where(a => a.Code == tag.ActionT.Code && a.Language_Name == Properties.Settings.Default.LanguageName && a.Version == Properties.Settings.Default.Version).First().Definition;
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                       // SP 1 workaround
-                       string definition = App.cccFrameWork.DB.ActionType.Where("it.Code = '"+  tag.ActionT.Code + "' AND it.Language_Name ='"+ Properties.Settings.Default.LanguageName + "' AND it.Version = '"+ Properties.Settings.Default.Version+"'").First().Definition;
-#endif                       
-                       if (definition != null)
-                           tbActionModifier.ToolTip = definition;
-                       else
-                           tbActionModifier.ToolTip = "Definition for action type was not found";
-
-                       spTagDiagInterv.Children.Add(tbActionModifier);
-                       //pTags.Inlines.Add(tbActionModifier);
-                   }
-
-
-                   //if (hasComment)
-                   //    endParentesis = ")";
-
-                   TextBlock tbTag = new TextBlock(new Run(/*startParentesis+*/tag.Concept.Trim()/*+endParentesis*/));
-                   tbTag.FontWeight = FontWeights.UltraBold;
-                   tbTag.FontSize = 12;
-                   tbTag.VerticalAlignment = VerticalAlignment.Center;
-                   tbTag.TextWrapping = TextWrapping.Wrap;
-                   tbTag.Width = 190;
-                   tbTag.ToolTip = tag.Definition; // Allow definition to pop up as tooltip
-                   tbTag.MouseEnter += new MouseEventHandler(tbTag_MouseEnter);
-                   tbTag.MouseLeave += new MouseEventHandler(tbTag_MouseLeave);
-
-
-
-                   switch (tag.TaxonomyType)
-                   {
-                       case "CCC/NursingDiagnosis": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("DiagnosisColor"); break;
-                       case "CCC/NursingIntervention": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("InterventionColor"); break;
-                       case "CCC/CareComponent": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareComponentColor") ; break;
-                   }
-
-
+                TextBlock tbTag = generateTag(tag,ref spTagDiagInterv);
+                if (tbTag != null)
                    spTagDiagInterv.Children.Add(tbTag);
 
 
-                   StackPanel spLatestOutcome = null;
+                
+                spTagContainer.Children.Add(spTagDiagInterv);
 
-                 bool hasLatestOutcome = (tag.LatestOutcome == null) ? false : true;
+                StackPanel spLatestOutcome = null;
 
-                   if (hasLatestOutcome)
-                   {
-                       spLatestOutcome = new StackPanel();
-                       spLatestOutcome.Orientation = Orientation.Horizontal;
-                       TextBlock tbWill = new TextBlock(new Run("will "));
-                       tbWill.FontSize = 12;
-                       spLatestOutcome.Children.Add(tbWill);
-                       TextBlock tbLatestOutcome = new TextBlock();
-                       tbLatestOutcome.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("DiagnosisColor");
-                       tbLatestOutcome.FontSize = 12;
-                       tbLatestOutcome.Margin = new Thickness(0, 0, 5, 0);
-                       RemoveParentesisOutcomeConceptConverter conv = new RemoveParentesisOutcomeConceptConverter();
-                       tbLatestOutcome.Inlines.Add((string)conv.Convert(tag.LatestOutcomeModifier,null,null,null));
-                       spLatestOutcome.Children.Add(tbLatestOutcome);
+                bool hasLatestOutcome = generateLatestOutcome(tag, ref spLatestOutcome);
+                
+                if (hasLatestOutcome)
+                    spTagContainer.Children.Add(spLatestOutcome);
 
-                       BitmapImage bImg = new BitmapImage();
-                       bImg.DecodePixelHeight = 15;
-                       Image imgOutcome = new Image();
-                       bImg.BeginInit();
-                       switch (tag.LatestOutcome)
-                       {
-                           case 1: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Improved.png"); break;
-                           case 2: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Stabilized.png"); break;
-                           case 3: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Worsened.png"); break;
-                       }
+                if (tbComment != null)
+                    spTagContainer.Children.Add(tbComment);
 
-                       bImg.EndInit();
-                       imgOutcome.Source = bImg;
-                       imgOutcome.Height = 15;
-                       imgOutcome.Width = 15;
+                //Border bTag = new Border();
+                //bTag.BorderThickness = new Thickness(1);
+                //bTag.BorderBrush = Brushes.CadetBlue;
+                //bTag.CornerRadius = new CornerRadius(5);
+                //bTag.Padding = new Thickness(5);
+                //bTag.Child = spTagContainer;
+                pTags.Inlines.Add(spTagContainer);
 
-                       spLatestOutcome.Children.Add(imgOutcome);
-                   }
-               //    pTags.Inlines.Add(tbTag);
-               //}
+            }
+            return pTags;
+        }
 
-                //if (delimiter != null)
-                //    pTags.Inlines.Add(delimiter);
-                   spTagContainer.Children.Add(spTagDiagInterv);
-                   if (hasLatestOutcome)
-                       spTagContainer.Children.Add(spLatestOutcome);
+        private bool generateLatestOutcome(Tag tag, ref StackPanel spLatestOutcome)
+        {
+            bool hasLatestOutcome = (tag.LatestOutcome == null) ? false : true;
 
-                   if (hasComment)
-                      spTagContainer.Children.Add(tbComment);
-                  
-                   //Border bTag = new Border();
-                   //bTag.BorderThickness = new Thickness(1);
-                   //bTag.BorderBrush = Brushes.CadetBlue;
-                   //bTag.CornerRadius = new CornerRadius(5);
-                   //bTag.Padding = new Thickness(5);
-                   //bTag.Child = spTagContainer;
-                   pTags.Inlines.Add(spTagContainer);
+            if (hasLatestOutcome)
+            {
+                spLatestOutcome = new StackPanel();
+                spLatestOutcome.Orientation = Orientation.Horizontal;
+                TextBlock tbWill = new TextBlock(new Run("will "));
+                tbWill.FontSize = 12;
+                spLatestOutcome.Children.Add(tbWill);
+                TextBlock tbLatestOutcome = new TextBlock();
+                tbLatestOutcome.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("DiagnosisColor");
+                tbLatestOutcome.FontSize = 12;
+                tbLatestOutcome.Margin = new Thickness(0, 0, 5, 0);
+                RemoveParentesisOutcomeConceptConverter conv = new RemoveParentesisOutcomeConceptConverter();
+                tbLatestOutcome.Inlines.Add((string)conv.Convert(tag.LatestOutcomeModifier, null, null, null));
+                spLatestOutcome.Children.Add(tbLatestOutcome);
+
+                BitmapImage bImg = new BitmapImage();
+                bImg.DecodePixelHeight = 15;
+                Image imgOutcome = new Image();
+                bImg.BeginInit();
+                switch (tag.LatestOutcome)
+                {
+                    case 1: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Improved.png"); break;
+                    case 2: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Stabilized.png"); break;
+                    case 3: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Worsened.png"); break;
+                }
+
+                bImg.EndInit();
+                imgOutcome.Source = bImg;
+                imgOutcome.Height = 15;
+                imgOutcome.Width = 15;
+
+                spLatestOutcome.Children.Add(imgOutcome);
             }
 
-            return pTags;
+            return hasLatestOutcome;
+        }
+
+        private TextBlock generateTag(Tag tag, ref StackPanel spTagDiagInterv)
+        {
+
+            // Add if neccessary action modifier for intervention
+            TextBlock tbActionModifier = null;
+            if (tag.TaxonomyType == "CCC/NursingIntervention")
+            {
+
+                tbActionModifier = generateActionType(tag);
+
+                if (tbActionModifier != null)
+                    spTagDiagInterv.Children.Add(tbActionModifier);
+            }
+
+
+            TextBlock tbTag = new TextBlock(new Run(/*startParentesis+*/tag.Concept.Trim()/*+endParentesis*/));
+            tbTag.FontWeight = FontWeights.UltraBold;
+            tbTag.FontSize = 12;
+            tbTag.VerticalAlignment = VerticalAlignment.Center;
+            tbTag.TextWrapping = TextWrapping.Wrap;
+            tbTag.Width = 190;
+            tbTag.ToolTip = tag.Definition; // Allow definition to pop up as tooltip
+            tbTag.MouseEnter += new MouseEventHandler(tbTag_MouseEnter);
+            tbTag.MouseLeave += new MouseEventHandler(tbTag_MouseLeave);
+
+
+
+            switch (tag.TaxonomyType)
+            {
+                case "CCC/NursingDiagnosis": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("DiagnosisColor"); break;
+                case "CCC/NursingIntervention": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("InterventionColor"); break;
+                case "CCC/CareComponent": tbTag.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("CareComponentColor"); break;
+            }
+
+
+            return tbTag;
         }
 
         void tbTag_MouseEnter(object sender, MouseEventArgs e)

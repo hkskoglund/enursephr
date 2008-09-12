@@ -528,6 +528,15 @@ namespace eNursePHR.BusinessLayer
             return referenceActionType.ToList();
         }
 
+        /// <summary>
+        /// This method will query the database / CCC framework for a specific diagnosis
+        /// Pseudo :
+        ///    1. Query the reference framework for all diagnosis (componentcode,major,minor) - set RF
+        ///    2. For each diagnosis in RF query CCC framework for the diagnosis
+        /// </summary>
+        /// <param name="verifyVersion"></param>
+        /// <param name="verifyLanguageName"></param>
+        /// <returns></returns>
         public List<eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Diagnosis> deepVerifyNursingDiagnosis(string verifyVersion, string verifyLanguageName)
         {
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
@@ -592,10 +601,10 @@ namespace eNursePHR.BusinessLayer
 #endif
                 int diagFound = verifyNursingDiagnosis.Count();
 
-                if (verifyNursingDiagnosis.Count() == 1)
-                    verifyDiag.Verified = true;
-                else
-                    verifyDiag.Verified = false;
+
+
+                verifyDiag.Verified = (diagFound == 1) ? true : false;
+
             }
 
             return referenceNursingDiagnosis;
