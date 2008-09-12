@@ -8,7 +8,8 @@
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     Title="About"  
     Background="{StaticResource BlueTheme}"    
-    Height="700" Width="450" 
+    Height="700" 
+    Width="450" 
     ResizeMode="NoResize" >
     <Window.Resources>
 
@@ -42,7 +43,7 @@
         </DataTemplate>
     </Window.Resources>
         <StackPanel>
-       <FlowDocumentScrollViewer  Height="450" x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
+       <FlowDocumentScrollViewer  Height="480" x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
         <FlowDocument >
 
             <FlowDocument.Resources>
@@ -69,7 +70,9 @@
 
             <Paragraph  Style="{StaticResource Title}">
                 eNurse Personal Health Record
-                <Floater 
+                    <LineBreak />
+                Prototype
+                    <Floater 
             Margin="5"  
             HorizontalAlignment="Center"
             
@@ -82,9 +85,10 @@
 
 
             <Paragraph Style="{StaticResource BodyText}">
-                This application is a personal health record that makes it possible to search and tag your health information by using
+                This application is a prototype personal health record that makes it possible to search and tag health information by using
                 the <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>. The content model is inspired from 
-                RSS with a title and and a description for each entry in the health record. 
+                RSS with a title and and a description for each entry in the health record. Currently it is intended for use in research
+                and education.
                 <LineBreak />
                 <LineBreak />
                 <!--

@@ -108,6 +108,7 @@ namespace eNursePHR.BusinessLayer
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
 
                 // SP 1 code
+                this.ExpectedNumberOfCarePatterns = db.Framework.Where("it.Version = '" + this.Version + "'").First().ExpectedNumberOfCarePatterns;
                 this.ExpectedNumberOfCareComponents = db.Framework.Where("it.Version = '" + this.Version + "'").First().ExpectedNumerOfCareComponents;
                 this.ExpectedNumberOfDiagnoses = db.Framework.Where("it.Version = '" + this.Version + "'").First().ExpectedNumberOfDiagnoses;
                 this.ExpectedNumberOfInterventions = db.Framework.Where("it.Version = '" + this.Version + "'").First().ExpectedNumberOfInterventions;
@@ -163,37 +164,13 @@ namespace eNursePHR.BusinessLayer
                     " " + db.Copyright.Where("it.Language_Name = '" + language + "'").First().Version +
                     " by " + db.Copyright.Where("it.Language_Name = '" + language + "'").First().Authors;
               
-               
-                if (this.ExpectedNumberOfCarePatterns == lf.CarePatternsShallow)
-                    lf.CarePatternsAsExpected = true;
-                else
-                    lf.CarePatternsAsExpected = false;
-
-                if (this.ExpectedNumberOfCareComponents == lf.CareComponentsShallow)
-                    lf.CareComponentsAsExpected = true;
-                else
-                    lf.CareComponentsAsExpected = false;
-
-                if (this.ExpectedNumberOfDiagnoses == lf.NursingDiagnosesShallow)
-                    lf.DiagnosesAsExpected = true;
-                else
-                    lf.DiagnosesAsExpected = false;
-
-                if (this.ExpectedNumberOfInterventions == lf.NursingInterventionsShallow)
-                    lf.InterventionsAsExpected = true;
-                else
-                    lf.InterventionsAsExpected = false;
-
-                if (this.ExpectedNumberOfOutcomeTypes == lf.OutcomeTypesShallow)
-                    lf.OutcomeTypesAsExpected= true;
-                else
-                    lf.OutcomeTypesAsExpected = false;
-
-
-                if (this.ExpectedNumberOfActionTypes == lf.ActionTypesShallow)
-                    lf.ActionTypesAsExpected = true;
-                else
-                    lf.ActionTypesAsExpected = false;
+                
+                lf.CarePatternsAsExpected = (this.ExpectedNumberOfCarePatterns == lf.CarePatternsShallow) ? true : false;
+                lf.CareComponentsAsExpected = (this.ExpectedNumberOfCareComponents == lf.CareComponentsShallow) ? true : false;
+                lf.DiagnosesAsExpected = (this.ExpectedNumberOfDiagnoses == lf.NursingDiagnosesShallow) ? true : false;
+                lf.InterventionsAsExpected = (this.ExpectedNumberOfInterventions == lf.NursingInterventionsShallow) ? true : false;
+                lf.OutcomeTypesAsExpected = (this.ExpectedNumberOfOutcomeTypes == lf.OutcomeTypesShallow) ? true : false;
+                lf.ActionTypesAsExpected = (this.ExpectedNumberOfActionTypes == lf.ActionTypesShallow) ? true : false;
 
                 this._langframeworkList.Add(lf);
 

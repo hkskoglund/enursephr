@@ -37,6 +37,10 @@ Adapted for SQL Compact v3.5 by H. Skoglund february 2008
 American v2.0 - electronically converted from .CSV/reference terminology
 Korean v2.0 - manually converted from Word-document (not reviewed, may contain errors)
 Norwegian v2.0 - manually converted from Word-document (not reviewed, may contain errors)
+    
+September 2008
+Turkish v2.0 - - manually converted from Word-document (not reviewed, may contain errors)
+    
 
 Recommended use at the moment: research/testing-purposes
 
@@ -48,21 +52,24 @@ Recommended use at the moment: research/testing-purposes
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+    xmlns:annot="clr-namespace:System.Windows.Annotations;assembly=PresentationFramework"
+    xmlns:ui="clr-namespace:eNursePHR.userInterfaceLayer"
+        
+        
     xmlns:dc="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.DateControls;assembly=J832.Wpf.BagOTricksLib"
     xmlns:ac="clr-namespace:AC.AvalonControlsLibrary.Controls;assembly=AvalonControlsLibrary"
    
-    xmlns:annot="clr-namespace:System.Windows.Annotations;assembly=PresentationFramework"
-    xmlns:ui="clr-namespace:eNursePHR.userInterfaceLayer"
-    Title="eNurse Personal Health Record"   
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
+
+    Title="eNurse Personal Health Record - prototype"   
     Loaded="Window_Loaded" 
     SizeToContent="Height" 
     Closing="Window_Closing" 
     WindowStyle="SingleBorderWindow" Height="423.383" Width="1108"
     WindowStartupLocation="CenterScreen"
     
-    x:Name="wndMain" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" >
+    x:Name="wndMain" >
     <Window.Resources>
     
     <!-- Converters -->
@@ -80,8 +87,6 @@ Recommended use at the moment: research/testing-purposes
         <ui:RoundSliderConverter x:Key="RoundSliderConverter" />
       
         <!--<ui:ConvertXmlElementToXmlDocument x:Key="ConvertXmlElementToXmlDocument" />-->
-
-
 
 		<!-- Based on http://adoguy.com/2007/04/17/Changing_the_Selected_Style_of_ListBox_s_in_XAML.aspx, accessed 20 march 08-->
 		<Style x:Key="GreenItemContainer"  TargetType="{x:Type ListViewItem}">
@@ -634,12 +639,12 @@ Recommended use at the moment: research/testing-purposes
                                 </DataTrigger>
                                 
                                 <DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="True">
-									<Setter Property="ToolTip" Value="Passed language integrity shallow test" TargetName="imgFlagCombo" />
+									<Setter Property="ToolTip" Value="Passed language integrity shallow test (everthing as the expected count)" TargetName="imgFlagCombo" />
 								  <!--<Setter Property="Source" Value="Images/OK.png" TargetName="imgPassed" />-->
 	                           
 								 </DataTrigger>
 								<DataTrigger Binding="{dat:Binding Path=ValidShallow}" Value="False">
-									<Setter Property="ToolTip" Value="Did not pass the language integrity shallow test" TargetName="imgFlagCombo" />
+									<Setter Property="ToolTip" Value="Did not pass the language integrity shallow test (something not as the expected count) " TargetName="imgFlagCombo" />
 								  <!--<Setter Property="Source" Value="Images/ERROR.png" TargetName="imgPassed" />-->
 	                           
 								</DataTrigger>
