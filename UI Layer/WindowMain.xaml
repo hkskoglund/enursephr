@@ -27,10 +27,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- CCC databases - Copyright (C) Sabacare Inc. 2007, 
 
-Permission granted february 2008 for use in e-Nurse Care Planner *only*. In april 2008 e-Nurse Care Planner
+Permission granted february 2008 for use in e-Nurse Care Planner. In april 2008 e-Nurse Care Planner
 changed name to eNurse Personal Health Record and the focus for development will be targated at
-personal use. Derived products/applications must ask for 
-permission to use databases  via Sabacare http://www.sabacare.com
+personal use, but primarily targeted at research and education for the moment. 
 
 Adapted for SQL Compact v3.5 by H. Skoglund february 2008
 
@@ -1060,7 +1059,7 @@ Recommended use at the moment: research/testing-purposes
           Background="{StaticResource BlueTheme}"
           Padding="5" >
                             <Expander.Header>
-                                <TextBlock Text="Tags" FontSize="13" FontWeight="UltraBold" />
+                                <TextBlock Text="Tags overview" FontSize="13" FontWeight="UltraBold" />
                   
                 </Expander.Header>
                             <ListView x:Name="lbTaxonomy" MaxHeight="600" 

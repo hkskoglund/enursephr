@@ -20,8 +20,13 @@ using eNursePHR.BusinessLayer.PHR;
 namespace eNursePHR.userInterfaceLayer
 {
 
+    public delegate void hideBtnSaveEventHandler(object sender, EventArgs e);
+       
     public class ItemAnnotationStore
     {
+
+        public event hideBtnSaveEventHandler hideBtnSaveEvent;
+
         private MemoryStream aStream;
         private AnnotationStore _store;
         public AnnotationStore Store
@@ -35,6 +40,7 @@ namespace eNursePHR.userInterfaceLayer
             get { return _CurrentItem; }
         }
 
+        // Text and Ink annotations are saved on explicitt button/save click
         private List<Annotation> _InkAndTextStickNotesToBeSaved;
 
         public ItemAnnotationStore(Item item)
@@ -115,7 +121,7 @@ namespace eNursePHR.userInterfaceLayer
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == aGuid);
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
             // Sp 1 workaround
-            var q = App.carePlan.DB.Annotation.Where("it.Id = GUID '"+aGuid+"'");
+            var q = App.carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+aGuid+"'");
 #endif      
             if (q.Count() == 0)
                 return null;
@@ -141,7 +147,7 @@ namespace eNursePHR.userInterfaceLayer
                 History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                 itemAnnotation.History = newHistory;
 
-                App.carePlan.DB.AddToAnnotation(itemAnnotation);
+                App.carePlan.DB.AddToCPAnnotation(itemAnnotation);
                 App.carePlan.DB.AddToHistory(newHistory);
 
 
@@ -171,11 +177,12 @@ namespace eNursePHR.userInterfaceLayer
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == annotation.Id);
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)           
             // SP 1 workaround
-            var q = App.carePlan.DB.Annotation.Where("it.Id = GUID '"+ annotation.Id+"'");
+            var q = App.carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+ annotation.Id+"'");
 #endif
             if (q.Count() == 1)
             {
                 deleteAnnotation = q.First() as CPAnnotation;
+                
                 // Check if this annotation has been changed recently
                 if (this._InkAndTextStickNotesToBeSaved.Contains(annotation))
                 {
@@ -183,8 +190,11 @@ namespace eNursePHR.userInterfaceLayer
                     if (this._InkAndTextStickNotesToBeSaved.Count == 0)
                     {
                         // A little dirty trick here to call user interface code....
-                        WindowMain wndMain = App.Current.MainWindow as WindowMain;
-                        wndMain.btnSaveTextInkAnnotation.Visibility = System.Windows.Visibility.Collapsed;
+                        //WindowMain wndMain = App.Current.MainWindow as WindowMain;
+                        //wndMain.btnSaveTextInkAnnotation.Visibility = System.Windows.Visibility.Collapsed;
+                        if (hideBtnSaveEvent != null)
+                            hideBtnSaveEvent(this, new EventArgs());
+
                     }
                        
                 }
@@ -283,13 +293,16 @@ namespace eNursePHR.userInterfaceLayer
             get { return _service; }
         }
 
-        public void changeItemStore(Item item, AnnotationResourceChangedEventHandler uiUpdSave)
+        public void changeItemStore(Item item, 
+            AnnotationResourceChangedEventHandler uiUpdSave, 
+            hideBtnSaveEventHandler uiHideSave)
         {
             if (_service.IsEnabled)
               _service.Disable();
              _iAnnotationStore = new ItemAnnotationStore(item);
             // Add CargoChanged event handling for the user interface -> updates the save button visibility when cargo changes
             _iAnnotationStore.Store.CargoChanged +=new AnnotationResourceChangedEventHandler(uiUpdSave);
+            _iAnnotationStore.hideBtnSaveEvent += new hideBtnSaveEventHandler(uiHideSave);
             _service.Enable(_iAnnotationStore.Store);
         }
 

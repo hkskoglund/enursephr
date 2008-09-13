@@ -735,14 +735,12 @@ namespace eNursePHR.userInterfaceLayer
             ////spPanel.Children.Add(pTitle);
             //sItem.Blocks.Add(pTitle);
 
-            aService.changeItemStore(selItem,annotationStoreCargoChanged);
+            aService.changeItemStore(selItem,annotationStoreCargoChanged,hideBtnSaveAnnotations);
 
             infoAcq.Refresh(aService.Service.Store);
 
 
             App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
-
-
 
 
             //spPanel.Children.Add(fdview);
@@ -1111,7 +1109,7 @@ namespace eNursePHR.userInterfaceLayer
 
         private void turnOnAnnotationService(Item item)
         {
-            aService.changeItemStore(item,annotationStoreCargoChanged);
+            aService.changeItemStore(item,annotationStoreCargoChanged,hideBtnSaveAnnotations);
           
         }
 
@@ -2389,10 +2387,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 AnnotationHelper.DeleteInkStickyNotesForSelection(AnnotationService.GetService(fdReaderCareBlog));
 
-                // TO DO : delete from database
-
-                //aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
-
+        
             }
             else
                 MessageBox.Show("Empty selection to delete annotations from", "Empty selection", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -2436,6 +2431,12 @@ namespace eNursePHR.userInterfaceLayer
                 wndMain.btnSaveTextInkAnnotation.Visibility = System.Windows.Visibility.Visible;
             }
 
+        }
+
+        // Event handler for hiding annotations
+        public void hideBtnSaveAnnotations(object sender, EventArgs e)
+        {
+            btnSaveTextInkAnnotation.Visibility = Visibility.Collapsed;
         }
     }
 }

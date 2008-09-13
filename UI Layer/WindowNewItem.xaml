@@ -5,7 +5,9 @@
     Title="New diary entry" 
     SizeToContent="Height" Width="400"
     Background="{StaticResource BlueTheme}"
-    Loaded="Window_Loaded" Icon="Images\New.png"   >
+    Loaded="Window_Loaded" Icon="Images\New.png" 
+    ResizeMode="CanMinimize"
+       >
 	<Window.Resources>
 		<ui:DateTimeConverter x:Key="DateTimeConverter"></ui:DateTimeConverter>
 
@@ -46,9 +48,10 @@
             
             <TextBlock Margin="0,5,0,0" Text="Description" FontWeight="UltraBold" />
            
-            <RichTextBox x:Name="rtbDescription"  MaxHeight="300" Height="200" 
+            <RichTextBox x:Name="rtbDescription" Height="300" 
               TextChanged="rtbDescription_TextChanged"
               IsDocumentEnabled="True"
+              VerticalScrollBarVisibility="Auto"
              
               
              
