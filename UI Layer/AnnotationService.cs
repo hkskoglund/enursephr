@@ -28,55 +28,82 @@ namespace eNursePHR.userInterfaceLayer
         {
             get { return _store; }
         }
-       
+
+        private Item _CurrentItem;
+        public Item CurrentItem
+        {
+            get { return _CurrentItem; }
+        }
+
+        private List<Annotation> _InkAndTextStickNotesToBeSaved;
+
         public ItemAnnotationStore(Item item)
         {
             aStream = new MemoryStream();
             _store = new XmlStreamStore(aStream);
-       
+            this._CurrentItem = item;
+            this._InkAndTextStickNotesToBeSaved = new List<Annotation>();
+           
+
             loadAnnotations(item);
 
             // Subscribe to all events to store annotation data
             _store.StoreContentChanged += new StoreContentChangedEventHandler(annotationStoreChangeHandler);
-            // store.CargoChanged += new AnnotationResourceChangedEventHandler(store_CargoChanged);
+            _store.CargoChanged += new AnnotationResourceChangedEventHandler(annotationStoreCargoChanged);
             // store.AnchorChanged += new AnnotationResourceChangedEventHandler(store_AnchorChanged);
             // store.AuthorChanged += new AnnotationAuthorChangedEventHandler(store_AuthorChanged);
 
         }
 
+        /// <summary>
+        /// Load all annotations for the current item
+        /// </summary>
+        /// <param name="item"></param>
         private void loadAnnotations(Item item)
         {
+            // If not loaded, then load
             if (!item.Annotation.IsLoaded)
                 item.Annotation.Load();
-
+            // Add annotations to Xml store
             foreach (CPAnnotation itemAnnotation in item.Annotation)
 
                 _store.AddAnnotation(deSerializeAnnotation(itemAnnotation.Data));
 
         }
 
-       
+       /// <summary>
+       /// This method handles store changed events like Added and Deleted
+       /// </summary>
+       /// <param name="sender"></param>
+       /// <param name="e"></param>
         void annotationStoreChangeHandler(object sender, StoreContentChangedEventArgs e)
         {
             WindowMain wndMain = (WindowMain)App.Current.MainWindow;
 
+            // Handle highlight annotations
             if (e.Annotation.AnnotationType.Name == "Highlight")
             {
                 switch (e.Action)
                 {
                     case StoreContentAction.Added:
-                        wndMain.infoAcq.Statement.Add(e.Annotation);
+                        wndMain.infoAcq.Statement.Add(e.Annotation); // Add new statement to information acquisition window
                         break;
 
                     case StoreContentAction.Deleted:
 
-                        wndMain.infoAcq.Statement.Remove(e.Annotation);
+                        wndMain.infoAcq.Statement.Remove(e.Annotation); // Remove statement from information acq. window
                         deleteAnnotation(e.Annotation);
                         break;
                 }
-
-
             }
+            else
+            {
+
+                if (e.Action == StoreContentAction.Deleted) // Deletes ink and text notes
+                    deleteAnnotation(e.Annotation);
+            }
+
+            
         }
 
 
@@ -99,7 +126,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        public void saveAnnotation(Annotation annotation, Item item)
+        public void saveAnnotation(Annotation annotation)
         {
             CPAnnotation itemAnnotation = annotationInDB(annotation.Id);
 
@@ -109,7 +136,7 @@ namespace eNursePHR.userInterfaceLayer
                 // If not, create new
                 itemAnnotation = CPAnnotation.CreateCPAnnotation(annotation.Id);
                 itemAnnotation.Data = serializeAnnotation(annotation);
-                itemAnnotation.Item = item;
+                itemAnnotation.Item = this._CurrentItem;
 
                 History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                 itemAnnotation.History = newHistory;
@@ -122,6 +149,11 @@ namespace eNursePHR.userInterfaceLayer
             else // else, update
             {
                 itemAnnotation.Data = serializeAnnotation(annotation);
+                
+                // Make sure that the related history reference is loaded
+                if (!itemAnnotation.HistoryReference.IsLoaded)
+                    itemAnnotation.HistoryReference.Load();
+
                 itemAnnotation.History.UpdatedBy = System.Environment.UserName;
                 itemAnnotation.History.UpdatedDate = DateTime.Now;
 
@@ -132,6 +164,7 @@ namespace eNursePHR.userInterfaceLayer
 
         private void deleteAnnotation(Annotation annotation)
         {
+            CPAnnotation deleteAnnotation;
 
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
             // Sp 1 BETA
@@ -142,6 +175,19 @@ namespace eNursePHR.userInterfaceLayer
 #endif
             if (q.Count() == 1)
             {
+                deleteAnnotation = q.First() as CPAnnotation;
+                // Check if this annotation has been changed recently
+                if (this._InkAndTextStickNotesToBeSaved.Contains(annotation))
+                {
+                    this._InkAndTextStickNotesToBeSaved.Remove(annotation);
+                    if (this._InkAndTextStickNotesToBeSaved.Count == 0)
+                    {
+                        // A little dirty trick here to call user interface code....
+                        WindowMain wndMain = App.Current.MainWindow as WindowMain;
+                        wndMain.btnSaveTextInkAnnotation.Visibility = System.Windows.Visibility.Collapsed;
+                    }
+                       
+                }
                 App.carePlan.DB.DeleteObject((CPAnnotation)q.First());
                 App.carePlan.DB.SaveChanges();
             }
@@ -164,10 +210,27 @@ namespace eNursePHR.userInterfaceLayer
             //throw new NotImplementedException();
         }
 
-        void store_CargoChanged(object sender, AnnotationResourceChangedEventArgs e)
+        public void saveAnnotationWithCargoChanged()
         {
-            //storeAnnotations();
-            // storeAnnotationDetail(e.Annotation, e.Action);
+            foreach (Annotation a in this._InkAndTextStickNotesToBeSaved)
+                saveAnnotation(a);
+        }
+
+        void annotationStoreCargoChanged(object sender, AnnotationResourceChangedEventArgs e)
+        {
+            
+             if (e.Annotation.AnnotationType.Name == "TextStickyNote" ||
+                 e.Annotation.AnnotationType.Name == "InkStickyNote")
+            {
+                 // Turn on save button
+                 WindowMain wndMain = App.Current.MainWindow as WindowMain;
+                wndMain.btnSaveTextInkAnnotation.Visibility = System.Windows.Visibility.Visible;
+
+                 // Add annotation to the save list...
+                 if (!this._InkAndTextStickNotesToBeSaved.Contains(e.Annotation))
+                   this._InkAndTextStickNotesToBeSaved.Add(e.Annotation);
+            
+            }
 
         }
         /// <summary>
@@ -220,11 +283,13 @@ namespace eNursePHR.userInterfaceLayer
             get { return _service; }
         }
 
-        public void changeItemStore(Item item)
+        public void changeItemStore(Item item, AnnotationResourceChangedEventHandler uiUpdSave)
         {
             if (_service.IsEnabled)
               _service.Disable();
              _iAnnotationStore = new ItemAnnotationStore(item);
+            // Add CargoChanged event handling for the user interface -> updates the save button visibility when cargo changes
+            _iAnnotationStore.Store.CargoChanged +=new AnnotationResourceChangedEventHandler(uiUpdSave);
             _service.Enable(_iAnnotationStore.Store);
         }
 
@@ -250,7 +315,7 @@ namespace eNursePHR.userInterfaceLayer
 
         public myAnnotationService(FlowDocumentReader flowDocReader)
         {
-            _service = new AnnotationService(flowDocReader); 
+            _service = new AnnotationService(flowDocReader);
            
 
         }

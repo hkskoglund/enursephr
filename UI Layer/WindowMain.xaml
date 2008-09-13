@@ -358,8 +358,36 @@ Recommended use at the moment: research/testing-purposes
          <ToolBarTray >
          <ToolBar>
 					<StackPanel Orientation="Horizontal">
-						
-						<Button x:Name="btnDisease"  
+
+                    <Button x:Name="btnSaveTextInkAnnotation"
+                                Height="20"
+						ToolTip="Save changed annotations" 
+						Foreground="Black" 
+						FontWeight="UltraBold"
+                         Click="btnSaveTextInkAnnotation_Click"
+                         Visibility="Collapsed"   >
+                        <Image Source="Images/Save.png" />
+                    </Button>
+
+
+                    <Button x:Name="btnTextNote"  
+						Height="20" Width="15"
+						ToolTip="Add a text note" 
+						Foreground="Black" 
+						FontWeight="UltraBold"
+                                Content="T"
+                                Click="btnTextNote_Click"  />
+
+                    <Button x:Name="btnInkNote"  
+						Height="20" Width="15"
+						ToolTip="Add a ink note" 
+						Foreground="Black" 
+						FontWeight="UltraBold"
+                                Content="I"
+                                Click="btnInkNote_Click"  />
+
+
+                    <Button x:Name="btnDisease"  
 						Height="15" Width="15"
 						ToolTip="Gather information that can be characterised as a disease" 
 						Background="{StaticResource DiseaseColor}" 
@@ -382,7 +410,8 @@ Recommended use at the moment: research/testing-purposes
 						Background="{StaticResource MedicationColor}" 
 						Foreground="White" FontWeight="UltraBold" Click="btnCaptureMedicationalStatement_Click" />
 						
-						<Button Command="annot:AnnotationService.ClearHighlightsCommand" ToolTip="Removes selected annotations" >
+						<Button x:Name="btnRemoveAnnotations" Click="btnRemoveAnnotations_Click" 
+                                ToolTip="Removes selected annotation(s)" >
 							<Image Height="15" Source="Images/Cut.png">
 							<Image.RenderTransform>
 								<RotateTransform Angle="-90" CenterX="7.5" CenterY="7.5" />

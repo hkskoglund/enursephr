@@ -39,7 +39,11 @@ namespace eNursePHR.userInterfaceLayer
             _statement.Clear();
             IList<Annotation> aList = aStore.GetAnnotations();
             foreach (Annotation a in aList)
-                _statement.Add(a);
+            {
+  // 12 september 08 : Added if-statement to only display highlights
+                if (a.AnnotationType.Name=="Highlight")
+                  _statement.Add(a);
+            }
         }
     }
 }
