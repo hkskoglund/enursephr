@@ -10,8 +10,11 @@ using System.Windows.Documents;
 
 namespace eNursePHR.userInterfaceLayer
 {
+    /// <summary>
+    /// Converts an annotation and returns the highlighted text
+    /// </summary>
     [ValueConversion(typeof(object), typeof(string))]
-    public class HighlightTextConverter : IValueConverter
+    public sealed class HighlightTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
             object parameter, System.Globalization.CultureInfo culture)

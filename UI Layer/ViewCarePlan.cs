@@ -25,6 +25,10 @@ using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.userInterfaceLayer
 {
+    /// <summary>
+    /// This class generates a flowdocument for a careplan (a collection of items). Each item/health entry also
+    /// has a set of associated tags. Contains methods to "pretty format" careplan/item/tags.
+    /// </summary>
     public class ViewCarePlan : CarePlanEntitesWrapper
     {
        
@@ -45,7 +49,6 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
         private Paragraph generateLastUpdate(History history)
         {
             // Creation and update times and authors
@@ -61,8 +64,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
-        public Section generateItem(TagHandler tagHandler, Item item, bool showTags)
+        public Section generateItem(TagLangageConverter tagHandler, Item item, bool showTags)
         {
             if (item == null)
                 return null;
@@ -115,8 +117,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
-        public void generateCareBlog(FlowDocumentReader fdReaderCareBlog,CarePlan cp, TagHandler tagHandler, bool hasLineSeparator)
+        public void generateCareBlog(FlowDocumentReader fdReaderCareBlog,CarePlan cp, TagLangageConverter tagConverter, bool hasLineSeparator)
         {
             if (cp.Item.Count == 0) // Check for empty careplan
                 return;
@@ -130,7 +131,7 @@ namespace eNursePHR.userInterfaceLayer
             foreach (Item item in cp.Item.OrderByDescending(d => d.History.LastUpdate))
             {
 
-                fdCareBlog.Blocks.Add(this.generateItem(tagHandler, item,true));
+                fdCareBlog.Blocks.Add(this.generateItem(tagConverter, item,true));
                 if (item != lastItem && hasLineSeparator)
                 {
                     Line lineSeparator = new Line();
@@ -153,8 +154,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
-        public void showCareplanItem(FlowDocumentReader fdReaderCareBlog,Item selItem, TagHandler tagHandler)
+        public void showCareplanItem(FlowDocumentReader fdReaderCareBlog,Item selItem, TagLangageConverter tagConverter)
         {
             if (selItem == null)
                 return;
@@ -168,7 +168,7 @@ namespace eNursePHR.userInterfaceLayer
             }
 
             FlowDocument fdItem = new FlowDocument();
-            Section itemSection = this.generateItem(tagHandler, selItem, false);
+            Section itemSection = this.generateItem(tagConverter, selItem, false);
            // foreach (Paragraph paragraph in itemSection.Blocks)
               fdItem.Blocks.Add(itemSection);
 
@@ -178,9 +178,12 @@ namespace eNursePHR.userInterfaceLayer
             fdReaderCareBlog.ViewingMode = FlowDocumentReaderViewingMode.Page;
 
         }
-
         
-
+        /// <summary>
+        /// Loads the item description for the item into a flowdocument
+        /// </summary>
+        /// <param name="fdLoadItemDescription"></param>
+        /// <param name="item"></param>
         private void loadItemDescription(FlowDocument fdLoadItemDescription, Item item)
         {
             TextRange range = new TextRange(fdLoadItemDescription.ContentStart, fdLoadItemDescription.ContentEnd);
@@ -205,7 +208,12 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
-
+        #region Item grayline-outside mouse enter/leave handling
+        /// <summary>
+        /// If mouse enters shows a gray line around the item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sItem_MouseEnter(object sender, MouseEventArgs e)
         {
             Section sItem = sender as Section;
@@ -221,11 +229,18 @@ namespace eNursePHR.userInterfaceLayer
             //    cvItems.Refresh();
         }
 
+        /// <summary>
+        /// Turns off border around item when mouse leaves
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sItem_MouseLeave(object sender, MouseEventArgs e)
         {
             //(sender as Section).Background = new SolidColorBrush(Colors.White);
             (sender as Section).BorderBrush = null;
         }
+
+        #endregion
 
         /// <summary>
         /// This method generate a textblock for a care component, it will not generate the care component
@@ -254,6 +269,11 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+        /// <summary>
+        /// Generates a comment for a tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         private TextBlock generateComment(Tag tag)
         {
             TextBlock tbComment = null;
@@ -284,6 +304,11 @@ namespace eNursePHR.userInterfaceLayer
                
         }
 
+        /// <summary>
+        /// Generates actiontype for a tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         private TextBlock generateActionType(Tag tag)
         {
              TextBlock tbActionModifier = null;
@@ -324,9 +349,13 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
-
-        private Paragraph generateTags(TagHandler tagHandler,Item item)
+        /// <summary>
+        /// Generate tags will build a Paragraph of tags for an item -> used in report/blog-mode
+        /// </summary>
+        /// <param name="tagConverter"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private Paragraph generateTags(TagLangageConverter tagHandler,Item item)
         {
           
             // Check for a journal entry that has no associated tags --> unnecessary to generate paragraph for tags
@@ -351,7 +380,9 @@ namespace eNursePHR.userInterfaceLayer
             {
 
 
-                tagHandler.updateTag(App.cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, Properties.Settings.Default.Version);
+                tagHandler.translateTag(App.cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, 
+                    Properties.Settings.Default.Version);
+
                 ((WindowMain)App.Current.MainWindow).refreshOutcomes(tag);
 
                 // Generate care component textblock an add it to the paragraph
@@ -361,45 +392,63 @@ namespace eNursePHR.userInterfaceLayer
 
                 TextBlock tbComment = generateComment(tag);
 
-                StackPanel spTagContainer = new StackPanel();
-                spTagContainer.Width = 220;
-                spTagContainer.Margin = new Thickness(5, 5, 5, 0);
-
-
-                StackPanel spTagDiagInterv = new StackPanel();
-                spTagDiagInterv.Orientation = Orientation.Horizontal;
-
-                
-                TextBlock tbTag = generateTag(tag,ref spTagDiagInterv);
-                if (tbTag != null)
-                   spTagDiagInterv.Children.Add(tbTag);
-
-
-                
-                spTagContainer.Children.Add(spTagDiagInterv);
-
-                StackPanel spLatestOutcome = null;
-
-                bool hasLatestOutcome = generateLatestOutcome(tag, ref spLatestOutcome);
-                
-                if (hasLatestOutcome)
-                    spTagContainer.Children.Add(spLatestOutcome);
-
-                if (tbComment != null)
-                    spTagContainer.Children.Add(tbComment);
-
-                //Border bTag = new Border();
-                //bTag.BorderThickness = new Thickness(1);
-                //bTag.BorderBrush = Brushes.CadetBlue;
-                //bTag.CornerRadius = new CornerRadius(5);
-                //bTag.Padding = new Thickness(5);
-                //bTag.Child = spTagContainer;
+                StackPanel spTagContainer = generateTagContainer(tag, tbComment); 
                 pTags.Inlines.Add(spTagContainer);
 
             }
             return pTags;
         }
 
+        /// <summary>
+        /// Generates a stackpanel that contains a tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="tbComment"></param>
+        /// <returns></returns>
+        private StackPanel generateTagContainer(Tag tag, TextBlock tbComment)
+        {
+            StackPanel spTagContainer = new StackPanel();
+            spTagContainer.Width = 220;
+            spTagContainer.Margin = new Thickness(5, 5, 5, 0);
+
+
+            StackPanel spTagDiagInterv = new StackPanel();
+            spTagDiagInterv.Orientation = Orientation.Horizontal;
+
+
+            TextBlock tbTag = generateTag(tag, ref spTagDiagInterv);
+            if (tbTag != null)
+                spTagDiagInterv.Children.Add(tbTag);
+
+
+            spTagContainer.Children.Add(spTagDiagInterv);
+
+            StackPanel spLatestOutcome = null;
+
+            bool hasLatestOutcome = generateLatestOutcome(tag, ref spLatestOutcome);
+
+            if (hasLatestOutcome)
+                spTagContainer.Children.Add(spLatestOutcome);
+
+            if (tbComment != null)
+                spTagContainer.Children.Add(tbComment);
+
+            //Border bTag = new Border();
+            //bTag.BorderThickness = new Thickness(1);
+            //bTag.BorderBrush = Brushes.CadetBlue;
+            //bTag.CornerRadius = new CornerRadius(5);
+            //bTag.Padding = new Thickness(5);
+            //bTag.Child = spTagContainer;
+
+            return spTagContainer;
+        }
+
+        /// <summary>
+        /// Generates the latest outcome for a tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="spLatestOutcome"></param>
+        /// <returns></returns>
         private bool generateLatestOutcome(Tag tag, ref StackPanel spLatestOutcome)
         {
             bool hasLatestOutcome = (tag.LatestOutcome == null) ? false : true;
@@ -479,6 +528,7 @@ namespace eNursePHR.userInterfaceLayer
             return tbTag;
         }
 
+        #region Tag mouse enter/leave event handling
         void tbTag_MouseEnter(object sender, MouseEventArgs e)
         {
             //TextBlock tag = sender as TextBlock;
@@ -497,9 +547,7 @@ namespace eNursePHR.userInterfaceLayer
             //TextBlock tag = sender as TextBlock;
             //tag.RenderTransform = null;
         }
-
-  
-
+        #endregion
 
     }
 

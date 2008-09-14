@@ -12,13 +12,16 @@ using System.Xml.XPath;
 
 namespace eNursePHR.userInterfaceLayer
 {
+    /// <summary>
+    /// Gives tooltip information for an annotation object
+    /// </summary>
     [ValueConversion(typeof(object), typeof(string))]
-    public class AnnotationToolTipConverter : IValueConverter
+    public sealed class AnnotationToolTipConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
             object parameter, System.Globalization.CultureInfo culture)
         {
-            Annotation annotation = (Annotation)value;
+            Annotation annotation = value as Annotation;
             return "Created: " + annotation.CreationTime + " by " + annotation.Authors[0];
 
         }

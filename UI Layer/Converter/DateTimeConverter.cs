@@ -7,7 +7,10 @@ using System.Globalization; // CultureInfo
 
 namespace eNursePHR.userInterfaceLayer
 {
-    public class DateTimeConverter : IValueConverter
+    /// <summary>
+    /// Converts a date to date and time string
+    /// </summary>
+    public sealed class DateTimeConverter : IValueConverter
     {
         
 

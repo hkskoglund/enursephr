@@ -1,9 +1,16 @@
-﻿using System;
+﻿// Allows compilation targeted for SQL Server Compact V3.5 Sp 1
+
+#define SQL_SERVER_COMPACT_SPECIFIC_CODE
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -66,59 +73,56 @@ namespace eNursePHR.userInterfaceLayer
             {
                 GB4 = 1024 * 1024 * 1024 * 4; // OVERFLOW......??
             }
-                healthDB = new Dictionary<string, bool>();
+        
+            healthDB = new Dictionary<string, bool>();
 
-            DatabaseHealth carePlanDB = new DatabaseHealth(true,"Personal health record",String.Empty);
-            databaseHealth.Add(carePlanDB);
-            
+            // Check health of personal health record
+            DatabaseHealth PHRDB = new DatabaseHealth(true,"Personal health record",String.Empty);
+            databaseHealth.Add(PHRDB);
+            checkPHRDB(GB4, PHRDB,"eNurseCP2008!");
+           
+            // Check health of ccc framework that contains all language translations
+            DatabaseHealth cccFrameworkDB = new DatabaseHealth(true, "CCC framework", String.Empty);
+            databaseHealth.Add(cccFrameworkDB);
+            checkCCCFrameworkDB(cccFrameworkDB);
 
+            // Check health of ccc reference terminology
+            DatabaseHealth cccReferenceDB = new DatabaseHealth(true, "CCC reference", String.Empty);
+            databaseHealth.Add(cccReferenceDB);
+            checkCCCReferenceDB(cccReferenceDB);
+
+            return healthDB;
+
+        }
+
+        private void checkCCCReferenceDB(DatabaseHealth cccReferenceDB)
+        {
             try
             {
                 string conn;
-                PHREntities ctxCarePlan = new PHREntities();
-                ctxCarePlan.Connection.Open();
-                //healthDB.Add("PHR", true);
-                
-                conn = "DataSource=" + "\"" + ctxCarePlan.Connection.DataSource + "\"" + ";Password='eNurseCP2008!'";
-                FileInfo fi = new FileInfo(ctxCarePlan.Connection.DataSource);
-                carePlanDB.Message = "Used " + Math.Round((double)((double)fi.Length / GB4 * 100), 1).ToString() + "%";
-                //carePlanDB.Message = "OK";
-                ctxCarePlan.Dispose();
+                CCC_Terminology_ReferenceEntities ctxCCCReferenceDB = new CCC_Terminology_ReferenceEntities();
+                ctxCCCReferenceDB.Connection.Open();
+                //healthDB.Add("CCCReference", true);
+                conn = "DataSource=" + "\"" + ctxCCCReferenceDB.Connection.DataSource + "\"";
+                ctxCCCReferenceDB.Connection.Close();
+                //cccReferenceDB.Message = "OK";
+                ctxCCCReferenceDB.Dispose();
 
-                #region SQL Compact specific code
-
-                // Checksum verification
-                SqlCeEngine sqlEngine = new SqlCeEngine(conn);
-                if (sqlEngine.Verify())
-                    healthDB.Add("PHR", true);
-                else
-                {
-                    carePlanDB.OK = false;
-                    healthDB.Add("PHR", false);
-                    carePlanDB.Message = "Checksum failed on database, recovering will be tried";
-                    sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverCorruptedRows);
-                    // To DO: Add new verification and repair with new RepairOptions DeleteCorruptedRows if thats oK with user
-                }
-                sqlEngine.Dispose();
-
-                #endregion
-
+                checkSQLServerCompactDB(cccReferenceDB, conn, "CCCReference");
 
             }
             catch (Exception ex)
             {
-                carePlanDB.OK = false;
-                healthDB.Add("PHR", false); 
-                carePlanDB.Message = ex.Message;
+                cccReferenceDB.OK = false;
+                healthDB.Add("CCCReference", false);
+                cccReferenceDB.Message = ex.Message;
                 if (ex.InnerException != null)
-                    carePlanDB.Message += " "+ex.InnerException.Message;
+                    cccReferenceDB.Message += " " + ex.InnerException.Message;
             }
+        }
 
-           
-            DatabaseHealth cccFrameworkDB = new DatabaseHealth(true, "CCC framework", String.Empty);
-
-            databaseHealth.Add(cccFrameworkDB);
-
+        private void checkCCCFrameworkDB(DatabaseHealth cccFrameworkDB)
+        {
             try
             {
                 string conn;
@@ -132,21 +136,8 @@ namespace eNursePHR.userInterfaceLayer
                 //cccFrameworkDB.Message = "OK";
                 ctxCCCFrameworkDB.Dispose();
 
-                #region SQL Server Compact specific code
-                // Checksum verification
-                SqlCeEngine sqlEngine = new SqlCeEngine(conn);
-                if (sqlEngine.Verify())
-                    healthDB.Add("CCCFramework", true);
-                else
-                {
-                    cccFrameworkDB.OK = false;
-                    healthDB.Add("CCCFramework", false);
-                    cccFrameworkDB.Message = "Checksum failed on database, recovering will be tried";
-                    sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverCorruptedRows);
-                }
-                sqlEngine.Dispose();
-                #endregion
-
+                checkSQLServerCompactDB(cccFrameworkDB, conn, "CCCFramework");
+                
             }
             catch (Exception ex)
             {
@@ -156,54 +147,58 @@ namespace eNursePHR.userInterfaceLayer
                 if (ex.InnerException != null)
                     cccFrameworkDB.Message += " " + ex.InnerException.Message;
             }
+        }
 
-            DatabaseHealth cccReferenceDB = new DatabaseHealth(true, "CCC reference", String.Empty);
 
-            databaseHealth.Add(cccReferenceDB);
-
+        private void checkPHRDB(double GB4, DatabaseHealth carePlanDB, string password)
+        {
             try
             {
                 string conn;
-               CCC_Terminology_ReferenceEntities ctxCCCReferenceDB = new CCC_Terminology_ReferenceEntities();
-               ctxCCCReferenceDB.Connection.Open();
-               //healthDB.Add("CCCReference", true);
-               conn = "DataSource=" + "\"" + ctxCCCReferenceDB.Connection.DataSource + "\"";
-                ctxCCCReferenceDB.Connection.Close();
-               //cccReferenceDB.Message = "OK";
-               ctxCCCReferenceDB.Dispose();
+                PHREntities ctxCarePlan = new PHREntities();
+                ctxCarePlan.Connection.Open();
+                //healthDB.Add("PHR", true);
 
-               #region SQL Server Compact specific code
-               // Checksum verification
-                SqlCeEngine sqlEngine = new SqlCeEngine(conn);
-               if (sqlEngine.Verify())
-                   healthDB.Add("CCCReference", true);
-               else
-               {
-                  cccReferenceDB.OK = false;
-                  healthDB.Add("CCCReference", false);
-                  cccReferenceDB.Message = "Checksum failed on database, recovering will be tried";
-                  sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverCorruptedRows);
+                conn = "DataSource=" + "\"" + ctxCarePlan.Connection.DataSource + "\"" + ";Password='"+password+"'";
+                FileInfo fi = new FileInfo(ctxCarePlan.Connection.DataSource);
+                carePlanDB.Message = "Used " + Math.Round((double)((double)fi.Length / GB4 * 100), 1).ToString() + "%";
+                //PHRDB.Message = "OK";
+                ctxCarePlan.Dispose();
 
-               }
-               sqlEngine.Dispose();
-               #endregion
+               checkSQLServerCompactDB(carePlanDB, conn, "PHR");
 
 
             }
             catch (Exception ex)
             {
-                cccReferenceDB.OK = false;
-                healthDB.Add("CCCReference", false);
-                cccReferenceDB.Message = ex.Message;
+                carePlanDB.OK = false;
+                healthDB.Add("PHR", false);
+                carePlanDB.Message = ex.Message;
                 if (ex.InnerException != null)
-                    cccReferenceDB.Message += " " + ex.InnerException.Message;
+                    carePlanDB.Message += " " + ex.InnerException.Message;
             }
-
-            return healthDB;
-
         }
 
+private void checkSQLServerCompactDB(DatabaseHealth DBHealth, string conn, string DBKey)
+{
+        #if (SQL_SERVER_COMPACT_SPECIFIC_CODE)
+                // Checksum verification
+                SqlCeEngine sqlEngine = new SqlCeEngine(conn);
+                if (sqlEngine.Verify())
+                    healthDB.Add(DBKey, true);
+                else
+                {
+                    DBHealth.OK = false;
+                    healthDB.Add(DBKey, false);
+                    DBHealth.Message = "Checksum failed on database, recovering will be tried";
+                    sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverCorruptedRows);
+                    // To DO: Add new verification and repair with new RepairOptions DeleteCorruptedRows if thats oK with user
+                }
+                sqlEngine.Dispose();
+#endif
+        
+}
 
-       
+
     }
 }

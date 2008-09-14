@@ -7,7 +7,10 @@ using System.Globalization; // CultureInfo
 
 namespace eNursePHR.userInterfaceLayer
 {
-    public class UpperCaseConverter : IValueConverter
+    /// <summary>
+    /// Converts a string to uppercase
+    /// </summary>
+    public sealed class UpperCaseConverter : IValueConverter
     {
 
 

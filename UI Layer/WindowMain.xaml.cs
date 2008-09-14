@@ -85,12 +85,12 @@ namespace eNursePHR.userInterfaceLayer
 
         ObservableCollection<Tag> careplanTags;
         //EntityCollection<Tag> careplanTags = new EntityCollection<Tag>();
-        ListCollectionView cvCareplanTags;
+        ListCollectionView cvTagsOverview;
 
 
         //   Dictionary<string, Guid> dictItemBlog;
 
-        public TagHandler tagHandler = new TagHandler();
+        public TagLangageConverter tagHandler = new TagLangageConverter();
 
         ListCollectionView cvItemTags;
 
@@ -460,47 +460,50 @@ namespace eNursePHR.userInterfaceLayer
         }
 
 
+        /// <summary>
+        /// Event handler for collectionchangeevent for item-collection in the active careplan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
         {
 
             lvCareBlog.ItemsSource = App.carePlan.ActiveCarePlan.Item.OrderByDescending(i => i.History.LastUpdate);
         }
 
-        public void inferContentFromTags(Item i)
+        /// <summary>
+        /// Travereses all tags for given item and finds out if this item contains diagnosis, intervention, carecomponent
+        /// or folksonomy. The green indicator flag in UI besides the item title signals that this item contains diagnosis,
+        /// a blue indicator is an intervention.
+        /// </summary>
+        /// <param name="item"></param>
+        public void inferContentFromTags(Item item)
         {
+            // Asssume that we have nothing to begin with
+            item.ContainsDiagnosis = false;
+            item.ContainsIntervention = false;
+            item.ContainsCareComponent = false;
+            item.ContainsFolksonomy = false;
 
-            i.ContainsDiagnosis = false;
-            i.ContainsIntervention = false;
-            i.ContainsCareComponent = false;
-            i.ContainsFolksonomy = false;
+            // Make sure that all tags for the item is loaded
+            if (!item.Tag.IsLoaded)
+                item.Tag.Load();
 
-            if (!i.Tag.IsLoaded)
-                i.Tag.Load();
-
-
-            if (i.Tag.Count == 0)
+            // No need to traverse is item has no tags, return please
+            if (item.Tag.Count == 0)
                 return;
 
-            foreach (Tag t in i.Tag)
+            // Give an indication of whether item contains diagnosis, intervention or carecomponent
+            foreach (Tag t in item.Tag)
             {
                 if (t.TaxonomyType.Contains("CCC/NursingDiagnosis"))
-                    i.ContainsDiagnosis = true;
+                    item.ContainsDiagnosis = true;
                 else if (t.TaxonomyType.Contains("CCC/NursingIntervention"))
-                    i.ContainsIntervention = true;
+                    item.ContainsIntervention = true;
                 else if (t.TaxonomyType.Contains("CCC/CareComponent"))
-                    i.ContainsCareComponent = true;
+                    item.ContainsCareComponent = true;
 
             }
-
-            //try
-            //{
-            //    int upd = App.carePlan.DB.SaveChanges();
-            //}
-            //catch (UpdateException ex)
-            //{
-
-            //    showUpdateException(ex);
-            //}
 
         }
 
@@ -519,21 +522,24 @@ namespace eNursePHR.userInterfaceLayer
                 foreach (Tag tag in item.Tag)
                 {
 
-                    tagHandler.updateTag(App.cccFrameWork.DB, tag, languageName, version); // Find Concept and CareComponent for tag
+                    tagHandler.translateTag(App.cccFrameWork.DB, tag, languageName, version); // Find Concept and CareComponent for tag
                     careplanTags.Add(tag);
                 }
 
-            cvCareplanTags = new ListCollectionView(careplanTags);
+            cvTagsOverview = new ListCollectionView(careplanTags);
 
-            cvCareplanTags.GroupDescriptions.Add(new PropertyGroupDescription("CareComponentConcept"));
-            cvCareplanTags.SortDescriptions.Add(new SortDescription("CareComponentConcept", ListSortDirection.Ascending));
-            cvCareplanTags.SortDescriptions.Add(new SortDescription("Concept", ListSortDirection.Ascending));
-            lbTaxonomy.ItemsSource = cvCareplanTags;
+            cvTagsOverview.GroupDescriptions.Add(new PropertyGroupDescription("CareComponentConcept"));
+            cvTagsOverview.SortDescriptions.Add(new SortDescription("CareComponentConcept", ListSortDirection.Ascending));
+            cvTagsOverview.SortDescriptions.Add(new SortDescription("Concept", ListSortDirection.Ascending));
+            lbTaxonomy.ItemsSource = cvTagsOverview;
 
         }
 
 
-
+        /// <summary>
+        /// Loads outcomes for a tag and gets the latest outcome to present
+        /// </summary>
+        /// <param name="tag"></param>
         public void refreshOutcomes(Tag tag)
         {
             Outcome latest;
@@ -571,32 +577,44 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+        /// <summary>
+        /// Translates all tags for a selected item 
+        /// </summary>
         public void refreshTags()
         {
 
             string version = eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version;
             string languageName = eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName;
 
+            // Check for invalid selection and return if problems
             Item selItem = lvCareBlog.SelectedItem as Item;
             if (selItem == null)
                 return;
 
+            // Traverse each tag for the selected item a translate it
             foreach (Tag tag in selItem.Tag)
             {
-                refreshOutcomes(tag);
+                refreshOutcomes(tag); // Gets the latest outcome and loads related outcome
 
-                if (!tag.ActionTReference.IsLoaded)
+                if (!tag.ActionTReference.IsLoaded) // Loads releated actiontype
                     tag.ActionTReference.Load();
 
-                tagHandler.updateTag(App.cccFrameWork.DB, tag, languageName, version);
+                tagHandler.translateTag(App.cccFrameWork.DB, tag, languageName, version); // Translate tag to specific language
 
             }
 
-            Tag_AssociationChanged(this, null);
+            Tag_AssociationChanged(this, null); // Call the eventhandler to update the tags, actually no tags have been added or removed for the item.Tags collection therefore a manual-call
         }
 
+        /// <summary>
+        /// Updates the tags view for a current item and the tags overview. This is an event handler for the
+        /// CollectionChangeEvent for item.Tags-collection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Tag_AssociationChanged(object sender, CollectionChangeEventArgs e)
         {
+            // Check for empty selected item
             Item selItem = lvCareBlog.SelectedItem as Item;
             if (selItem == null)
                 return;
@@ -605,13 +623,15 @@ namespace eNursePHR.userInterfaceLayer
 
             inferContentFromTags(selItem);
 
+            // Setup tags
             cvItemTags = new ListCollectionView(selItem.Tag.OrderBy(t => t.CareComponentConcept).ThenBy(t => t.Concept).ToList());
             cvItemTags.GroupDescriptions.Add(new PropertyGroupDescription("CareComponentConcept"));
             cvItemTags.Refresh();
             lbTags.ItemsSource = cvItemTags;
 
-            if (cvCareplanTags != null)
-                cvCareplanTags.Refresh();
+            // Also do a refresh of the tags overview
+            if (cvTagsOverview != null)
+                cvTagsOverview.Refresh();
         }
 
 
@@ -1103,7 +1123,7 @@ namespace eNursePHR.userInterfaceLayer
             SaveCarePlan();
             // App.carePlan.showCareplanItem(fdReaderCareBlog, (Item)lvCareBlog.SelectedItem, tagHandler);
             btnSaveTagComments.Visibility = Visibility.Collapsed;
-            cvCareplanTags.Refresh();
+            cvTagsOverview.Refresh();
 
         }
 
@@ -1456,28 +1476,34 @@ namespace eNursePHR.userInterfaceLayer
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Toggles between fullscreen and normal view of an item/heath entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFullScreen_Click(object sender, RoutedEventArgs e)
         {
-            if (!FullScreenItem)
+            if (!FullScreenItem) // In case we are not in full screen, switch to full screen
             {
-                prevTagsWidth = gcTags.Width;
+                prevTagsWidth = gcTags.Width; // Remember last position of the grid-splitter for tags
                 gcTags.Width = new GridLength(0);
 
-                prevTaxonomyWidth = gcTaxonomy.Width;
+                prevTaxonomyWidth = gcTaxonomy.Width; // Remember last pos. of grid-splitter for taxonomy
                 gcTaxonomy.Width = new GridLength(0);
 
-                FullScreenItem = true;
+                FullScreenItem = true; // We are now in full screen yeah
             }
             else
             {
+                // Restore last pos. of grid-splitters for tags and taxonomy
                 gcTags.Width = prevTagsWidth;
                 gcTaxonomy.Width = prevTaxonomyWidth;
 
-                FullScreenItem = false;
+                FullScreenItem = false; // Back to normal view mode
 
             }
 
-
+            // Use page mode reading when we are not in full screen and scroll mode in full screen
             if (!FullScreenItem)
                 fdReaderCareBlog.SwitchViewingMode(FlowDocumentReaderViewingMode.Page);
             else
@@ -1558,24 +1584,31 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-
+        /// <summary>
+        /// Handles new selection of language and loads CCC framework based on the new selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FrameworkActual selItem = (FrameworkActual)(sender as ComboBox).SelectedItem;
+            
+            if (selItem == null)
+                return;
+
+            if (selItem.Language_Name == Properties.Settings.Default.LanguageName)
+                return;
 
             if (App.cccFrameWork.LogoURL == null)
                 imgLogo.Visibility = Visibility.Collapsed;
             else
                 imgLogo.Visibility = Visibility.Visible;
 
-            if (selItem != null)
-            {
+            // Save the new langaugename in properties
+            Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
+            Properties.Settings.Default.Save();
 
-                if (selItem.Language_Name != Properties.Settings.Default.LanguageName)
-                {
-                    Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
-                    Properties.Settings.Default.Save();
-
+            // Recreates new CCC framework for given language name
                     App.cccFrameWork.DB.Dispose();
                     App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName,
                         Properties.Settings.Default.Version);
@@ -1584,10 +1617,9 @@ namespace eNursePHR.userInterfaceLayer
                     refreshTags();
 
                     buildAllTags(App.carePlan.ActiveCarePlan);
-                }
+     
 
-            }
-
+            
         }
 
         #endregion

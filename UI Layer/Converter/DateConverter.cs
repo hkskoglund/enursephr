@@ -7,7 +7,10 @@
 
 namespace eNursePHR.userInterfaceLayer
     {
-        public class DateConverter : IValueConverter
+        /// <summary>
+        /// Converts a date to a string
+        /// </summary>
+        public sealed class DateConverter : IValueConverter
         {
 
 

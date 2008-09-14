@@ -10,7 +10,10 @@ using eNursePHR.BusinessLayer.PHR;
 
 namespace eNursePHR.BusinessLayer
 {
-    public class TagHandler
+    /// <summary>
+    /// The TagLangageConverter-class handles tag language translation of the tags carecomponent, diagnosis and intervention
+    /// </summary>
+    public class TagLangageConverter
     {
         CCC_Terminology_ReferenceEntities ctxRefTerminology = new CCC_Terminology_ReferenceEntities();
 
@@ -38,15 +41,46 @@ namespace eNursePHR.BusinessLayer
             Care_Component rCareComponent = getReferenceCareComponent(tag, version, ctxRefTerminology);
             return getFrameworkCareComponent(DB,rCareComponent.Code, languageName, version);
         }
+
+
+        Care_Component getReferenceCareComponent(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
+        {
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+             return ctxRefTerminology.Care_Component.Where(c => c.TagGuid == tag.TaxonomyTagId
+                       && c.Version == version).First();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            return ctxRefTerminology.Care_Component.Where("it.TagGuid = GUID '" + tag.TaxonomyTagId + "' AND it.Version = '" + version + "'").First();
+#endif
+        }
+
         #endregion CareComponent
 
         #region Diagnosis
+        /// <summary>
+        /// This method gets the ComponentCode,MajorCode and MinorCode from the reference terminology based on a
+        /// guid foreign reference key in Tag. It will then ask for the language translation.
+        /// </summary>
+        /// <param name="DB"></param>
+        /// <param name="tag"></param>
+        /// <param name="languageName"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis getFrameworkDiagnosis(CCC_FrameworkEntities DB, Tag tag, string languageName, string version)
         {
             eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Diagnosis rDiag = getReferenceDiagnosis(tag, version, ctxRefTerminology);
             return getFrameworkDiagnosis(DB,rDiag.ComponentCode, rDiag.MajorCode, rDiag.MinorCode, languageName, version);
         }
 
+        /// <summary>
+        /// Gives the language translation for a specific ComponentCode,MajorCode,MinorCode
+        /// </summary>
+        /// <param name="DB"></param>
+        /// <param name="componentCode"></param>
+        /// <param name="majorCode"></param>
+        /// <param name="minorCode"></param>
+        /// <param name="languageName"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis getFrameworkDiagnosis(CCC_FrameworkEntities DB, string componentCode, short majorCode, short? minorCode, string languageName, string version)
         {
             eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis fDiag;
@@ -100,10 +134,37 @@ namespace eNursePHR.BusinessLayer
 
         }
 
+        /// <summary>
+        /// Gets the reference diagnosis for a given taxonomyTagId (foreign key)
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="version"></param>
+        /// <param name="refDB"></param>
+        /// <returns></returns>
+        eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Diagnosis getReferenceDiagnosis(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
+        {
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+              return refDB.Nursing_Diagnosis.Where(d =>
+                        d.TagGuid == tag.TaxonomyTagId &&
+                        d.Version == version).First();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            return refDB.Nursing_Diagnosis.Where("it.TagGuid = GUID '" + tag.TaxonomyTagId + "' AND it.Version = '" + version + "'").First();
+#endif
+
+        }
+
         #endregion
 
         #region Intervention
 
+        /// <summary>
+        /// Finds the componentcode,majorcode and minorcode for a foreign reference key/guid in tag
+        /// </summary>
+        /// <param name="DB"></param>
+        /// <param name="tag"></param>
+        /// <param name="languageName"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         eNursePHR.BusinessLayer.CCC_Translations.Nursing_Intervention getFrameworkIntervention(CCC_FrameworkEntities DB, Tag tag, string languageName, string version)
         {
             eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention rInterv = getReferenceIntervention(tag, version, ctxRefTerminology);
@@ -111,7 +172,27 @@ namespace eNursePHR.BusinessLayer
 
         }
 
+        eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention getReferenceIntervention(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
+        {
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            return refDB.Nursing_Intervention.Where(i => i.TagGuid == tag.TaxonomyTagId
+               && i.Version == version).First();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            return refDB.Nursing_Intervention.Where("it.TagGuid = GUID '" + tag.TaxonomyTagId + "'AND it.Version = '" + version + "'").First();
+#endif
+        }
 
+
+        /// <summary>
+        /// Gives the langauge translation for an intervention
+        /// </summary>
+        /// <param name="DB"></param>
+        /// <param name="componentCode"></param>
+        /// <param name="majorCode"></param>
+        /// <param name="minorCode"></param>
+        /// <param name="languageName"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         eNursePHR.BusinessLayer.CCC_Translations.Nursing_Intervention getFrameworkIntervention(CCC_FrameworkEntities DB, string componentCode, short majorCode, short? minorCode, string languageName, string version)
         {
 
@@ -167,17 +248,27 @@ namespace eNursePHR.BusinessLayer
         }
 
         #endregion
-        //Finds tag Concept+CareComponent for CCC framework
-        public void updateTag(CCC_FrameworkEntities DB, Tag tag, string languageName, string version)
+        
+        /// <summary>
+        /// Finds the concept,definition and carecomponent of a given tag that contains foreign key/TaxonomyId that
+        /// is a reference to the CCC reference terminology where the componentcode,majorcode, and minorcode is found
+        /// Then the language translation is fetched.
+        /// </summary>
+        /// <param name="cccFrameworkDB"></param>
+        /// <param name="tag"></param>
+        /// <param name="languageName"></param>
+        /// <param name="version"></param>
+
+        public void translateTag(CCC_FrameworkEntities cccFrameworkDB, Tag tag, string languageName, string version)
         {
             eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis fDiag;
             eNursePHR.BusinessLayer.CCC_Translations.Nursing_Intervention fInterv;
             Care_component fComponent;
            
-
+           // Gets language translation of diagnosis, intervention and carecomponent
             switch (tag.TaxonomyType)
             {
-                case "CCC/NursingDiagnosis": fDiag = getFrameworkDiagnosis(DB,tag, languageName, version);
+                case "CCC/NursingDiagnosis": fDiag = getFrameworkDiagnosis(cccFrameworkDB,tag, languageName, version);
                     if (fDiag == null)
                     {
                         tag.Concept = "Not found, check language integrity";
@@ -196,7 +287,7 @@ namespace eNursePHR.BusinessLayer
                         break;
 
 
-                case "CCC/NursingIntervention": fInterv = getFrameworkIntervention(DB,tag, languageName, version);
+                case "CCC/NursingIntervention": fInterv = getFrameworkIntervention(cccFrameworkDB,tag, languageName, version);
                         if (fInterv == null)
                         {
                            
@@ -215,7 +306,7 @@ namespace eNursePHR.BusinessLayer
                         }
                     break;
 
-                case "CCC/CareComponent": fComponent = getFrameworkCareComponent(DB,tag, languageName, version);
+                case "CCC/CareComponent": fComponent = getFrameworkCareComponent(cccFrameworkDB,tag, languageName, version);
                     tag.Concept = fComponent.Component;
                     tag.Definition = fComponent.Definition;
                     tag.CareComponentConcept = tag.Concept;
@@ -227,43 +318,13 @@ namespace eNursePHR.BusinessLayer
         }
 
 
-
-        eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Diagnosis getReferenceDiagnosis(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
-        {
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-              return refDB.Nursing_Diagnosis.Where(d =>
-                        d.TagGuid == tag.TaxonomyTagId &&
-                        d.Version == version).First();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-            return refDB.Nursing_Diagnosis.Where("it.TagGuid = GUID '" + tag.TaxonomyTagId + "' AND it.Version = '" + version + "'").First();
-#endif               
-        
-        }
-
-        Care_Component getReferenceCareComponent(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
-        {
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-             return ctxRefTerminology.Care_Component.Where(c => c.TagGuid == tag.TaxonomyTagId
-                       && c.Version == version).First();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-            return ctxRefTerminology.Care_Component.Where("it.TagGuid = GUID '"+ tag.TaxonomyTagId + "' AND it.Version = '"+version+"'").First();
-#endif
-        }
-
-        eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Intervention getReferenceIntervention(Tag tag, string version, CCC_Terminology_ReferenceEntities refDB)
-        {
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-            return refDB.Nursing_Intervention.Where(i => i.TagGuid == tag.TaxonomyTagId
-               && i.Version == version).First();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-            return refDB.Nursing_Intervention.Where("it.TagGuid = GUID '"+ tag.TaxonomyTagId +"'AND it.Version = '"+version+"'").First();
-#endif
-        }
-
-       
-       
-
-        
+        #region Get guid in CCC reference terminology for carecomponent, diagnosis, intervention and outcometype
+        /// <summary>
+        /// Gets a guid in the CCC reference terminology for a given componentCode
+        /// </summary>
+        /// <param name="componentCode"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public Guid getTaxonomyGuidCareComponent(string componentCode, string version)
         {
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
@@ -274,6 +335,14 @@ namespace eNursePHR.BusinessLayer
             return taxonomyGuid;       
          }
 
+        /// <summary>
+        /// Gets a guid in the CCC reference terminologi for a given diagnosis
+        /// </summary>
+        /// <param name="componentCode"></param>
+        /// <param name="majorCode"></param>
+        /// <param name="minorCode"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public Guid getTaxonomyGuidNursingDiagnosis(string componentCode, decimal majorCode, short? minorCode, string version)
         {
             Guid taxonomyGuid;
@@ -301,6 +370,12 @@ namespace eNursePHR.BusinessLayer
             return taxonomyGuid;
         }
 
+        /// <summary>
+        /// Gets a guid in the reference terminology for a given outcometype
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public Guid getTaxonomyGuidOutcomeType(short code,string version)
         {
             Guid taxonomyAttachmentGuid;
@@ -326,6 +401,14 @@ namespace eNursePHR.BusinessLayer
             return taxonomyAttachmentGuid;
         }
 
+        /// <summary>
+        /// Gets a guid in the CCC reference terminology for a given intervention
+        /// </summary>
+        /// <param name="componentCode"></param>
+        /// <param name="majorCode"></param>
+        /// <param name="minorCode"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public Guid getTaxonomyGuidNursingIntervention(string componentCode, decimal majorCode, short? minorCode, string version)
         {
             Guid taxonomyGuid;
@@ -353,5 +436,6 @@ namespace eNursePHR.BusinessLayer
 #endif
                 return taxonomyGuid;
         }
+        #endregion
     }
 }
