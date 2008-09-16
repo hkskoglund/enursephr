@@ -70,6 +70,8 @@ Recommended use at the moment: research/testing-purposes
     
     x:Name="wndMain" >
     <Window.Resources>
+        
+        <ui:StatusHandler x:Key="StatusHandler" />
     
     <!-- Converters -->
        
@@ -2033,9 +2035,10 @@ Recommended use at the moment: research/testing-purposes
             
             
         </TabControl>
+        
         <StatusBar x:Name="sbStatus">
             <StatusBarItem>
-                <TextBlock x:Name="tbUserName" />
+                <TextBlock x:Name="tbStatusMessage" Text="{Binding Source={StaticResource StatusHandler}, Path=StatusMsg}" />
             </StatusBarItem>
             
             

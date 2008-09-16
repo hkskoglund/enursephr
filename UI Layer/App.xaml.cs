@@ -17,8 +17,8 @@ namespace eNursePHR.userInterfaceLayer
     public partial class App : Application
     {
      
-       public static ViewCCCFrameWork cccFrameWork; //= new ViewCCCFrameWork();
-       public static ViewCarePlan carePlan; 
+       public static ViewCCCFrameWork s_cccFrameWork; //= new ViewCCCFrameWork();
+       public static ViewCarePlan s_carePlan; 
 
       
        public static WindowMain mainWindow;

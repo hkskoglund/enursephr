@@ -349,14 +349,93 @@ namespace eNursePHR.BusinessLayer
             }
         }
 
-
+        /// <summary>
+        /// This method is executed in the background and does a "deep level" language analysis
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+        /// <param name="worker"></param>
         public void doDLAnalysis(string version, string languageName, BackgroundWorker worker)
         {
-
 
             this.Version = version;
             this.LanguageName = languageName;
 
+            // Care component
+            DLACareComponent(version, languageName);
+            worker.ReportProgress(20, FCareComponent);
+
+            // Outcome types
+            DLAOutcomeTypes(version, languageName);
+            worker.ReportProgress(40, FOutcomeType);
+
+            // Diagnoses
+            DLADiagnosis(version, languageName);
+            worker.ReportProgress(60, FNursingDiagnosis);
+            
+            // Action types
+            DLAActionTypes(version, languageName);
+            worker.ReportProgress(80, FActionType);
+
+            // Interventions
+            DLAIntervention(version, languageName);
+            worker.ReportProgress(100, FNursingIntervention);
+
+            this.Activity = "Analysis complete";
+        }
+
+        private void DLAIntervention(string version, string languageName)
+        {
+            this.Activity = "Analysing nursing intervention (5 of 5)";
+            this.FNursingIntervention.MissingList =
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                deepVerifyNursingIntervention(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+ deepVerifyNursingIntervention(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
+
+#endif
+        }
+
+        private void DLAActionTypes(string version, string languageName)
+        {
+            this.Activity = "Analysing action types (4 of 5)";
+            this.FActionType.MissingList =
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                deepVerifyActionType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                // CHECK THIS
+                deepVerifyActionType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
+
+#endif
+        }
+
+        private void DLADiagnosis(string version, string languageName)
+        {
+            this.Activity = "Analysing nursing diagnoses (3 of 5)";
+            this.FNursingDiagnosis.MissingList =
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+              deepVerifyNursingDiagnosis(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                // Check this
+                  deepVerifyNursingDiagnosis(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
+#endif
+        }
+
+        private void DLAOutcomeTypes(string version, string languageName)
+        {
+            this.Activity = "Analysing outcome types (2 of 5)";
+            this.FOutcomeType.MissingList =
+#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+
+                deepVerifyOutcomeType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
+#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+                // CHECK THIS
+ deepVerifyOutcomeType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
+#endif
+        }
+
+        private void DLACareComponent(string version, string languageName)
+        {
             this.Activity = "Analysing care components (1 of 5)";
 
 
@@ -369,52 +448,6 @@ namespace eNursePHR.BusinessLayer
 
 
 #endif
-
-            worker.ReportProgress(20, FCareComponent);
-
-            this.Activity = "Analysing outcome types (2 of 5)";
-            this.FOutcomeType.MissingList =
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-
-                deepVerifyOutcomeType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                // CHECK THIS
- deepVerifyOutcomeType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
-#endif
-                worker.ReportProgress(40, FOutcomeType);
-
-            this.Activity = "Analysing nursing diagnoses (3 of 5)";
-            this.FNursingDiagnosis.MissingList =
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-              deepVerifyNursingDiagnosis(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                // Check this
-                  deepVerifyNursingDiagnosis(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
-#endif
-            worker.ReportProgress(60, FNursingDiagnosis);
-
-            this.Activity = "Analysing action types (4 of 5)";
-            this.FActionType.MissingList =
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                deepVerifyActionType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
- // CHECK THIS
-                deepVerifyActionType(version, languageName).OrderBy(c => c.Code).Where(d => d.Verified == false).ToList();
-
-#endif
-            worker.ReportProgress(80, FActionType);
-
-            this.Activity = "Analysing nursing intervention (5 of 5)";
-            this.FNursingIntervention.MissingList =
-#if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                deepVerifyNursingIntervention(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
-#elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
- deepVerifyNursingIntervention(version, languageName).OrderBy(c => c.ComponentCode).Where(d => d.Verified == false).ToList();
-
-#endif
-                worker.ReportProgress(100, FNursingIntervention);
-
-            this.Activity = "Analysis complete";
         }
 
         public List<eNursePHR.BusinessLayer.CCC_Terminology.Care_Component> deepVerifyCareComponent(string verifyVersion, string verifyLanguageName)
@@ -537,6 +570,7 @@ namespace eNursePHR.BusinessLayer
         /// <param name="verifyVersion"></param>
         /// <param name="verifyLanguageName"></param>
         /// <returns></returns>
+        /// 
         public List<eNursePHR.BusinessLayer.CCC_Terminology.Nursing_Diagnosis> deepVerifyNursingDiagnosis(string verifyVersion, string verifyLanguageName)
         {
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)

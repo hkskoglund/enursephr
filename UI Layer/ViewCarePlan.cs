@@ -31,10 +31,11 @@ namespace eNursePHR.userInterfaceLayer
     /// </summary>
     public class ViewCarePlan : CarePlanEntitesWrapper
     {
-       
-        public ViewCarePlan()
+
+        public ViewCarePlan(EventHandler DB_SavingChanges)
             : base()
         {
+            base.DB.SavingChanges += new EventHandler(DB_SavingChanges);
                     
         }
 
@@ -336,7 +337,7 @@ namespace eNursePHR.userInterfaceLayer
                        string definition = App.cccFrameWork.DB.ActionType.Where(a => a.Code == tag.ActionT.Code && a.Language_Name == Properties.Settings.Default.LanguageName && a.Version == Properties.Settings.Default.Version).First().Definition;
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
                     // SP 1 workaround
-                    string definition = App.cccFrameWork.DB.ActionType.Where("it.Code = '" + tag.ActionT.Code + "' AND it.Language_Name ='" + Properties.Settings.Default.LanguageName + "' AND it.Version = '" + Properties.Settings.Default.Version + "'").First().Definition;
+                    string definition = App.s_cccFrameWork.DB.ActionType.Where("it.Code = '" + tag.ActionT.Code + "' AND it.Language_Name ='" + Properties.Settings.Default.LanguageName + "' AND it.Version = '" + Properties.Settings.Default.Version + "'").First().Definition;
 #endif
                     if (definition != null)
                         tbActionModifier.ToolTip = definition;
@@ -380,7 +381,7 @@ namespace eNursePHR.userInterfaceLayer
             {
 
 
-                tagHandler.translateTag(App.cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, 
+                tagHandler.translateTag(App.s_cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, 
                     Properties.Settings.Default.Version);
 
                 ((WindowMain)App.Current.MainWindow).refreshOutcomes(tag);
@@ -453,13 +454,15 @@ namespace eNursePHR.userInterfaceLayer
         {
             bool hasLatestOutcome = (tag.LatestOutcome == null) ? false : true;
 
-            if (hasLatestOutcome)
-            {
+            if (!hasLatestOutcome)
+                return hasLatestOutcome;
+
                 spLatestOutcome = new StackPanel();
                 spLatestOutcome.Orientation = Orientation.Horizontal;
                 TextBlock tbWill = new TextBlock(new Run("will "));
                 tbWill.FontSize = 12;
                 spLatestOutcome.Children.Add(tbWill);
+            
                 TextBlock tbLatestOutcome = new TextBlock();
                 tbLatestOutcome.Foreground = (Brush)((WindowMain)App.Current.MainWindow).TryFindResource("DiagnosisColor");
                 tbLatestOutcome.FontSize = 12;
@@ -472,7 +475,8 @@ namespace eNursePHR.userInterfaceLayer
                 bImg.DecodePixelHeight = 15;
                 Image imgOutcome = new Image();
                 bImg.BeginInit();
-                switch (tag.LatestOutcome)
+      
+               switch (tag.LatestOutcome)
                 {
                     case 1: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Improved.png"); break;
                     case 2: bImg.UriSource = new Uri("pack://application:,,/Outcome Types/Stabilized.png"); break;
@@ -485,8 +489,7 @@ namespace eNursePHR.userInterfaceLayer
                 imgOutcome.Width = 15;
 
                 spLatestOutcome.Children.Add(imgOutcome);
-            }
-
+      
             return hasLatestOutcome;
         }
 

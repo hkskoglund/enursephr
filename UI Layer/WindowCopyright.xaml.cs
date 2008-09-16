@@ -43,14 +43,14 @@ namespace eNursePHR.userInterfaceLayer
     {
 
         
-        private ObservableCollection<DatabaseHealth> databaseHealth = new ObservableCollection<DatabaseHealth>();
+        private ObservableCollection<DatabaseHealth> dbHealthStatus = new ObservableCollection<DatabaseHealth>();
 
         private Dictionary<string, bool> healthDB;
 
         public WindowCopyright()
         {
             InitializeComponent();
-            lbDatabaseHealth.ItemsSource = databaseHealth;
+            lbDatabaseHealth.ItemsSource = dbHealthStatus;
 
         }
 
@@ -78,23 +78,27 @@ namespace eNursePHR.userInterfaceLayer
 
             // Check health of personal health record
             DatabaseHealth PHRDB = new DatabaseHealth(true,"Personal health record",String.Empty);
-            databaseHealth.Add(PHRDB);
+            dbHealthStatus.Add(PHRDB);
             checkPHRDB(GB4, PHRDB,"eNurseCP2008!");
            
             // Check health of ccc framework that contains all language translations
             DatabaseHealth cccFrameworkDB = new DatabaseHealth(true, "CCC framework", String.Empty);
-            databaseHealth.Add(cccFrameworkDB);
+            dbHealthStatus.Add(cccFrameworkDB);
             checkCCCFrameworkDB(cccFrameworkDB);
 
             // Check health of ccc reference terminology
             DatabaseHealth cccReferenceDB = new DatabaseHealth(true, "CCC reference", String.Empty);
-            databaseHealth.Add(cccReferenceDB);
+            dbHealthStatus.Add(cccReferenceDB);
             checkCCCReferenceDB(cccReferenceDB);
 
             return healthDB;
 
         }
 
+        /// <summary>
+        /// Tries to connection to the CCC reference database, and peforms sql server compact verification
+        /// </summary>
+        /// <param name="cccReferenceDB"></param>
         private void checkCCCReferenceDB(DatabaseHealth cccReferenceDB)
         {
             try
@@ -121,6 +125,10 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
+        /// <summary>
+        /// Tries to connect to CCC framework database, and performs sql server compact db. verification
+        /// </summary>
+        /// <param name="cccFrameworkDB"></param>
         private void checkCCCFrameworkDB(DatabaseHealth cccFrameworkDB)
         {
             try
@@ -149,7 +157,12 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
-
+        /// <summary>
+        /// Tries to connect to personal health record PHR database, and performs sql server compact db. verification
+        /// </summary>
+        /// <param name="GB4"></param>
+        /// <param name="carePlanDB"></param>
+        /// <param name="password"></param>
         private void checkPHRDB(double GB4, DatabaseHealth carePlanDB, string password)
         {
             try
@@ -179,6 +192,12 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
+        /// <summary>
+        /// Verifies and repairs a sql server compact database
+        /// </summary>
+        /// <param name="DBHealth"></param>
+        /// <param name="conn"></param>
+        /// <param name="DBKey"></param>
 private void checkSQLServerCompactDB(DatabaseHealth DBHealth, string conn, string DBKey)
 {
         #if (SQL_SERVER_COMPACT_SPECIFIC_CODE)

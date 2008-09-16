@@ -39,6 +39,7 @@ using Microsoft.Win32;
 using eNursePHR.BusinessLayer;
 using eNursePHR.BusinessLayer.CCC_Translations;
 using eNursePHR.BusinessLayer.PHR;
+using eNursePHR.userInterfaceLayer.AnnotationNS;
 
 // MIT Licence
 //
@@ -74,6 +75,15 @@ namespace eNursePHR.userInterfaceLayer
     public partial class WindowMain : Window
     {
 
+        private DispatcherTimer dispatcherTimerUI;
+
+        private StatusHandler _statusMsgHandler = new StatusHandler();
+        public StatusHandler StatusMsgHandler
+        {
+            get { return _statusMsgHandler; }
+            set { _statusMsgHandler = value; }
+        }
+
         private string _netVersion = Environment.Version.ToString();
         public string NETVersion
         {
@@ -90,11 +100,11 @@ namespace eNursePHR.userInterfaceLayer
 
         //   Dictionary<string, Guid> dictItemBlog;
 
-        public TagLangageConverter tagHandler = new TagLangageConverter();
+        public TagLangageConverter tagConverter = new TagLangageConverter();
 
         ListCollectionView cvItemTags;
 
-        myAnnotationService aService;
+        eNAnnotationService annotationService;
 
         public ViewInformationAcqusition infoAcq = new ViewInformationAcqusition();
 
@@ -172,6 +182,7 @@ namespace eNursePHR.userInterfaceLayer
 
             if (!getSQLCompactVersion())
             {
+                // TO DO: Consider bundling sql server compact .dll with eNursePHR
                 MessageBox.Show("You have not installed SQL Server Compact V 3.5 SP 1, please install before using application again", "SQL Server Compact v3.5 SP 1 not installed", MessageBoxButton.OK, MessageBoxImage.Stop);
                 App.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 App.Current.Shutdown();
@@ -186,22 +197,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 InitializeComponent();
 
-                if (healthDB["CCCFramework"])
-                {
-
-                    wndCopyright.tbLoading.Text = "Loading CCC taxonomy...";
-                    loadCCCFramework();
-
-                    wndCopyright.pbLoading.Value = 75;
-                }
-                else
-                {
-                    exFramework.Visibility = Visibility.Collapsed;
-                    exFramework.Header = "Clinical Care Classification";
-                    exFramework.IsExpanded = false;
-                    exFramework.IsEnabled = false;
-                    tbSearch.IsEnabled = false;
-                }
+                
             }
         }
 
@@ -299,7 +295,7 @@ namespace eNursePHR.userInterfaceLayer
             setupBloodPressureUI();
 
             /* LANGUAGE attrib change */
-            tbUserName.Text = "Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName;
+            changeStatus("Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName);
             //+ " Kultur for UI: " + Thread.CurrentThread.CurrentUICulture.DisplayName.ToString();
 
             // Enable sharing of properties across layers
@@ -311,20 +307,36 @@ namespace eNursePHR.userInterfaceLayer
 
             fdReaderCareBlog.AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(hyperlink_RequestNavigate));
 
-
-
             // Start annotation service
-            aService = new myAnnotationService(fdReaderCareBlog);
+            annotationService = new eNAnnotationService(fdReaderCareBlog);
             lvAnnotation.ItemsSource = infoAcq.CvStatement;
 
+
+            // If CCC framework is in good condition load it
+            if (healthDB["CCCFramework"])
+            {
+
+                wndCopyright.tbLoading.Text = "Loading CCC taxonomy...";
+                loadCCCFramework();
+
+                wndCopyright.pbLoading.Value = 75;
+            }
+            else // turn off ui elements for CCC framework
+            {
+                exFramework.Visibility = Visibility.Collapsed;
+                exFramework.Header = "Clinical Care Classification";
+                exFramework.IsExpanded = false;
+                exFramework.IsEnabled = false;
+                tbSearch.IsEnabled = false;
+            }
 
             if (healthDB["PHR"])
             {
                 wndCopyright.tbLoading.Text = "Loading test health record....";
-                loadCareplan(Guid.NewGuid(), true); // Load a test careplan
+                loadCareplan(Guid.NewGuid(), true, updateCCCDBSaveStatus); // Load a test careplan
                 wndCopyright.pbLoading.Value = 100;
                 // Show all tags for the current careplan
-                buildAllTags(App.carePlan.ActiveCarePlan);
+                buildTagsOverview(App.s_carePlan.ActiveCarePlan);
             }
 
 
@@ -363,6 +375,26 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+        private void refreshOutcomeTypes()
+        {
+            lbOutcomeType.ItemsSource = App.s_cccFrameWork.cvOutcomeTypes;
+            ccOutcomeType.Content = App.s_cccFrameWork.cvOutcomeTypes;
+
+        }
+
+        private void refreshActionTypes()
+        {
+            lbActionType.ItemsSource = App.s_cccFrameWork.cvActionTypes;
+        }
+
+        private void refreshMetaInformation()
+        {
+            spCopyright.DataContext = App.s_cccFrameWork;
+           
+        }
+
+
+
         public void loadCCCFramework()
         {
             bool loadFail = false;
@@ -370,8 +402,30 @@ namespace eNursePHR.userInterfaceLayer
 
             try
             {
-                App.cccFrameWork = new ViewCCCFrameWork(eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName,
+                App.s_cccFrameWork = new ViewCCCFrameWork(eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName,
                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+
+                App.s_cccFrameWork.loadMetaInformation(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                refreshMetaInformation();
+
+                App.s_cccFrameWork.loadCareComponentAndPatternView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
+                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                refreshCareComponentAndPattern();
+
+                App.s_cccFrameWork.loadDiagnosesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
+                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                activateNursingDiagnosisFilter();
+
+                App.s_cccFrameWork.loadOutcomeTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                refreshOutcomeTypes();
+
+                App.s_cccFrameWork.loadInterventionsView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
+                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                activateNursingInterventionFilter();
+
+                App.s_cccFrameWork.loadActionTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
+                                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
+                refreshActionTypes();
 
             }
             catch (Exception exception)
@@ -384,14 +438,14 @@ namespace eNursePHR.userInterfaceLayer
             }
 
             if (!loadFail)
-                refreshCCCFramework();
+                refreshFrameworkLanguageAnalysis();
             else
             {
                 exFramework.IsExpanded = false;
                 exFramework.IsEnabled = false;
                 tbSearch.IsEnabled = false;
             }
-        }
+ }
 
         private void stopApplication(string errMsg, string errTitle, int exitCode)
         {
@@ -401,20 +455,20 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        private void loadCareplan(Guid carePlanID, bool testPlan)
+        private void loadCareplan(Guid carePlanID, bool testPlan, EventHandler DB_SavingChanges)
         {
 
             try
             {
-                App.carePlan = new ViewCarePlan();
+                App.s_carePlan = new ViewCarePlan(DB_SavingChanges);
                 if (testPlan)
-                    App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.First();
+                    App.s_carePlan.ActiveCarePlan = App.s_carePlan.DB.CarePlan.First();
                 else
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
                          App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where(cp => cp.Id == carePlanID).First();
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
                     //SP 1 workaround
-                    App.carePlan.ActiveCarePlan = App.carePlan.DB.CarePlan.Where("it.Id = '" + carePlanID + "'").First();
+                    App.s_carePlan.ActiveCarePlan = App.s_carePlan.DB.CarePlan.Where("it.Id = '" + carePlanID + "'").First();
 #endif
             }
             catch (Exception exception)
@@ -425,15 +479,15 @@ namespace eNursePHR.userInterfaceLayer
             }
 
             // Setup care blog items
-            if (!App.carePlan.ActiveCarePlan.Item.IsLoaded)
-                App.carePlan.ActiveCarePlan.Item.Load();
+            if (!App.s_carePlan.ActiveCarePlan.Item.IsLoaded)
+                App.s_carePlan.ActiveCarePlan.Item.Load();
 
             Item lastItem = null;
 
-            if (App.carePlan.ActiveCarePlan.Item.Count > 0)
+            if (App.s_carePlan.ActiveCarePlan.Item.Count > 0)
             {
 
-                foreach (Item i in App.carePlan.ActiveCarePlan.Item)
+                foreach (Item i in App.s_carePlan.ActiveCarePlan.Item)
                 {// Load related history and tags
                     i.HistoryReference.Load();
                     i.Tag.Load();
@@ -446,7 +500,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 // Setup of item collection change handling (updates combobox)
 
-                App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
+                App.s_carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
                 Item_AssociationChanged(this, null);
 
                 // Start at last selected item from previous session by default
@@ -467,8 +521,8 @@ namespace eNursePHR.userInterfaceLayer
         /// <param name="e"></param>
         public void Item_AssociationChanged(object sender, CollectionChangeEventArgs e)
         {
-
-            lvCareBlog.ItemsSource = App.carePlan.ActiveCarePlan.Item.OrderByDescending(i => i.History.LastUpdate);
+            
+            lvCareBlog.ItemsSource = App.s_carePlan.ActiveCarePlan.Item.OrderByDescending(i => i.History.LastUpdate);
         }
 
         /// <summary>
@@ -511,7 +565,7 @@ namespace eNursePHR.userInterfaceLayer
         /// Finds concept and care component for a tag and build up a careplan of all tags
         /// </summary>
         /// <param name="cp"></param>
-        void buildAllTags(CarePlan cp)
+        void buildTagsOverview(CarePlan cp)
         {
             string version = eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version;
             string languageName = eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName;
@@ -522,7 +576,7 @@ namespace eNursePHR.userInterfaceLayer
                 foreach (Tag tag in item.Tag)
                 {
 
-                    tagHandler.translateTag(App.cccFrameWork.DB, tag, languageName, version); // Find Concept and CareComponent for tag
+                    tagConverter.translateTag(App.s_cccFrameWork.DB, tag, languageName, version); // Find Concept and CareComponent for tag
                     careplanTags.Add(tag);
                 }
 
@@ -563,7 +617,7 @@ namespace eNursePHR.userInterfaceLayer
 #if (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
                     tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where(o => o.Code == latest.ExpectedOutcome &&
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-                tag.LatestOutcomeModifier = App.cccFrameWork.DB.OutcomeType.Where("it.Code = " + latest.ExpectedOutcome + " AND it.Version = '" +
+                tag.LatestOutcomeModifier = App.s_cccFrameWork.DB.OutcomeType.Where("it.Code = " + latest.ExpectedOutcome + " AND it.Version = '" +
 
                 eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version + "'AND it.Language_Name = '" + eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName + "'").First().Concept;
 #endif
@@ -580,7 +634,7 @@ namespace eNursePHR.userInterfaceLayer
         /// <summary>
         /// Translates all tags for a selected item 
         /// </summary>
-        public void refreshTags()
+        public void refreshLanguageTranslationForItemTags()
         {
 
             string version = eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version;
@@ -599,7 +653,7 @@ namespace eNursePHR.userInterfaceLayer
                 if (!tag.ActionTReference.IsLoaded) // Loads releated actiontype
                     tag.ActionTReference.Load();
 
-                tagHandler.translateTag(App.cccFrameWork.DB, tag, languageName, version); // Translate tag to specific language
+                tagConverter.translateTag(App.s_cccFrameWork.DB, tag, languageName, version); // Translate tag to specific language
 
             }
 
@@ -698,13 +752,13 @@ namespace eNursePHR.userInterfaceLayer
 
                     selItem.Tag.AssociationChanged -= new CollectionChangeEventHandler(Tag_AssociationChanged); // Disable tag association
 
-                    App.carePlan.DB.DeleteObject(selItem.History);
+                    App.s_carePlan.DB.DeleteObject(selItem.History);
 
                     infoAcq.Statement.Clear(); // Remove annotation-references
-                    if (aService.Service.IsEnabled)
-                        aService.Service.Disable();
+                    if (annotationService.Service.IsEnabled)
+                        annotationService.Service.Disable();
 
-                    App.carePlan.DB.DeleteObject(selItem);
+                    App.s_carePlan.DB.DeleteObject(selItem);
 
                     SaveCarePlan();
 
@@ -719,7 +773,7 @@ namespace eNursePHR.userInterfaceLayer
                     lbTags.ItemsSource = null;
                     fdReaderCareBlog.Document = null;
                     fdReaderCareBlog.Visibility = Visibility.Collapsed;
-                    buildAllTags(App.carePlan.ActiveCarePlan);
+                    buildTagsOverview(App.s_carePlan.ActiveCarePlan);
 
                     lvCareBlog_SelectionChanged(lvCareBlog, null); // Fake event to update control 
 
@@ -742,7 +796,7 @@ namespace eNursePHR.userInterfaceLayer
             eNursePHR.userInterfaceLayer.Properties.Settings.Default.LastItem = selItem.Id;
             eNursePHR.userInterfaceLayer.Properties.Settings.Default.Save();
 
-            refreshTags();
+            refreshLanguageTranslationForItemTags();
 
             // Build flowdocument
 
@@ -755,12 +809,12 @@ namespace eNursePHR.userInterfaceLayer
             ////spPanel.Children.Add(pTitle);
             //sItem.Blocks.Add(pTitle);
 
-            aService.changeItemStore(selItem,annotationStoreCargoChanged,hideBtnSaveAnnotations);
+            annotationService.changeItemStore(selItem,annotationStoreCargoChanged,hideBtnSaveAnnotations);
 
-            infoAcq.Refresh(aService.Service.Store);
+            infoAcq.Refresh(annotationService.Service.Store);
 
 
-            App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+            App.s_carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagConverter);
 
 
             //spPanel.Children.Add(fdview);
@@ -787,9 +841,9 @@ namespace eNursePHR.userInterfaceLayer
             wndUpdateItem.CurrentItem = selItem;
             wndUpdateItem.ShowDialog();
 
-            infoAcq.Refresh(aService.Service.Store); // In case annotation references is changed...
+            infoAcq.Refresh(annotationService.Service.Store); // In case annotation references is changed...
 
-            App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+            App.s_carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagConverter);
 
         }
 
@@ -851,7 +905,7 @@ namespace eNursePHR.userInterfaceLayer
                 Tag_AssociationChanged(this, null);
                 careplanTags.Add(newTag);
                 inferContentFromTags(selItem); // Update content status
-                refreshTags();
+                refreshLanguageTranslationForItemTags();
             }
         }
 
@@ -866,8 +920,8 @@ namespace eNursePHR.userInterfaceLayer
             newTag.History = tagHistory;
 
 
-            App.carePlan.DB.AddToTag(newTag);
-            App.carePlan.DB.AddToHistory(tagHistory);
+            App.s_carePlan.DB.AddToTag(newTag);
+            App.s_carePlan.DB.AddToHistory(tagHistory);
             return newTag;
         }
 
@@ -883,8 +937,8 @@ namespace eNursePHR.userInterfaceLayer
 
                 History actionHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                 newActionType.History = actionHistory;
-                App.carePlan.DB.AddToHistory(actionHistory);
-                App.carePlan.DB.AddToActionT(newActionType);
+                App.s_carePlan.DB.AddToHistory(actionHistory);
+                App.s_carePlan.DB.AddToActionT(newActionType);
             }
             return taxonomyActionTypeAttachmentGuid;
         }
@@ -899,8 +953,8 @@ namespace eNursePHR.userInterfaceLayer
 
                 History outcomeHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                 newOutcome.History = outcomeHistory;
-                App.carePlan.DB.AddToHistory(outcomeHistory);
-                App.carePlan.DB.AddToOutcome(newOutcome);
+                App.s_carePlan.DB.AddToHistory(outcomeHistory);
+                App.s_carePlan.DB.AddToOutcome(newOutcome);
 
             }
             return taxonomyOutcomeAttachmentGuid;
@@ -915,7 +969,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 comment = fInterv.Comment;
                 // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
-                taxonomyGuid = tagHandler.getTaxonomyGuidNursingIntervention(fInterv.ComponentCode, fInterv.MajorCode, fInterv.MinorCode, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+                taxonomyGuid = tagConverter.getTaxonomyGuidNursingIntervention(fInterv.ComponentCode, fInterv.MajorCode, fInterv.MinorCode, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
 
 
             }
@@ -927,7 +981,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 taxonomyType = "CCC/ActionType";
                 fActionType = (ActionType)transfer.GetData("CCC/ActionType");
-                taxonomyActionTypeAttachmentGuid = tagHandler.getTaxonomyGuidActionType(fActionType.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+                taxonomyActionTypeAttachmentGuid = tagConverter.getTaxonomyGuidActionType(fActionType.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
 
             }
         }
@@ -940,7 +994,7 @@ namespace eNursePHR.userInterfaceLayer
                 eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis fDiag = (eNursePHR.BusinessLayer.CCC_Translations.Nursing_Diagnosis)transfer.GetData("CCC/NursingDiagnosis");
                 comment = fDiag.Comment;
                 // Find taxonomy reference/guid to identify diagnosis (component,major,minor)
-                taxonomyGuid = tagHandler.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+                taxonomyGuid = tagConverter.getTaxonomyGuidNursingDiagnosis(fDiag.ComponentCode, fDiag.MajorCode, fDiag.MinorCode, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
 
             }
         }
@@ -951,7 +1005,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 fOutcomeType = (eNursePHR.BusinessLayer.CCC_Translations.OutcomeType)transfer.GetData("CCC/OutcomeType");
                 // Find guid in reference terminology
-                taxonomyOutcomeAttachmentGuid = tagHandler.getTaxonomyGuidOutcomeType(fOutcomeType.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+                taxonomyOutcomeAttachmentGuid = tagConverter.getTaxonomyGuidOutcomeType(fOutcomeType.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
             }
         }
 
@@ -961,7 +1015,7 @@ namespace eNursePHR.userInterfaceLayer
             {
                 taxonomyType = "CCC/CareComponent";
                 Care_component component = (Care_component)transfer.GetData("CCC/CareComponent");
-                taxonomyGuid = tagHandler.getTaxonomyGuidCareComponent(component.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
+                taxonomyGuid = tagConverter.getTaxonomyGuidCareComponent(component.Code, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
 
             }
         }
@@ -991,24 +1045,30 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+        /// <summary>
+        /// Generates a blog of all health entries
+        /// TO DO : Date filter - start - end data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void miCarePlanBlog_Click(object sender, RoutedEventArgs e)
         {
-            if (App.carePlan == null)
+            if (App.s_carePlan == null)
             {
                 MessageBox.Show("No active personal health record, is database connectivity OK?", "No active personal health record", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (App.carePlan.ActiveCarePlan.Item.Count == 0)
+            if (App.s_carePlan.ActiveCarePlan.Item.Count == 0)
             {
                 MessageBox.Show("The current health record is empty, please create at least one entry first", "Empty health record", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            if (aService.Service.IsEnabled)
-                aService.Service.Disable();
+            if (annotationService.Service.IsEnabled)
+                annotationService.Service.Disable();
 
-            App.carePlan.generateCareBlog(fdReaderCareBlog, App.carePlan.ActiveCarePlan, tagHandler, true);
+            App.s_carePlan.generateCareBlog(fdReaderCareBlog, App.s_carePlan.ActiveCarePlan, tagConverter, true);
 
             exTags.IsExpanded = false;
             exTaxonomy.IsExpanded = true;
@@ -1041,7 +1101,7 @@ namespace eNursePHR.userInterfaceLayer
             if (result == MessageBoxResult.No)
                 return;
 
-            App.carePlan.DB.DeleteObject(selTag);
+            App.s_carePlan.DB.DeleteObject(selTag);
             if (SaveCarePlan() != -1)
                 careplanTags.Remove(selTag);
 
@@ -1093,7 +1153,7 @@ namespace eNursePHR.userInterfaceLayer
         {
             try
             {
-                int upd = App.carePlan.DB.SaveChanges();
+                int upd = App.s_carePlan.DB.SaveChanges();
             }
             catch (UpdateException uex)
             {
@@ -1129,13 +1189,13 @@ namespace eNursePHR.userInterfaceLayer
 
         private void turnOnAnnotationService(Item item)
         {
-            aService.changeItemStore(item,annotationStoreCargoChanged,hideBtnSaveAnnotations);
+            annotationService.changeItemStore(item,annotationStoreCargoChanged,hideBtnSaveAnnotations);
           
         }
 
         private void turnOffAnnotationService()
         {
-            aService.Service.Disable();
+            annotationService.Service.Disable();
         }
 
         #region Item navigation for a specific careplan
@@ -1172,7 +1232,7 @@ namespace eNursePHR.userInterfaceLayer
             Item selItem = lvCareBlog.SelectedItem as Item;
             if (selItem != null)
             {
-                App.carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagHandler);
+                App.s_carePlan.showCareplanItem(fdReaderCareBlog, selItem, tagConverter);
                 turnOnAnnotationService(selItem);
             }
             else
@@ -1201,7 +1261,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 this.addContent(annotation, ContentType.Disease);
                 //aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -1223,7 +1283,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 this.addContent(annotation, ContentType.Diagnostic);
                 //aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -1245,7 +1305,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 this.addContent(annotation, ContentType.Interventional);
                 //aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -1285,7 +1345,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 this.addContent(annotation, ContentType.Medication);
                 //aService.IAnnotationStore.saveAnnotation(annotation, lvCareBlog.SelectedItem as Item);
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -1382,9 +1442,11 @@ namespace eNursePHR.userInterfaceLayer
             if (annotation.Anchors[0].Contents.Count == 0)
                 return ContentType.Null;
 
+            // Load extended XML-info.
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(annotation.Anchors[0].Contents[0].OuterXml);
 
+            // Query for content type
             XmlNode xe = xdoc.SelectSingleNode("eNursePHR/Statement[1]"); // XPath-query
             string contentType = xe.Attributes["ContentType"].Value;
 
@@ -1515,7 +1577,6 @@ namespace eNursePHR.userInterfaceLayer
 
         #region Explorer
 
-        private char FilterCode;
         private string FilterSearch;
 
 
@@ -1534,8 +1595,9 @@ namespace eNursePHR.userInterfaceLayer
             {
                 WindowMultiLanguageIntegrity winMultiLangIntegrity = new WindowMultiLanguageIntegrity();
                 winMultiLangIntegrity.ShowDialog();
-                App.cccFrameWork.loadFrameworkAnalysis();
-                refreshCCCFramework();
+                
+                App.s_cccFrameWork.loadFrameworkLanguageAnalysis();
+                refreshFrameworkLanguageAnalysis();
             }
             catch (Exception exception)
             {
@@ -1543,45 +1605,45 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
-        public void refreshCCCFramework()
+        private void pickDefaultCareComponent()
+        {
+            lbCareComponent.SelectedIndex = 1; 
+        
+        }
+
+        public void refreshCareComponentAndPattern()
         {
 
+             lbCareComponent.ItemsSource = App.s_cccFrameWork.cvComponents; // Master
+             ccCareComponent.Content = App.s_cccFrameWork.cvComponents;     // Detail
 
-            cbLanguage.ItemsSource = App.cccFrameWork.FrameworkActual;
-            if (App.cccFrameWork.FrameworkActual != null)
+             pickDefaultCareComponent();
+        }
+
+        public void refreshFrameworkLanguageAnalysis()
+        {
+            // Load language analysis information
+            App.s_cccFrameWork.loadFrameworkLanguageAnalysis();
+            // Bind to UI
+            cbLanguage.ItemsSource = App.s_cccFrameWork.ActualLanguageAnalysisResult;
+            
+            if (App.s_cccFrameWork.ActualLanguageAnalysisResult != null)
                 cbLanguage.ToolTip = "Last language integrity check was run on " +
-                    App.cccFrameWork.FrameworkActual[0].Date.ToString();
-            for (int i = 0; i < App.cccFrameWork.FrameworkActual.Count; i++)
+                    App.s_cccFrameWork.ActualLanguageAnalysisResult[0].Date.ToString();
+
+            // Choose last saved setting language as the selected language
+            for (int i = 0; i < App.s_cccFrameWork.ActualLanguageAnalysisResult.Count; i++)
             {
-                if (App.cccFrameWork.FrameworkActual[i].Language_Name == eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName)
+                if (App.s_cccFrameWork.ActualLanguageAnalysisResult[i].Language_Name == 
+                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName)
                 {
-                    cbLanguage.SelectedItem = App.cccFrameWork.FrameworkActual[i];
+                    cbLanguage.SelectedItem = App.s_cccFrameWork.ActualLanguageAnalysisResult[i];
                     break;
                 }
             }
 
-            spCopyright.DataContext = App.cccFrameWork;
-            //tbFrameworkAuthors.DataContext = App.cccFrameWork;
-            //tbFrameworkName.DataContext = App.cccFrameWork;
-            //tbFrameworkVersion.DataContext = App.cccFrameWork;
-            //tbFrameworkLastUpdate.DataContext = App.ccc
-
-            //lbCareComponent.GroupStyle.Add(new GroupStyle());
-
-            // Care component
-
-            lbCareComponent.ItemsSource = App.cccFrameWork.cvComponents; // Master
-            ccCareComponent.Content = App.cccFrameWork.cvComponents;     // Detail
-            lbCareComponent.SelectedIndex = 1; // Default to selfcare
-
-            // Outcome type
-            lbOutcomeType.ItemsSource = App.cccFrameWork.cvOutcomeTypes;
-            ccOutcomeType.Content = App.cccFrameWork.cvOutcomeTypes;
-
-            // Action type
-
-            lbActionType.ItemsSource = App.cccFrameWork.cvActionTypes;
-
+           
+           
         }
 
         /// <summary>
@@ -1599,7 +1661,7 @@ namespace eNursePHR.userInterfaceLayer
             if (selItem.Language_Name == Properties.Settings.Default.LanguageName)
                 return;
 
-            if (App.cccFrameWork.LogoURL == null)
+            if (App.s_cccFrameWork.LogoURL == null)
                 imgLogo.Visibility = Visibility.Collapsed;
             else
                 imgLogo.Visibility = Visibility.Visible;
@@ -1608,15 +1670,12 @@ namespace eNursePHR.userInterfaceLayer
             Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
             Properties.Settings.Default.Save();
 
-            // Recreates new CCC framework for given language name
-                    App.cccFrameWork.DB.Dispose();
-                    App.cccFrameWork = new ViewCCCFrameWork(Properties.Settings.Default.LanguageName,
-                        Properties.Settings.Default.Version);
-                    refreshCCCFramework();
+            // Recreates new CCC framework for given language name and version
+            loadCCCFramework();
+            
+            refreshLanguageTranslationForItemTags();
 
-                    refreshTags();
-
-                    buildAllTags(App.carePlan.ActiveCarePlan);
+            buildTagsOverview(App.s_carePlan.ActiveCarePlan);
      
 
             
@@ -1630,7 +1689,7 @@ namespace eNursePHR.userInterfaceLayer
         {
             TextBox tb = sender as TextBox;
 
-            if (App.cccFrameWork == null)
+            if (App.s_cccFrameWork == null)
             {
                 MessageBox.Show("Cannot search in the clinical care classification, because database is not loaded", "Cannot search", MessageBoxButton.OK, MessageBoxImage.Error);
 
@@ -1645,7 +1704,7 @@ namespace eNursePHR.userInterfaceLayer
                 lblNoMatchNursingInterventions.Visibility = Visibility.Collapsed;
 
                 spCareComponent.Visibility = Visibility.Visible;
-                App.cccFrameWork.cvComponents.Filter = null;
+                App.s_cccFrameWork.cvComponents.Filter = null;
 
                 lbCareComponent.SelectedIndex = 1;
                 return;
@@ -1654,41 +1713,22 @@ namespace eNursePHR.userInterfaceLayer
             //   spCareComponent.Visibility = Visibility.Collapsed;
 
 
-            App.cccFrameWork.cvComponents.Filter = new Predicate<object>(FilterOutComponentsSearch);
-            App.cccFrameWork.cvComponents.Refresh();
-            if (App.cccFrameWork.cvComponents.Count == 0)
-            {
-                lblNoMatchCareComponent.Visibility = Visibility.Visible;
-                spCareComponent.Visibility = Visibility.Hidden;
+            filterCareComponents();
 
-            }
-            else
-            {
-                lblNoMatchCareComponent.Visibility = Visibility.Collapsed;
-                spCareComponent.Visibility = Visibility.Visible;
-            }
+            filterDiagnoses();
 
-            App.cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnosesSearch);
-            App.cccFrameWork.cvDiagnoses.Refresh();
+            filterInterventions();
+        }
 
-            if (App.cccFrameWork.cvDiagnoses.Count == 0)
-            {
-                lblNoMatchNursingDiagnoses.Visibility = Visibility.Visible;
-                spNursingDiagnoses.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                lblNoMatchNursingDiagnoses.Visibility = Visibility.Collapsed;
-                spNursingDiagnoses.Visibility = Visibility.Visible;
-            }
+        /// <summary>
+        /// Filters the interventions
+        /// </summary>
+        private void filterInterventions()
+        {
+            App.s_cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventionsSearch);
+            App.s_cccFrameWork.cvInterventions.Refresh();
 
-            lbNursingDiagnosis.ItemsSource = App.cccFrameWork.cvDiagnoses;
-            lbNursingDiagnosis.SelectedIndex = 0;
-
-            App.cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventionsSearch);
-            App.cccFrameWork.cvInterventions.Refresh();
-
-            if (App.cccFrameWork.cvInterventions.Count == 0)
+            if (App.s_cccFrameWork.cvInterventions.Count == 0)
             {
                 lblNoMatchNursingInterventions.Visibility = Visibility.Visible;
                 spNursingInterventions.Visibility = Visibility.Hidden;
@@ -1699,8 +1739,52 @@ namespace eNursePHR.userInterfaceLayer
                 spNursingInterventions.Visibility = Visibility.Visible;
             }
 
-            lbNursingInterventions.ItemsSource = App.cccFrameWork.cvInterventions;
+            lbNursingInterventions.ItemsSource = App.s_cccFrameWork.cvInterventions;
             lbNursingInterventions.SelectedIndex = 0;
+
+        }
+
+        /// <summary>
+        /// Filters diagnoses
+        /// </summary>
+        private void filterDiagnoses()
+        {
+            App.s_cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnosesSearch);
+            App.s_cccFrameWork.cvDiagnoses.Refresh();
+
+            if (App.s_cccFrameWork.cvDiagnoses.Count == 0)
+            {
+                lblNoMatchNursingDiagnoses.Visibility = Visibility.Visible;
+                spNursingDiagnoses.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                lblNoMatchNursingDiagnoses.Visibility = Visibility.Collapsed;
+                spNursingDiagnoses.Visibility = Visibility.Visible;
+            }
+
+            lbNursingDiagnosis.ItemsSource = App.s_cccFrameWork.cvDiagnoses;
+            lbNursingDiagnosis.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Filters care components
+        /// </summary>
+        private void filterCareComponents()
+        {
+            App.s_cccFrameWork.cvComponents.Filter = new Predicate<object>(FilterOutComponentsSearch);
+            App.s_cccFrameWork.cvComponents.Refresh();
+            if (App.s_cccFrameWork.cvComponents.Count == 0)
+            {
+                lblNoMatchCareComponent.Visibility = Visibility.Visible;
+                spCareComponent.Visibility = Visibility.Hidden;
+
+            }
+            else
+            {
+                lblNoMatchCareComponent.Visibility = Visibility.Collapsed;
+                spCareComponent.Visibility = Visibility.Visible;
+            }
         }
 
         private bool FilterOutDiagnosesSearch(object item)
@@ -1765,7 +1849,7 @@ namespace eNursePHR.userInterfaceLayer
                 return false;
 
 
-            int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
+            int result = nd.ComponentCode.CompareTo(getFilterCareComponentCode(lbCareComponent).ToString());
 
             if (result == 0) return true;
 
@@ -1784,7 +1868,7 @@ namespace eNursePHR.userInterfaceLayer
             if (nd == null)
                 return false;
 
-            int result = nd.ComponentCode.CompareTo(FilterCode.ToString());
+            int result = nd.ComponentCode.CompareTo(getFilterCareComponentCode(lbCareComponent).ToString());
 
             if (result == 0) return true;
 
@@ -1816,6 +1900,39 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+
+
+        private char getFilterCareComponentCode(ListBox lbCareComponent)
+        {
+            Care_component cc = lbCareComponent.SelectedItem as Care_component;
+            return cc.Code.ToCharArray()[0];
+        }
+
+        private void activateNursingDiagnosisFilter()
+        {
+            App.s_cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnoses);
+            App.s_cccFrameWork.cvDiagnoses.Refresh();
+            // Master
+            lbNursingDiagnosis.ItemsSource = App.s_cccFrameWork.cvDiagnoses;
+
+            // Detail
+
+            ccNursingDiagnosis.Content = App.s_cccFrameWork.cvDiagnoses.CurrentItem;
+
+        }
+
+        private void activateNursingInterventionFilter()
+        {
+            App.s_cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventions);
+            App.s_cccFrameWork.cvInterventions.Refresh();
+            lbNursingInterventions.ItemsSource = App.s_cccFrameWork.cvInterventions;
+
+            // Detail
+
+           // ccNursingDiagnosis.Content = App.cccFrameWork.cvDiagnoses.CurrentItem;
+           
+        }
+
         private void lbCareComponent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (tbSearch.Text != "")
@@ -1826,25 +1943,10 @@ namespace eNursePHR.userInterfaceLayer
             if (lb.SelectedIndex == -1) // Tom selected item-liste
                 return;
 
-            Care_component cc = lb.SelectedItem as Care_component;
-            FilterCode = cc.Code.ToCharArray()[0];
 
-            App.cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnoses);
-            App.cccFrameWork.cvDiagnoses.Refresh();
+            activateNursingDiagnosisFilter();
 
-            App.cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventions);
-            App.cccFrameWork.cvInterventions.Refresh();
-
-
-            // Master
-            lbNursingDiagnosis.ItemsSource = App.cccFrameWork.cvDiagnoses;
-            lbNursingInterventions.ItemsSource = App.cccFrameWork.cvInterventions;
-
-            // Detail
-
-            ccNursingDiagnosis.Content = App.cccFrameWork.cvDiagnoses.CurrentItem;
-
-
+            activateNursingInterventionFilter();
 
         }
 
@@ -2040,17 +2142,23 @@ namespace eNursePHR.userInterfaceLayer
 
         #endregion
 
-
+        /// <summary>
+        /// Updates UI when a new intervention is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lbNursingInterventions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = sender as ListBox;
 
+            // Get the nursing intervention that is selected
             Nursing_Intervention fi = (Nursing_Intervention)lb.SelectedItem;
             if (fi == null)
                 return;
 
             if ((bool)cbAttachToIntervention.IsChecked)
             {
+                // Update action modifier 
                 tbNursingInterventionActionModifier.Text = tbConceptActionType.Text;
                 tbNursingInterventionConcept.Text = fi.Concept;
             }
@@ -2146,7 +2254,6 @@ namespace eNursePHR.userInterfaceLayer
                 cbActionType.ItemsSource = actionTypeSeparate;
                 cbActionType.SelectedIndex = 0;
             }
-
 
         }
 
@@ -2396,7 +2503,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 Annotation annotation = AnnotationHelper.CreateTextStickyNoteForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName);
 
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -2429,7 +2536,7 @@ namespace eNursePHR.userInterfaceLayer
 
         private void btnSaveTextInkAnnotation_Click(object sender, RoutedEventArgs e)
         {
-            aService.IAnnotationStore.saveAnnotationWithCargoChanged();
+            annotationService.IAnnotationStore.saveAnnotationWithCargoChanged();
             btnSaveTextInkAnnotation.Visibility = Visibility.Collapsed;
         }
 
@@ -2444,7 +2551,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 Annotation annotation = AnnotationHelper.CreateInkStickyNoteForSelection(AnnotationService.GetService(fdReaderCareBlog), System.Environment.UserName);
 
-                aService.IAnnotationStore.saveAnnotation(annotation);
+                annotationService.IAnnotationStore.saveAnnotation(annotation);
 
             }
             else
@@ -2453,6 +2560,11 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
+        /// <summary>
+        /// Event handler for AnnotationResourceChanged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void annotationStoreCargoChanged(object sender, AnnotationResourceChangedEventArgs e)
         {
             if (e.Annotation.AnnotationType.Name == "TextStickyNote" ||
@@ -2469,6 +2581,40 @@ namespace eNursePHR.userInterfaceLayer
         public void hideBtnSaveAnnotations(object sender, EventArgs e)
         {
             btnSaveTextInkAnnotation.Visibility = Visibility.Collapsed;
+        }
+
+        public void updateCCCDBSaveStatus(object sender, EventArgs e)
+        {
+
+            string prevStatusMsg = (wndMain.TryFindResource("StatusHandler") as StatusHandler).StatusMsg;
+
+            changeStatus("Saving changes...");
+          
+
+            // Setup timer 
+            // The dispatcher timer allows update on the user interface thread, I tried to used
+            // timer-class first, but was not allows to make ui changes from another thread
+            // More info: http://blogs.msdn.com/shen/archive/2008/02/28/changing-the-ui-in-a-multi-threaded-wpf-application.aspx
+            // Accessed : 16 september 2008
+
+            dispatcherTimerUI = new DispatcherTimer(DispatcherPriority.Background);
+            dispatcherTimerUI.Interval = TimeSpan.FromMilliseconds(3000);
+            dispatcherTimerUI.Tag = prevStatusMsg;
+            dispatcherTimerUI.Tick += new EventHandler(removeDBSaveStatus);
+            dispatcherTimerUI.Start();
+
+        }
+
+        private void removeDBSaveStatus(object sender, EventArgs e)
+        {
+            dispatcherTimerUI.Stop();
+            changeStatus((sender as DispatcherTimer).Tag as string);
+        }
+
+        private void changeStatus(string statusMsg)
+        {
+            StatusHandler handler = wndMain.TryFindResource("StatusHandler") as StatusHandler;
+            handler.StatusMsg = statusMsg;
         }
     }
 }

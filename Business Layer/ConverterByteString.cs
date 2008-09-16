@@ -6,6 +6,9 @@ using System.IO;
 
 namespace eNursePHR.BusinessLayer
 {
+    /// <summary>
+    /// Convert/convertback of byte array to string
+    /// </summary>
     public static class ConvertHelper
     {
         public static string convertToString(byte[] bArray)

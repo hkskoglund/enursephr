@@ -125,11 +125,11 @@ namespace eNursePHR.BusinessLayer
 
         #region Language statictics
         
-        private List<FrameworkActual> _factual;
+        private List<FrameworkActual> _actualLanguageAnalysisResult;
 
-        public List<FrameworkActual> FrameworkActual
+        public List<FrameworkActual> ActualLanguageAnalysisResult
         {
-            get { return this._factual; }
+            get { return this._actualLanguageAnalysisResult; }
         }
 
         #endregion
@@ -149,74 +149,134 @@ namespace eNursePHR.BusinessLayer
        public CCC_Framework(string languageName, string version)
         {
             
-           loadFramework(languageName,version);  
+           //loadFramework(languageName,version);  
          
  }
-       private void loadFramework(string languageName, string version)
+        /// <summary>
+        /// Loads meta information of CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+       public void loadMetaInformation(string version, string languageName)
        {
-           
-           // Meta information
-
-           try
-
-               
-           {
-
 #if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
-               // SP 1 work-around
-             
-               this.Name = this.DB.Copyright.Where("it.Version = '"+version +"' AND it.Language_Name ='"+languageName+"'").First().Name;
-               this.Authors = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().Authors;
-               this.Version = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().Version;
-               this.LastUpdate = (DateTime)this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().LastUpdate;
-            this.LogoURL = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().LogoURL;
-          
-               this._patterns = this.DB.CarePattern.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-               this._components = this.DB.Care_component.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-               this._diagnoses = this.DB.Nursing_Diagnosis.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-               this._interventions = this.DB.Nursing_Intervention.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-               this._outcomes = this.DB.OutcomeType.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-               this._actionTypes = this.DB.ActionType.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
-           
+        
+           this.Name = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().Name;
+           this.Authors = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().Authors;
+           this.Version = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().Version;
+           this.LastUpdate = (DateTime)this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().LastUpdate;
+           this.LogoURL = this.DB.Copyright.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").First().LogoURL;
 #elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
-               // SP 1 beta
               this.Name = this.DB.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Name;
               this.Authors = this.DB.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Authors;
             this.Version = this.DB.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().Version;
             this.LogoURL = this.DB.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().LogoURL;
                this.LastUpdate = (DateTime)this.DB.Copyright.Where(c => c.Language_Name == languageName && c.Version == version).First().LastUpdate;
 
+#endif
+       }
+
+        /// <summary>
+        /// Loads carecomponents and patterns from CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+       protected void loadCareComponentAndPattern(string version, string languageName)
+       {
+#if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+               // SP 1 work-around
+
+           this._patterns = this.DB.CarePattern.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
+           this._components = this.DB.Care_component.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
+#elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
              this._patterns = this.DB.CarePattern.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
              this._components = this.DB.Care_component.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
-             this._diagnoses = this.DB.Nursing_Diagnosis.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
-              this._interventions = this.DB.Nursing_Intervention.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
-             this._outcomes = this.DB.OutcomeType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
-           this._actionTypes = this.DB.ActionType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
 
 #endif
-           }
-           catch (Exception ex)
-           {
-           }
-
-          
-           
-           // Load last languages found in analysis
-
-           loadFrameworkAnalysis();
        }
 
-       public void loadFrameworkAnalysis()
+        /// <summary>
+        /// Loads diagnoses from CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+       protected void loadDiagnoses(string version, string languageName)
        {
-           if (this._factual != null)
-               this.DB.Refresh(System.Data.Objects.RefreshMode.StoreWins, this._factual);
-           else
-               this._factual = this.DB.FrameworkActual.ToList();
+#if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+           this._diagnoses = this.DB.Nursing_Diagnosis.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
+
+#elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+             this._diagnoses = this.DB.Nursing_Diagnosis.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+
+#endif
+
        }
 
-    
-        
+        /// <summary>
+        /// Loads interventions from CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+       protected void loadInterventions(string version, string languageName)
+       {
+#if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+           this._interventions = this.DB.Nursing_Intervention.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
 
+#elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+              this._interventions = this.DB.Nursing_Intervention.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+
+#endif
+
+       }
+       
+        /// <summary>
+        /// Loads outcome types from CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+        protected void loadOutcomeTypes(string version, string languageName)
+       {
+#if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+           this._outcomes = this.DB.OutcomeType.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
+        
+#elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+             this._outcomes = this.DB.OutcomeType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+        
+#endif
+
+       }
+
+
+        /// <summary>
+        /// Loads action types from CCC framework
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="languageName"></param>
+        protected void loadActionTypes(string version, string languageName)
+        {
+#if (SQL_SERVER_COMPACT_SP1_WORKAROUND)
+            this._actionTypes = this.DB.ActionType.Where("it.Version = '" + version + "' AND it.Language_Name ='" + languageName + "'").ToList();
+
+#elif (!SQL_SERVER_COMPACT_SP1_WORKAROUND)
+           this._actionTypes = this.DB.ActionType.Where(p => p.Language_Name == languageName && p.Version == version).ToList();
+        
+#endif
+
+        }
+
+       /// <summary>
+       /// Load language analysis data that shows language integrity
+       /// </summary>
+       public void loadFrameworkLanguageAnalysis()
+       {
+           // If framework language analysis contains data, then do a refresh from the database
+           if (this._actualLanguageAnalysisResult != null)
+               this.DB.Refresh(System.Data.Objects.RefreshMode.StoreWins, this._actualLanguageAnalysisResult);
+           else
+               this._actualLanguageAnalysisResult = this.DB.FrameworkActual.ToList();  // Try do load language analysis data
+       }
+
+        // Used in update of meta data information
         public event PropertyChangedEventHandler PropertyChanged;
         
         protected void OnPropertyChanged(string propertyName)        

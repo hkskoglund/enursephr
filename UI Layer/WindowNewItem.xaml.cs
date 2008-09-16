@@ -130,10 +130,10 @@ namespace eNursePHR.userInterfaceLayer
                     newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                     newItem.History = newHistory;
                     // Prevent Item_Association event handling - do not want to update yet
-                    App.carePlan.ActiveCarePlan.Item.AssociationChanged -= new CollectionChangeEventHandler(wndMain.Item_AssociationChanged);
-                    newItem.CarePlan = App.carePlan.ActiveCarePlan; // Will trigger Item_Association-changed event
+                    App.s_carePlan.ActiveCarePlan.Item.AssociationChanged -= new CollectionChangeEventHandler(wndMain.Item_AssociationChanged);
+                    newItem.CarePlan = App.s_carePlan.ActiveCarePlan; // Will trigger Item_Association-changed event
                     //spNewHistory.Visibility = Visibility.Visible;
-                    App.carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(wndMain.Item_AssociationChanged);
+                    App.s_carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(wndMain.Item_AssociationChanged);
 
 
                     //EntityCommand ecmd = (EntityCommand)App.carePlan.DB.Connection.CreateCommand();
@@ -146,8 +146,8 @@ namespace eNursePHR.userInterfaceLayer
                     //MessageBox.Show(ecmd.ToTraceString());
                     //ecmd.ExecuteNonQuery();
  
-                    App.carePlan.DB.AddToItem(newItem);
-                    App.carePlan.DB.AddToHistory(newHistory);
+                    App.s_carePlan.DB.AddToItem(newItem);
+                    App.s_carePlan.DB.AddToHistory(newHistory);
                 }
                 else
                 {

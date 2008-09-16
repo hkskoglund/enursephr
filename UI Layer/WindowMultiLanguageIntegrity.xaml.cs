@@ -21,7 +21,7 @@ namespace eNursePHR.userInterfaceLayer
     /// </summary>
     public partial class WindowMultiLanguageIntegrity : Window
     {
-        BackgroundWorker worker;
+        BackgroundWorker backgroundWorkerLA;
         string version;
         string languageName;
         CCCFrameworkLanguageAnalysis langAnalysis;
@@ -31,17 +31,24 @@ namespace eNursePHR.userInterfaceLayer
             InitializeComponent();
         }
 
+        /// <summary>
+        /// This is the background task "deep level" language analysis
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="a"></param>
         public void worker_DoWork(object sender, DoWorkEventArgs a)
         {
-            langAnalysis.doDLAnalysis(this.version, this.languageName, worker);
+            langAnalysis.doDLAnalysis(this.version, this.languageName, backgroundWorkerLA);
         }
 
         public void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs a)
         {
+            // Update progressbar
             pbBackground.Value = 0;
             pbBackground.Visibility = Visibility.Collapsed;
-             spDLSummary.Visibility = Visibility.Visible;
-            worker = null;
+            
+            spDLSummary.Visibility = Visibility.Visible;
+            backgroundWorkerLA = null;
         }
 
         public void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -52,64 +59,102 @@ namespace eNursePHR.userInterfaceLayer
             pbBackground.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Starts the "deep level" language analysing in the background
+        /// </summary>
         public void showDLA()
         {
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = false;
-            worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
-            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
 
-            spDLA.Visibility  = Visibility.Visible;
-            worker.RunWorkerAsync();
+            spDLA.Visibility = Visibility.Visible;
+
+            backgroundWorkerLA = new BackgroundWorker();
+            backgroundWorkerLA.WorkerReportsProgress = true;
+            backgroundWorkerLA.WorkerSupportsCancellation = false;
+            backgroundWorkerLA.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
+            backgroundWorkerLA.DoWork += new DoWorkEventHandler(worker_DoWork);
+            backgroundWorkerLA.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+
+            
+            // We are ready to start the background task now.
+            backgroundWorkerLA.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Shows the missinglist (codes missing from the framework after comparison with reference terminology).
+        /// The listbox consist of different types of framework elements
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lbFramework_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox l = sender as ListBox;
-            if (l.SelectedItem == null)
+            ListBox lbFrameworkAnalysis = sender as ListBox;
+        
+            // Check for empty selected item
+            if (lbFrameworkAnalysis.SelectedItem == null)
                 return;
-            Type t = l.SelectedItem.GetType();
 
+            // Get the type of framework element of selected item
+            Type frameworkElementType = lbFrameworkAnalysis.SelectedItem.GetType();
+
+            // Assume no missing codes
             spDLMissingCodes.Visibility = Visibility.Collapsed;
 
-            switch (t.Name)
+            // Based on the type of framework element selected, choo
+            switch (frameworkElementType.Name)
             {
-                case "MCareComponent": lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
-                    lbDLMissingCodes.ItemsSource = ((MCareComponent)l.SelectedItem).MissingList;
-                    if (((MCareComponent)l.SelectedItem).MissingListCount > 0)
-                        spDLMissingCodes.Visibility = Visibility.Visible;
-                    break;
+                case "MCareComponent": setupMissingCodesForCareComponent(lbFrameworkAnalysis); break;
 
-                case "MOutcomeType": lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
-                    lbDLMissingCodes.ItemsSource = ((MOutcomeType)l.SelectedItem).MissingList;
-                    if (((MOutcomeType)l.SelectedItem).MissingListCount > 0)
-                        spDLMissingCodes.Visibility = Visibility.Visible;
-                    break;
+                case "MOutcomeType": setupMissingCodesForOutcomeType(lbFrameworkAnalysis); break;
 
-                case "MNursingDiagnosis": lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["BigCodeTemplate"];
-                    lbDLMissingCodes.ItemsSource = ((MNursingDiagnosis)l.SelectedItem).MissingList;
-                    if (((MNursingDiagnosis)l.SelectedItem).MissingListCount > 0)
-                        spDLMissingCodes.Visibility = Visibility.Visible;
+                case "MNursingDiagnosis": setupMissingCodesForNursingDiagnosis(lbFrameworkAnalysis); break;
 
-                    break;
+                case "MActionType": setupMissingCodesForActionType(lbFrameworkAnalysis); break;
 
-                case "MActionType": lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
-                    lbDLMissingCodes.ItemsSource = ((MActionType)l.SelectedItem).MissingList;
-                    if (((MActionType)l.SelectedItem).MissingListCount > 0)
-                        spDLMissingCodes.Visibility = Visibility.Visible;
-
-                    break;
-
-                case "MNursingIntervention": lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["BigCodeTemplate"];
-                    lbDLMissingCodes.ItemsSource = ((MNursingIntervention)l.SelectedItem).MissingList;
-                    if (((MNursingIntervention)l.SelectedItem).MissingListCount > 0)
-                        spDLMissingCodes.Visibility = Visibility.Visible;
-                    break;
+                case "MNursingIntervention": setupMissingCodesForIntervention(lbFrameworkAnalysis); break;
 
             }
 
+        }
+
+        private void setupMissingCodesForIntervention(ListBox l)
+        {
+            lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["BigCodeTemplate"];
+            lbDLMissingCodes.ItemsSource = ((MNursingIntervention)l.SelectedItem).MissingList;
+            if (((MNursingIntervention)l.SelectedItem).MissingListCount > 0)
+                spDLMissingCodes.Visibility = Visibility.Visible;
+        }
+
+        private void setupMissingCodesForActionType(ListBox l)
+        {
+            lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
+            lbDLMissingCodes.ItemsSource = ((MActionType)l.SelectedItem).MissingList;
+            if (((MActionType)l.SelectedItem).MissingListCount > 0)
+                spDLMissingCodes.Visibility = Visibility.Visible;
+        }
+
+        private void setupMissingCodesForNursingDiagnosis(ListBox l)
+        {
+            lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["BigCodeTemplate"];
+            lbDLMissingCodes.ItemsSource = ((MNursingDiagnosis)l.SelectedItem).MissingList;
+            if (((MNursingDiagnosis)l.SelectedItem).MissingListCount > 0)
+                spDLMissingCodes.Visibility = Visibility.Visible;
+        }
+
+        private void setupMissingCodesForOutcomeType(ListBox l)
+        {
+            lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
+            lbDLMissingCodes.ItemsSource = ((MOutcomeType)l.SelectedItem).MissingList;
+            if (((MOutcomeType)l.SelectedItem).MissingListCount > 0)
+                spDLMissingCodes.Visibility = Visibility.Visible;
+
+        }
+
+        private void setupMissingCodesForCareComponent(ListBox l)
+        {
+            lbDLMissingCodes.ItemTemplate = (DataTemplate)this.Resources["CodeTemplate"];
+            lbDLMissingCodes.ItemsSource = ((MCareComponent)l.SelectedItem).MissingList;
+            if (((MCareComponent)l.SelectedItem).MissingListCount > 0)
+                spDLMissingCodes.Visibility = Visibility.Visible;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -146,7 +191,7 @@ namespace eNursePHR.userInterfaceLayer
         {
             ListView lv = sender as ListView;
 
-            if (worker == null) // If not worker is running
+            if (backgroundWorkerLA == null) // If not worker is running
             {
                 ContextMenu ctxm = new ContextMenu();
                 languageName = langAnalysis.LanguageFrameworkList[lv.SelectedIndex].LanguageName;

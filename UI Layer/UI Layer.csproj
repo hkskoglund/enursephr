@@ -179,6 +179,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="StatusHandler.cs" />
     <Compile Include="ViewCarePlan.cs">
       <SubType>Code</SubType>
     </Compile>

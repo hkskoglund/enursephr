@@ -17,7 +17,7 @@ using eNursePHR.BusinessLayer.PHR;
 
 // Code based on info. from Derek Mehlhorn blog http://blogs.msdn.com/mehlhorn/archive/2006/03/11/549132.aspx
 
-namespace eNursePHR.userInterfaceLayer
+namespace eNursePHR.userInterfaceLayer.AnnotationNS
 {
 
     public delegate void hideBtnSaveEventHandler(object sender, EventArgs e);
@@ -121,7 +121,7 @@ namespace eNursePHR.userInterfaceLayer
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == aGuid);
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)
             // Sp 1 workaround
-            var q = App.carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+aGuid+"'");
+            var q = App.s_carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+aGuid+"'");
 #endif      
             if (q.Count() == 0)
                 return null;
@@ -147,8 +147,8 @@ namespace eNursePHR.userInterfaceLayer
                 History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
                 itemAnnotation.History = newHistory;
 
-                App.carePlan.DB.AddToCPAnnotation(itemAnnotation);
-                App.carePlan.DB.AddToHistory(newHistory);
+                App.s_carePlan.DB.AddToCPAnnotation(itemAnnotation);
+                App.s_carePlan.DB.AddToHistory(newHistory);
 
 
             }
@@ -165,7 +165,7 @@ namespace eNursePHR.userInterfaceLayer
 
             }
 
-            App.carePlan.DB.SaveChanges();
+            App.s_carePlan.DB.SaveChanges();
         }
 
         private void deleteAnnotation(Annotation annotation)
@@ -177,7 +177,7 @@ namespace eNursePHR.userInterfaceLayer
             var q = App.carePlan.DB.Annotation.Where(a => a.Id == annotation.Id);
 #elif (SQL_SERVER_COMPACT_SP1_WORKAROUND)           
             // SP 1 workaround
-            var q = App.carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+ annotation.Id+"'");
+            var q = App.s_carePlan.DB.CPAnnotation.Where("it.Id = GUID '"+ annotation.Id+"'");
 #endif
             if (q.Count() == 1)
             {
@@ -198,8 +198,8 @@ namespace eNursePHR.userInterfaceLayer
                     }
                        
                 }
-                App.carePlan.DB.DeleteObject((CPAnnotation)q.First());
-                App.carePlan.DB.SaveChanges();
+                App.s_carePlan.DB.DeleteObject((CPAnnotation)q.First());
+                App.s_carePlan.DB.SaveChanges();
             }
 
         }
@@ -279,20 +279,30 @@ namespace eNursePHR.userInterfaceLayer
         
     }
 
-    public class myAnnotationService
+    public class eNAnnotationService
     {
+        // This is the annotation store that is associated to the annotation service
         private ItemAnnotationStore _iAnnotationStore;
         public ItemAnnotationStore IAnnotationStore
         {
             get { return _iAnnotationStore; }
         }
 
+        // Property for annotation service
         private AnnotationService _service;
         public AnnotationService Service
         {
             get { return _service; }
         }
 
+        /// <summary>
+        /// This method creates/reloads a new annotation store for a specified item
+        /// It is associated with two eventhandlers that shows/hides a save button for annotations
+        /// Decided to not use automatic save or timer based same to keep things simple.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="uiUpdSave"></param>
+        /// <param name="uiHideSave"></param>
         public void changeItemStore(Item item, 
             AnnotationResourceChangedEventHandler uiUpdSave, 
             hideBtnSaveEventHandler uiHideSave)
@@ -306,144 +316,16 @@ namespace eNursePHR.userInterfaceLayer
             _service.Enable(_iAnnotationStore.Store);
         }
 
-     
-        ///// <summary>
-        ///// Code taken from Derek Mehlhorn blog http://blogs.msdn.com/mehlhorn/archive/2006/03/11/549132.aspx
-        ///// Stops annotation service 
-        ///// </summary>
-        //public void stopAnnotationService()
-        //{
-
-        //    //AnnotationService service =
-
-        //    //AnnotationService.GetService(fdReaderPrettyCarePlan);
-
-        //    if (_service != null && _service.IsEnabled) // (a) Check that an AnnotationService actually existed and was Enabled.
-        //    {
-        //        _service.Store.Flush();  // (b) Flush changes to annotations to our stream.
-        //        _service.Disable();      // (c) Turn off annotations.
-        //        aStream.Close();        // (d) Close annotation stream
-        //    }
-        //}
-
-        public myAnnotationService(FlowDocumentReader flowDocReader)
+        /// <summary>
+        /// Creates a new annotation service
+        /// </summary>
+        /// <param name="flowDocReader"></param>
+        public eNAnnotationService(FlowDocumentReader flowDocReader)
         {
             _service = new AnnotationService(flowDocReader);
            
 
         }
-
-
-        
-        
-        private void storeAnnotationDetail(Annotation a, AnnotationAction action)
-        {
-            MemoryStream ms = new MemoryStream();
-            
-          
-            MemoryStream stream = new MemoryStream();
-            // XmlStreamStore smallstore = new XmlStreamStore(stream);
-
-            StreamReader reader = new StreamReader(stream);
-            XmlStreamStore smallstore = new XmlStreamStore(stream);
-
-            //if (a.Cargos.Count >= 2)
-            //{
-            //    if (a.Cargos[1].Name == "Ink Data")
-            //    {
-
-            //        string data = a.Cargos[1].Contents[0].InnerText;
-            //        //System.Xml.XmlNode checkExp =a.Cargos[0].Contents[0].Attributes.GetNamedItem("IsExpanded"); 
-            //        //string val;
-            //        //if (checkExp != null)
-            //        //{
-
-            //        //    val = checkExp.Value;
-
-            //        //    if (val == "False")
-            //        //        checkExp.Value = "True";
-
-            //        //}
-            //        byte[] inkdata = System.Convert.FromBase64String(data);
-            //        MemoryStream inkstream = new MemoryStream(inkdata);
-            //        // InkCanvas ink = new InkCanvas();
-            //        System.Windows.Ink.StrokeCollection coll = new System.Windows.Ink.StrokeCollection(inkstream);
-            //        inkyes.RenderTransform = new ScaleTransform(0.5, 0.5);
-            //        inkyes.Strokes.Clear();
-            //        inkyes.Strokes.Add(coll);
-            //    }
-            //}
-
-            // Create memorystream of annoation
-
-            smallstore.AddAnnotation(a);
-            smallstore.Flush();
-
-
-
-            //CarePlanAnnotation myAnnot = null;
-            //foreach (CarePlanAnnotation ann in _annotlist)
-            //    if (ann.Id == a.Id)
-            //        myAnnot = ann;
-            //// myAnnot = cp.DB.Annots.Single(an => an.Id == a.Id);
-            //if (myAnnot == null)
-            //{
-            //    myAnnot = new CarePlanAnnotation();
-            //    myAnnot.Id = a.Id;
-            //    //E myAnnot.CarePlanId = cp.Id;
-            //    myAnnot.CarePlan = App.carePlan.DB.CarePlan.First(c => c.Id == cp.Id);
-            //    //E myAnnot.CarePlan.Id = cp.Id;
-            //    stream.Position = 0;
-            //    myAnnot.Data = reader.ReadToEnd();
-            //    //Ecp.DB.Annots.InsertOnSubmit(myAnnot);
-            //    //Ecp.DB.SubmitChanges();
-            //    cp.DB.AddToAnnotation(myAnnot);
-            //    cp.DB.SaveChanges();
-
-            //    _annotlist.Add(myAnnot);
-            //}
-            //else
-            //{
-            //    byte[] buffer = stream.ToArray();
-            //    stream.Position = 0;
-            //    myAnnot.Data = reader.ReadToEnd(); // Update annotation data, submit in database timer
-            //    //E int c = cp.DB.GetChangeSet().Updates.Count();
-
-            //}
-
-            smallstore.Dispose();
-
-
-        }
-
-       
-
-
-        //private void annotationStoreChangeHandler(Object sender, StoreContentChangedEventArgs e)
-        //{
-        //    // Next line added because WPF does not add usernames 
-        //    e.Annotation.Authors.Add(System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName);
-
-        //    switch (e.Action)
-        //    {
-
-        //        case StoreContentAction.Added: storeAnnotation(e.Annotation, e.Action); break;
-        //        case StoreContentAction.Deleted: storeAnnotation(e.Annotation, e.Action); break;
-        //    }
-
-
-        //    //lbAnnot.ItemsSource = store.GetAnnotations();
-        //    //// storeAnnotations();
-
-
-        //}
-
-
-
-        
-
-        
-        
 
     }
 }

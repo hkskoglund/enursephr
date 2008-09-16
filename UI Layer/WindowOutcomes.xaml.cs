@@ -33,13 +33,13 @@ namespace eNursePHR.userInterfaceLayer
         {
             Tag selTag = this.DataContext as Tag;
             // Default to outcome 1, user must change it
-            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, ((WindowMain)App.Current.MainWindow).tagHandler.getTaxonomyGuidOutcomeType(1, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version));
+            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, ((WindowMain)App.Current.MainWindow).tagConverter.getTaxonomyGuidOutcomeType(1, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version));
             newOutcome.Tag = selTag;
             History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
             newOutcome.History = newHistory;
             
-            App.carePlan.DB.AddToOutcome(newOutcome);
-            App.carePlan.DB.AddToHistory(newHistory);
+            App.s_carePlan.DB.AddToOutcome(newOutcome);
+            App.s_carePlan.DB.AddToHistory(newHistory);
             ((WindowMain)App.Current.MainWindow).SaveCarePlan();
             
         }
@@ -49,7 +49,7 @@ namespace eNursePHR.userInterfaceLayer
             Outcome selOutcome = (Outcome)lvOutcome.SelectedItem;
             if (selOutcome != null)
             {
-                App.carePlan.DB.DeleteObject(selOutcome);
+                App.s_carePlan.DB.DeleteObject(selOutcome);
                 ((WindowMain)App.Current.MainWindow).SaveCarePlan();
             }
             else
@@ -80,8 +80,8 @@ namespace eNursePHR.userInterfaceLayer
               ComboBox cbOutcomePlan = (ComboBox)ccOutcome.ContentTemplate.FindName("cbOutcomePlan", contentPresenter);
               ComboBox cbOutcomeEvaluate = (ComboBox)ccOutcome.ContentTemplate.FindName("cbOutcomeEvaluate", contentPresenter);
 
-              cbOutcomePlan.ItemsSource = App.cccFrameWork.Outcomes;
-              cbOutcomeEvaluate.ItemsSource = App.cccFrameWork.cvOutcomeTypes;
+              cbOutcomePlan.ItemsSource = App.s_cccFrameWork.Outcomes;
+              cbOutcomeEvaluate.ItemsSource = App.s_cccFrameWork.cvOutcomeTypes;
             
         }
 

@@ -9,6 +9,7 @@ using System.ComponentModel;
 using eNursePHR.BusinessLayer;
 using System.Windows.Annotations.Storage;
 
+
 namespace eNursePHR.userInterfaceLayer
 {
     public class ViewInformationAcqusition
