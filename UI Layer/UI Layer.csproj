@@ -29,7 +29,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <PublishUrl>C:\e-Nurse\</PublishUrl>
+    <PublishUrl>C:\Documents and Settings\henning\Mine dokumenter\eNurse PHR publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -42,7 +42,8 @@
     <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -235,6 +236,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -248,6 +254,11 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
@@ -315,10 +326,6 @@
     <Resource Include="Images\FullScreen.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="J832\J832.Common.dll" />
-    <EmbeddedResource Include="J832\J832.Wpf.BagOTricksLib.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\eNurse.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +333,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Flags\tr-TR.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="J832\J832.Common.dll" />
+    <Content Include="J832\J832.Wpf.BagOTricksLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

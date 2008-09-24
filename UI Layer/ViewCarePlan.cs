@@ -31,10 +31,15 @@ namespace eNursePHR.userInterfaceLayer
     /// </summary>
     public class ViewCarePlan : CarePlanEntitesWrapper
     {
+        public DateTime? CurrentPHRViewFromDate { get; set; }
+        public DateTime? CurrentPHRViewToDate { get; set; }
 
         public ViewCarePlan(EventHandler DB_SavingChanges)
             : base()
         {
+            this.CurrentPHRViewFromDate = base.OldestPHRViewDate;
+            this.CurrentPHRViewToDate = base.NewestPHRViewDate;
+            // Setup event handling for Saving changes...
             base.DB.SavingChanges += new EventHandler(DB_SavingChanges);
                     
         }
@@ -65,7 +70,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        public Section generateItem(TagLangageConverter tagHandler, Item item, bool showTags)
+        public Section generateItem(TagLangageConverter tagConverter, Item item, bool showTags)
         {
             if (item == null)
                 return null;
@@ -109,7 +114,7 @@ namespace eNursePHR.userInterfaceLayer
 
             if (showTags)
             {
-                Paragraph pTags = generateTags(tagHandler, item);
+                Paragraph pTags = generateTags(tagConverter, item);
                 if (pTags != null)
                     sItem.Blocks.Add(pTags);
             }

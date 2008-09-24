@@ -5,6 +5,8 @@
 
 #define  SQL_SERVER_COMPACT_SP1_WORKAROUND
 
+#undef VERBOSE_SAVE_CHANGES
+// If defined will give added, deleted, modified object entitites status message on an object context
 
 using System;
 using System.Threading;
@@ -77,12 +79,7 @@ namespace eNursePHR.userInterfaceLayer
 
         private DispatcherTimer dispatcherTimerUI;
 
-        private StatusHandler _statusMsgHandler = new StatusHandler();
-        public StatusHandler StatusMsgHandler
-        {
-            get { return _statusMsgHandler; }
-            set { _statusMsgHandler = value; }
-        }
+        
 
         private string _netVersion = Environment.Version.ToString();
         public string NETVersion
@@ -233,7 +230,7 @@ namespace eNursePHR.userInterfaceLayer
         {
             // Setup controls
 
-
+            
             tpTime.SelectedTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 00);
             dpDate.Value = DateTime.Now;
 
@@ -289,6 +286,11 @@ namespace eNursePHR.userInterfaceLayer
             showChart(chartBloodPressure, img);
         }
 
+        /// <summary>
+        /// Event handler for Window loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -333,7 +335,7 @@ namespace eNursePHR.userInterfaceLayer
             if (healthDB["PHR"])
             {
                 wndCopyright.tbLoading.Text = "Loading test health record....";
-                loadCareplan(Guid.NewGuid(), true, updateCCCDBSaveStatus); // Load a test careplan
+                loadCareplan(Guid.NewGuid(), true, updateCCCDBSaveStatus,null,null); // Load a test careplan
                 wndCopyright.pbLoading.Value = 100;
                 // Show all tags for the current careplan
                 buildTagsOverview(App.s_carePlan.ActiveCarePlan);
@@ -390,11 +392,14 @@ namespace eNursePHR.userInterfaceLayer
         private void refreshMetaInformation()
         {
             spCopyright.DataContext = App.s_cccFrameWork;
+          
            
         }
 
 
-
+        /// <summary>
+        /// Loads the CCC framework and updates user interface
+        /// </summary>
         public void loadCCCFramework()
         {
             bool loadFail = false;
@@ -405,24 +410,30 @@ namespace eNursePHR.userInterfaceLayer
                 App.s_cccFrameWork = new ViewCCCFrameWork(eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName,
                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
 
+                // Meta information
                 App.s_cccFrameWork.loadMetaInformation(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 refreshMetaInformation();
 
+                // Care Component and Pattern
                 App.s_cccFrameWork.loadCareComponentAndPatternView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 refreshCareComponentAndPattern();
 
+                // Diagnoses
                 App.s_cccFrameWork.loadDiagnosesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 activateNursingDiagnosisFilter();
 
+                // Outcome types
                 App.s_cccFrameWork.loadOutcomeTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 refreshOutcomeTypes();
 
+                // Interventions
                 App.s_cccFrameWork.loadInterventionsView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 activateNursingInterventionFilter();
 
+                // Action types
                 App.s_cccFrameWork.loadActionTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
                                     eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
                 refreshActionTypes();
@@ -455,7 +466,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        private void loadCareplan(Guid carePlanID, bool testPlan, EventHandler DB_SavingChanges)
+        private void loadCareplan(Guid carePlanID, bool testPlan, EventHandler DB_SavingChanges, DateTime? startDatePHR, DateTime? endDatePHR)
         {
 
             try
@@ -482,6 +493,9 @@ namespace eNursePHR.userInterfaceLayer
             if (!App.s_carePlan.ActiveCarePlan.Item.IsLoaded)
                 App.s_carePlan.ActiveCarePlan.Item.Load();
 
+           
+           
+
             Item lastItem = null;
 
             if (App.s_carePlan.ActiveCarePlan.Item.Count > 0)
@@ -498,6 +512,9 @@ namespace eNursePHR.userInterfaceLayer
                         lastItem = i;
                 }
 
+
+                setupPHRDateControls(startDatePHR, endDatePHR, false);
+
                 // Setup of item collection change handling (updates combobox)
 
                 App.s_carePlan.ActiveCarePlan.Item.AssociationChanged += new CollectionChangeEventHandler(Item_AssociationChanged);
@@ -511,6 +528,57 @@ namespace eNursePHR.userInterfaceLayer
             //else
             //    MessageBox.Show("This careplan is empty", "Empty careplan", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
 
+        }
+
+        private void dpStartDatePHR_ValueChanged<DateTime>(object sender, RoutedPropertyChangedEventArgs<DateTime> e)
+        {
+         
+        }
+
+
+        private void dpEndDatePHR_ValueChanged<DateTime>(object sender, RoutedPropertyChangedEventArgs<DateTime> e)
+        {
+
+        }
+
+        private void setupPHRDateControls(DateTime? startDatePHR, DateTime? endDatePHR, bool MaxMinLimits)
+        {
+            
+
+            if (MaxMinLimits)
+              setupPHRViewDateControlsMaxMinLimits();
+
+
+            // Setup date control to the first/oldest PHR entry
+            if (startDatePHR == null)
+                dpStartDatePHR.Value = App.s_carePlan.OldestPHRViewDate;
+            else
+                dpStartDatePHR.Value = startDatePHR;
+            
+            // Setup date control to the last/newest PHR entry
+            if (endDatePHR == null)
+
+                dpEndDatePHR.Value = App.s_carePlan.NewestPHRViewDate;
+            else
+                dpEndDatePHR.Value = endDatePHR;
+            
+          }
+
+        private void setupPHRViewDateControlsMaxMinLimits()
+        {
+            // Setup max/min limit for start date
+            if (App.s_carePlan.OldestPHRViewDate != null)
+                dpStartDatePHR.MinDate = (DateTime)App.s_carePlan.OldestPHRViewDate;
+
+            if (App.s_carePlan.NewestPHRViewDate != null)
+                dpStartDatePHR.MaxDate = (DateTime)App.s_carePlan.NewestPHRViewDate;
+
+            // Setup max/min limit for end date
+            if (App.s_carePlan.NewestPHRViewDate != null)
+                dpEndDatePHR.MaxDate = (DateTime)App.s_carePlan.NewestPHRViewDate;
+
+            if (App.s_carePlan.OldestPHRViewDate != null)
+                dpEndDatePHR.MinDate = (DateTime)App.s_carePlan.OldestPHRViewDate;
         }
 
 
@@ -724,6 +792,9 @@ namespace eNursePHR.userInterfaceLayer
 
             WindowNewItem wndNewItem = new WindowNewItem();
             wndNewItem.ShowDialog();
+
+            // If a new item is created, then update the end time date control
+            setupPHRDateControls(App.s_carePlan.CurrentPHRViewFromDate, null,false);
 
             // Assume user want to work with the newly created item
 
@@ -2583,34 +2654,58 @@ namespace eNursePHR.userInterfaceLayer
             btnSaveTextInkAnnotation.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Event handler for SavingChanges event on object-context, entity framework
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void updateCCCDBSaveStatus(object sender, EventArgs e)
         {
-
+            ObjectContext ctx = sender as ObjectContext;
             string prevStatusMsg = (wndMain.TryFindResource("StatusHandler") as StatusHandler).StatusMsg;
 
+            int added = ctx.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Count();
+            int deleted = ctx.ObjectStateManager.GetObjectStateEntries(EntityState.Deleted).Count();
+            int modified = ctx.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Count();
+
+#if (VERBOSE_SAVE_CHANGES)
+            changeStatus("Saving changes (" +
+                         added.ToString() + " added " +
+                         deleted.ToString() + " deleted " +
+                         modified.ToString() + " modified )");
+#else
             changeStatus("Saving changes...");
-          
+#endif
 
             // Setup timer 
             // The dispatcher timer allows update on the user interface thread, I tried to used
-            // timer-class first, but was not allows to make ui changes from another thread
+            // timer-class first, but was not allowed to make ui changes from another thread
             // More info: http://blogs.msdn.com/shen/archive/2008/02/28/changing-the-ui-in-a-multi-threaded-wpf-application.aspx
             // Accessed : 16 september 2008
 
             dispatcherTimerUI = new DispatcherTimer(DispatcherPriority.Background);
-            dispatcherTimerUI.Interval = TimeSpan.FromMilliseconds(3000);
+            dispatcherTimerUI.Interval = TimeSpan.FromMilliseconds(2000);
             dispatcherTimerUI.Tag = prevStatusMsg;
             dispatcherTimerUI.Tick += new EventHandler(removeDBSaveStatus);
             dispatcherTimerUI.Start();
 
         }
 
+        /// <summary>
+        /// Event handler on the dispatch timer for removal of "Saving changes..." message and insert the previous message available in the Tag
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void removeDBSaveStatus(object sender, EventArgs e)
         {
             dispatcherTimerUI.Stop();
             changeStatus((sender as DispatcherTimer).Tag as string);
         }
 
+        /// <summary>
+        /// Changes the status message
+        /// </summary>
+        /// <param name="statusMsg"></param>
         private void changeStatus(string statusMsg)
         {
             StatusHandler handler = wndMain.TryFindResource("StatusHandler") as StatusHandler;

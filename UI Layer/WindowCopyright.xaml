@@ -8,7 +8,7 @@
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     Title="About"  
     Background="{StaticResource BlueTheme}"    
-    Height="700" 
+    Height="600" 
     Width="450" 
     ResizeMode="NoResize" >
     <Window.Resources>
@@ -20,9 +20,13 @@
                 
                 <Image Height="15" x:Name="imgOK" Margin="0,0,5,0" VerticalAlignment="Top" />
                 
-                <TextBlock Text="{Binding Path=Database}"  FontWeight="UltraBold"  Width="90" />
-                      <TextBlock x:Name="tbMessage" Text="{Binding Path=Message}"
-                                 TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Path=Database}"
+                           FontWeight="UltraBold"
+                           Width="90" />
+                 
+                <TextBlock x:Name="tbMessage" 
+                           Text="{Binding Path=Message}"
+                           TextWrapping="Wrap" />
                 
                             
             </StackPanel>
@@ -43,7 +47,7 @@
         </DataTemplate>
     </Window.Resources>
         <StackPanel>
-       <FlowDocumentScrollViewer  Height="480" x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
+       <FlowDocumentScrollViewer  Height="400" x:Name="fdScrollViewer" VerticalScrollBarVisibility="Disabled"  >
         <FlowDocument >
 
             <FlowDocument.Resources>
@@ -72,7 +76,8 @@
                 eNurse Personal Health Record
                     <LineBreak />
                 Prototype
-                    <Floater 
+                    
+                <Floater 
             Margin="5"  
             HorizontalAlignment="Center"
             
@@ -86,9 +91,8 @@
 
             <Paragraph Style="{StaticResource BodyText}">
                 This application is a prototype personal health record that makes it possible to search and tag health information by using
-                the <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>. The content model is inspired from 
-                RSS with a title and and a description for each entry in the health record. Currently it is intended for use in research
-                and education.
+                the <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>. Currently it is intended for use in research of ideas
+                in the health/ICT arena and education of the CCC classification.
                 <LineBreak />
                 <LineBreak />
                 <!--
@@ -102,26 +106,26 @@
                         </BlockUIContainer>
                     </Figure>
                     -->
-                Project initiated by M.Sc. IT/nurse Henning Knut Skoglund , november 2007,
+                Project initiated by M.Sc. IT and Nurse Henning Knut Skoglund in november 2007,
                     available as open source on
                 <Hyperlink x:Name="hyperCodeplex" ToolTip="http://www.codeplex.com/nursingcareplanner"
                     NavigateUri = "http://www.codeplex.com/nursingcareplanner" RequestNavigate="hyperCodeplex_RequestNavigate" >CodePlex</Hyperlink> from january 2008 .
             </Paragraph>
 
-            <Paragraph Style="{StaticResource BodyText}">
+            <!--<Paragraph Style="{StaticResource BodyText}">
                 If you have questions or feedback please e-mail: hk-sko@online.no
-            </Paragraph>
+            </Paragraph>-->
 
-                <Paragraph Style="{StaticResource BodyText}">
+                <!--<Paragraph Style="{StaticResource BodyText}">
                     <InlineUIContainer>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text=".NET version : " />
                             <TextBlock Text="{Binding Source={x:Static s:Environment.Version}}" />
-                           <!-- Based on info from http://www.charlespetzold.com/blog/2006/03/180953.html
-                            Accessed : 10 september 2008-->
+                            Based on info from http://www.charlespetzold.com/blog/2006/03/180953.html
+                            Accessed : 10 september 2008
                         </StackPanel>
                      </InlineUIContainer>
-                </Paragraph>
+                </Paragraph>-->
 
 
 
@@ -133,7 +137,10 @@
         
            
             <TextBlock Margin="3" Text="Databases:" />
-            <ListBox x:Name="lbDatabaseHealth" HorizontalAlignment="Left" ItemTemplate="{StaticResource DBHealthItem}" MaxHeight="80" MaxWidth="425"  >
+            <ListBox x:Name="lbDatabaseHealth" 
+                     HorizontalAlignment="Left" 
+                     ItemTemplate="{StaticResource DBHealthItem}" 
+                     MaxHeight="80" MaxWidth="425"  >
                 <ListBox.Resources>
                     
                     

@@ -30,13 +30,22 @@ namespace eNursePHR.userInterfaceLayer
             mainWindow = new WindowMain();
           
             App.Current.MainWindow = mainWindow;
+            App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
             mainWindow.Show();
            
             
         }
 
+
+        /// <summary>
+        /// Event handler for application session ending 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
+         
             MessageBox.Show("Application session ending because: " + e.ReasonSessionEnding.ToString());
 
            

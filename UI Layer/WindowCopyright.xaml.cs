@@ -68,18 +68,13 @@ namespace eNursePHR.userInterfaceLayer
         /// <returns>Database + flag that indicates if problems where detected , TRUE = ok</returns>
         public Dictionary<string,bool> checkDatabasesHealth()
         {
-            double GB4;
-            unchecked
-            {
-                GB4 = 1024 * 1024 * 1024 * 4; // OVERFLOW......??
-            }
-        
+            
             healthDB = new Dictionary<string, bool>();
 
             // Check health of personal health record
             DatabaseHealth PHRDB = new DatabaseHealth(true,"Personal health record",String.Empty);
             dbHealthStatus.Add(PHRDB);
-            checkPHRDB(GB4, PHRDB,"eNurseCP2008!");
+            checkPHRDB(PHRDB,"eNurseCP2008!");
            
             // Check health of ccc framework that contains all language translations
             DatabaseHealth cccFrameworkDB = new DatabaseHealth(true, "CCC framework", String.Empty);
@@ -157,14 +152,24 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
+
+        private double getFilesizeUsedInPercent(string fileName, double maxFileSizeLimit)
+        {
+            FileInfo fi = new FileInfo(fileName);
+            return Math.Round((double)fi.Length / maxFileSizeLimit * 100, 1);
+               
+        }
+
         /// <summary>
         /// Tries to connect to personal health record PHR database, and performs sql server compact db. verification
         /// </summary>
         /// <param name="GB4"></param>
         /// <param name="carePlanDB"></param>
         /// <param name="password"></param>
-        private void checkPHRDB(double GB4, DatabaseHealth carePlanDB, string password)
+        private void checkPHRDB(DatabaseHealth carePlanDB, string password)
         {
+            long maxSQLServerCompactDBSize = 4294967296; // 4 GB 1024*1024*1024*4
+
             try
             {
                 string conn;
@@ -174,7 +179,7 @@ namespace eNursePHR.userInterfaceLayer
 
                 conn = "DataSource=" + "\"" + ctxCarePlan.Connection.DataSource + "\"" + ";Password='"+password+"'";
                 FileInfo fi = new FileInfo(ctxCarePlan.Connection.DataSource);
-                carePlanDB.Message = "Used " + Math.Round((double)((double)fi.Length / GB4 * 100), 1).ToString() + "%";
+                carePlanDB.Message = "Used " + getFilesizeUsedInPercent(ctxCarePlan.Connection.DataSource,Convert.ToDouble(maxSQLServerCompactDBSize)).ToString() + "%";
                 //PHRDB.Message = "OK";
                 ctxCarePlan.Dispose();
 
@@ -203,6 +208,9 @@ private void checkSQLServerCompactDB(DatabaseHealth DBHealth, string conn, strin
         #if (SQL_SERVER_COMPACT_SPECIFIC_CODE)
                 // Checksum verification
                 SqlCeEngine sqlEngine = new SqlCeEngine(conn);
+
+  
+             
                 if (sqlEngine.Verify())
                     healthDB.Add(DBKey, true);
                 else

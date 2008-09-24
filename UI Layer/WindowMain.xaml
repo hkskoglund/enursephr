@@ -260,21 +260,21 @@ Recommended use at the moment: research/testing-purposes
 
         </DataTemplate>
 
-		<DataTemplate x:Key="ccTemplateOutcomeType">
+        <DataTemplate x:Key="ccTemplateOutcomeType">
 
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="will" Margin="0,0,5,0" />
-				<TextBlock x:Name="tbTemplateConceptOutcomeType" Text="{dat:Binding Path=Concept, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" 
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="will" Margin="0,0,5,0" />
+                <TextBlock x:Name="tbTemplateConceptOutcomeType" Text="{dat:Binding Path=Concept, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" 
                 HorizontalAlignment="Left"  Foreground="{StaticResource DiagnosisColor}"
                 FontWeight="UltraBold" TextWrapping="Wrap" ToolTip="{dat:Binding Path=Definition}" />
-               <!-- <TextBlock Text="{Binding Path=Definition}" HorizontalAlignment="Left"  TextWrapping="Wrap" /> -->
+                <!-- <TextBlock Text="{Binding Path=Definition}" HorizontalAlignment="Left"  TextWrapping="Wrap" /> -->
             </StackPanel>
 
-		</DataTemplate>
+        </DataTemplate>
 
 
 
-		<SolidColorBrush x:Key="FrameworkElementBorderSelected" Color="Yellow" />
+        <SolidColorBrush x:Key="FrameworkElementBorderSelected" Color="Yellow" />
         
         <SolidColorBrush x:Key="FrameworkElementBorder" Color="White" />
     	
@@ -356,8 +356,42 @@ Recommended use at the moment: research/testing-purposes
         
         
         
-         <ToolBarTray >
-         <ToolBar>
+         <ToolBarTray  >
+
+            <ToolBar>
+
+                <Button Click="btnBack_Click">
+                    <Image Source="Images\ArrowBack.png" Height="20" ToolTip="Previous entry"/>
+                </Button>
+
+                <Button Click="btnForward_Click">
+                    <Image Source="Images\ArrowForward.png" Height="20" ToolTip="Next entry"/>
+                </Button>
+
+                <Button x:Name="btnHome" Click="btnHome_Click">
+                    <Image Source="Images\Home.png" Height="20" ToolTip="Return to selected entry"/>
+                </Button>
+
+                <Button x:Name="btnSaveTagComments" ToolTip="Save tag comments" Visibility="Collapsed" Click="btnSaveTagComments_Click">
+                    <Image Source="\Images\Save.png" Height="15" Margin="5,0,5,0" />
+                </Button>
+
+                <Button Click="btnNewItem_Click">
+                    <Image Source="Images\New.png" Height="20" ToolTip="New entry" />
+                </Button>
+
+                <Button Click="btnDeleteItem_Click">
+                    <Image Source="Images\Delete.png" Height="20" ToolTip="Delete selected entry"/>
+                </Button>
+
+                <Button  x:Name="btnFullScreen" Click="btnFullScreen_Click">
+                    <Image Source="Images\FullScreen.png" Height="20" ToolTip="Toogle fullscreen display"/>
+                </Button>
+
+
+            </ToolBar>
+
+            <ToolBar>
 					<StackPanel Orientation="Horizontal">
 
                     <Button x:Name="btnSaveTextInkAnnotation"
@@ -423,45 +457,47 @@ Recommended use at the moment: research/testing-purposes
 					</StackPanel>
 
 			</ToolBar>
-         
-         
-                  <ToolBar>
-                       
-                       <Button Click="btnBack_Click">
-                          <Image Source="Images\ArrowBack.png" Height="20" ToolTip="Previous entry"/>
-                       </Button>
-                       
-                       <Button Click="btnForward_Click">
-                          <Image Source="Images\ArrowForward.png" Height="20" ToolTip="Next entry"/>
-                       </Button>
-                       
-                        <Button x:Name="btnHome" Click="btnHome_Click">
-                          <Image Source="Images\Home.png" Height="20" ToolTip="Return to selected entry"/>
-                       </Button>
-                      
-                      <Button x:Name="btnSaveTagComments" ToolTip="Save tag comments" Visibility="Collapsed" Click="btnSaveTagComments_Click">
-			           	<Image Source="\Images\Save.png" Height="15" Margin="5,0,5,0" />
-                      </Button>
-                       
-                       <Button Click="btnNewItem_Click">
-                         <Image Source="Images\New.png" Height="20" ToolTip="New entry" />
-                       </Button>
-                       
-                       <Button Click="btnDeleteItem_Click">
-                          <Image Source="Images\Delete.png" Height="20" ToolTip="Delete selected entry"/>
-                       </Button>
-                       
-                       <Button  x:Name="btnFullScreen" Click="btnFullScreen_Click">
-                          <Image Source="Images\FullScreen.png" Height="20" ToolTip="Toogle fullscreen display"/>
-                       </Button>
-                       
-                       
-                  </ToolBar>
-                  
-                  
-                  <ToolBar>
+
+
+            <ToolBar Band="2" BandIndex="1">
+                <Label Content="View from" FontWeight="UltraBold"  />
+
+                <!--<ac:DatePicker x:Name="dpStartDatePHRAC" Margin="5,0,5,0"   
+                               HorizontalAlignment="Left"  
+                                ToolTip="Enter a start date for the PHR view"
+                              
+                               VerticalAlignment="Center"
+                                />-->
+
+                <dc:DatePicker x:Name="dpStartDatePHR" 
+                               Margin="5,0,5,0"   
+                               HorizontalAlignment="Left" 
+                               NullValueText="From date" 
+                               ToolTip="Enter a start date for the PHR view"
+                               VerticalAlignment="Center"
+                               ValueChanged="dpStartDatePHR_ValueChanged"
+                               IsReadOnly="False"
+                               />
+                
+                <Label Content="to" FontWeight="UltraBold"  />
+
+
+                <dc:DatePicker x:Name="dpEndDatePHR" 
+                               Margin="5,0,0,0" 
+                               HorizontalAlignment="Left" 
+                               Width="100" 
+                               NullValueText="To date"
+                               ToolTip="Enter an end date for the PHR view" 
+                               VerticalAlignment="Center"
+                               ValueChanged="dpEndDatePHR_ValueChanged"
+                               IsReadOnly="False"/>
+
+            </ToolBar>
+
+                <ToolBar>
                    <!-- CareBlog -->
-                                    
+                 
+                            
              <ComboBox x:Name="lvCareBlog" MaxHeight="100"
                                      MouseDoubleClick="lvCareBlog_MouseDoubleClick"
                                      SelectionChanged="lvCareBlog_SelectionChanged"
@@ -580,7 +616,7 @@ Recommended use at the moment: research/testing-purposes
                      <DataTemplate>
                                     <Border x:Name="bItem" BorderThickness="0" CornerRadius="5"
                                             BorderBrush="LightGray" 
-                                            Width="400"
+                                            Width="300"
                                             Margin="2"
                                             Padding="3">
                                          <StackPanel Orientation="Horizontal" >
@@ -1984,7 +2020,7 @@ Recommended use at the moment: research/testing-purposes
                        Content="Date" VerticalAlignment="Center"
                        ToolTip="Date of measurement" HorizontalAlignment="Right" />
 
-
+                                
                                 <dc:DatePicker x:Name="dpDate" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
                                HorizontalAlignment="Left" Width="100"  NullValueText="Enter date"
                                VerticalAlignment="Center"/>

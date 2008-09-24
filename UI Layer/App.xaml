@@ -1,7 +1,8 @@
 ﻿<Application x:Class="eNursePHR.userInterfaceLayer.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    StartupUri="WindowMain.xaml" SessionEnding="Application_SessionEnding">
+    StartupUri="WindowMain.xaml" 
+    SessionEnding="Application_SessionEnding">
     <Application.Resources>
     
     <!-- Annotation START -->
