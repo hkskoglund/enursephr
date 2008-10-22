@@ -117,6 +117,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AnnotationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BloodPressureControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CCCTaxonomyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowDatabaseError.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -155,9 +167,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotationControl.xaml.cs">
+      <DependentUpon>AnnotationControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Blood Pressure\AverageSBPChart.cs" />
     <Compile Include="Blood Pressure\BloodPressureChart.cs" />
     <Compile Include="Blood Pressure\GoogleChart.cs" />
+    <Compile Include="BloodPressureControl.xaml.cs">
+      <DependentUpon>BloodPressureControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CCCTaxonomyControl.xaml.cs">
+      <DependentUpon>CCCTaxonomyControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converter\AnnotationToolTipConverter.cs" />
     <Compile Include="Converter\DateConverter.cs" />
     <Compile Include="Converter\DateTimeConverter.cs" />

@@ -120,14 +120,7 @@ namespace eNursePHR.userInterfaceLayer
         Dictionary<string, bool> healthDB; // Holds information about databases and a flag that indicates if problems where detected
 
 
-        BackgroundWorker bwSave = null;    // Saves BP-data asynchronous/in the background
-        BloodPressureChart chartBloodPressure;
-        int? systolicBP, diastolicBP, heartRate;
-        string comment;
-        DateTime time;
-        MeasurementUpdateStatus updDB = new MeasurementUpdateStatus();
-        Guid cpGuid; // Get test careplan
-
+       
         public delegate void turnOffSaveAnnotationsButton();
 
         private string _SQLCompactVersion;
@@ -226,66 +219,7 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        private void setupBloodPressureUI()
-        {
-            // Setup controls
-
-            
-            tpTime.SelectedTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 00);
-            dpDate.Value = DateTime.Now;
-
-
-            // Save asynchronous
-            bwSave = new BackgroundWorker();
-            bwSave.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwSave_RunWorkerCompleted);
-            bwSave.DoWork += new DoWorkEventHandler(bwSave_DoWork);
-
-
-
-            chartBloodPressure = new BloodPressureChart("Blood+pressure (mmHg)", 300, 150);
-
-            cpGuid = chartBloodPressure.getCarePlanGuid(); // Get test careplan
-
-            // Setup display options
-            chartBloodPressure.ShowDiastolicBP = true;
-            chartBloodPressure.ShowSystolicBP = true;
-            chartBloodPressure.ShowPulseHR = true;
-            chartBloodPressure.ShowLabels = true;
-
-            gbDisplayOptions.DataContext = chartBloodPressure;
-
-
-            // Read some test data
-
-            chartBloodPressure.readBPdata(cpGuid, 5);
-            double? avgSystolicBP = chartBloodPressure.getAverageSystolicBP();
-            double? avgDiastolicBP = chartBloodPressure.getAverageDiastolicBP();
-            double? avgPulseHR = chartBloodPressure.getAveragePulseHR();
-            AverageChart avgSystolicChart = new AverageChart((Brush)App.Current.MainWindow.TryFindResource("colorSystolic"), "Systolic BP Average", 100, 60, 250);
-            if (avgSystolicBP.HasValue)
-                avgSystolicChart.Average = avgSystolicBP.Value;
-
-            AverageChart avgDiastolicChart = new AverageChart((Brush)App.Current.MainWindow.TryFindResource("colorDiastolic"), "Diastolic BP Average", 100, 60, 250);
-            if (avgDiastolicBP.HasValue)
-                avgDiastolicChart.Average = avgDiastolicBP.Value;
-
-            AverageChart avgPulseChart = new AverageChart((Brush)App.Current.MainWindow.TryFindResource("colorPulse"), "Pulse HR Average", 100, 60, 250);
-            if (avgPulseHR.HasValue)
-                avgPulseChart.Average = avgPulseHR.Value;
-
-            showChart(avgSystolicChart, imgSystolicAverage);
-            showChart(avgDiastolicChart, imgDiastolicAverage);
-            showChart(avgPulseChart, imgPulseAverage);
-
-            chartBloodPressure.generateChart();
-
-            lvBP.ItemsSource = chartBloodPressure.BPData;
-
-
-
-            showChart(chartBloodPressure, img);
-        }
-
+        
         /// <summary>
         /// Event handler for Window loaded
         /// </summary>
@@ -293,8 +227,9 @@ namespace eNursePHR.userInterfaceLayer
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            CCCTaxonomyControl.CCCLoadFail += new CCCTaxonomyControl.LoadEventHandler(CCCTaxonomyControl_CCCLoadFail);
 
-            setupBloodPressureUI();
+            BloodPressureControl.setupBloodPressureUI();
 
             /* LANGUAGE attrib change */
             changeStatus("Logged in as " + System.Environment.MachineName.ToString() + "\\" + System.Environment.UserName);
@@ -311,7 +246,7 @@ namespace eNursePHR.userInterfaceLayer
 
             // Start annotation service
             annotationService = new eNAnnotationService(fdReaderCareBlog);
-            lvAnnotation.ItemsSource = infoAcq.CvStatement;
+            AnnotationControl.lvAnnotation.ItemsSource = infoAcq.CvStatement;
 
 
             // If CCC framework is in good condition load it
@@ -319,17 +254,14 @@ namespace eNursePHR.userInterfaceLayer
             {
 
                 wndCopyright.tbLoading.Text = "Loading CCC taxonomy...";
-                loadCCCFramework();
+                CCCTaxonomyControl.loadCCCFramework();
 
                 wndCopyright.pbLoading.Value = 75;
             }
             else // turn off ui elements for CCC framework
             {
-                exFramework.Visibility = Visibility.Collapsed;
-                exFramework.Header = "Clinical Care Classification";
-                exFramework.IsExpanded = false;
-                exFramework.IsEnabled = false;
-                tbSearch.IsEnabled = false;
+                CCCTaxonomyControl.turnOffUI();   
+                CCCTaxonomyControl.tbSearch.IsEnabled = false;
             }
 
             if (healthDB["PHR"])
@@ -377,86 +309,11 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        private void refreshOutcomeTypes()
+        void CCCTaxonomyControl_CCCLoadFail(object sender, LoadEventArgs e)
         {
-            lbOutcomeType.ItemsSource = App.s_cccFrameWork.cvOutcomeTypes;
-            ccOutcomeType.Content = App.s_cccFrameWork.cvOutcomeTypes;
+            showException(e.Exception);
 
         }
-
-        private void refreshActionTypes()
-        {
-            lbActionType.ItemsSource = App.s_cccFrameWork.cvActionTypes;
-        }
-
-        private void refreshMetaInformation()
-        {
-            spCopyright.DataContext = App.s_cccFrameWork;
-          
-           
-        }
-
-
-        /// <summary>
-        /// Loads the CCC framework and updates user interface
-        /// </summary>
-        public void loadCCCFramework()
-        {
-            bool loadFail = false;
-            // Load CCC Framework 
-
-            try
-            {
-                App.s_cccFrameWork = new ViewCCCFrameWork(eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName,
-                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version);
-
-                // Meta information
-                App.s_cccFrameWork.loadMetaInformation(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                refreshMetaInformation();
-
-                // Care Component and Pattern
-                App.s_cccFrameWork.loadCareComponentAndPatternView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
-                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                refreshCareComponentAndPattern();
-
-                // Diagnoses
-                App.s_cccFrameWork.loadDiagnosesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
-                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                activateNursingDiagnosisFilter();
-
-                // Outcome types
-                App.s_cccFrameWork.loadOutcomeTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version, eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                refreshOutcomeTypes();
-
-                // Interventions
-                App.s_cccFrameWork.loadInterventionsView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
-                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                activateNursingInterventionFilter();
-
-                // Action types
-                App.s_cccFrameWork.loadActionTypesView(eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version,
-                                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName);
-                refreshActionTypes();
-
-            }
-            catch (Exception exception)
-            {
-                loadFail = true;
-                showException(exception);
-
-                // stopApplication("Could not load CCC framework", "CCC framework", WindowMain.EXIT_LOAD_FRAMEWORK);
-
-            }
-
-            if (!loadFail)
-                refreshFrameworkLanguageAnalysis();
-            else
-            {
-                exFramework.IsExpanded = false;
-                exFramework.IsEnabled = false;
-                tbSearch.IsEnabled = false;
-            }
- }
 
         private void stopApplication(string errMsg, string errTitle, int exitCode)
         {
@@ -633,7 +490,7 @@ namespace eNursePHR.userInterfaceLayer
         /// Finds concept and care component for a tag and build up a careplan of all tags
         /// </summary>
         /// <param name="cp"></param>
-        void buildTagsOverview(CarePlan cp)
+        public void buildTagsOverview(CarePlan cp)
         {
             string version = eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version;
             string languageName = eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName;
@@ -1002,7 +859,7 @@ namespace eNursePHR.userInterfaceLayer
             {
 
                 ActionT newActionType = ActionT.CreateActionT(fActionType.Code,
-                    tbConceptActionType.Text, taxonomyActionTypeAttachmentGuid, newTag.Id);
+                    CCCTaxonomyControl.tbConceptActionType.Text, taxonomyActionTypeAttachmentGuid, newTag.Id);
                 newActionType.Tag = newTag;
 
 
@@ -1197,27 +1054,6 @@ namespace eNursePHR.userInterfaceLayer
         }
 
 
-
-        private void tbReasonDiagnosis_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Nursing_Diagnosis selDiag = lbNursingDiagnosis.SelectedItem as Nursing_Diagnosis;
-            if (selDiag == null)
-                return;
-
-            selDiag.Comment = tbReasonDiagnosis.Text;
-
-        }
-
-        private void tbReasonIntervention_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Nursing_Intervention selInterv = lbNursingInterventions.SelectedItem as Nursing_Intervention;
-            if (selInterv == null)
-                return;
-
-            selInterv.Comment = tbReasonIntervention.Text;
-
-
-        }
 
 
         public int SaveCarePlan()
@@ -1481,125 +1317,12 @@ namespace eNursePHR.userInterfaceLayer
 
         }
 
-        public string getAnnotationContent(Annotation annotation)
-        {
-            if (annotation.Anchors[0].Contents.Count == 0)
-                return String.Empty;
-
-
-            XmlDocument xdoc = new XmlDocument();
-
-            xdoc.LoadXml(annotation.Anchors[0].Contents[0].OuterXml);
-
-            XmlNode xe = xdoc.SelectSingleNode("eNursePHR/Statement[1]");
-            return xe.Attributes["Content"].Value;
-
-        }
-
-
-        /// <summary>
-        /// This method takes an annotation and reads the extended XML-element
-        /// eNursePHR/Statement attribute ContentType
-        /// <eNursePHR>
-        ///     <Statement ContentType="?"></Statement>
-        /// </eNursePHR>
-        /// </summary>
-        /// <param name="annotation"></param>
-        /// <returns></returns>
-        public ContentType getContentType(Annotation annotation)
-        {
-
-            // Check if annotation contains extended XML-information
-            if (annotation.Anchors[0].Contents.Count == 0)
-                return ContentType.Null;
-
-            // Load extended XML-info.
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.LoadXml(annotation.Anchors[0].Contents[0].OuterXml);
-
-            // Query for content type
-            XmlNode xe = xdoc.SelectSingleNode("eNursePHR/Statement[1]"); // XPath-query
-            string contentType = xe.Attributes["ContentType"].Value;
-
-            ContentType cType = new ContentType();
-            switch (contentType)
-            {
-                case "Diagnostic": cType = ContentType.Diagnostic; break;
-                case "Interventional": cType = ContentType.Interventional; break;
-                case "Disease": cType = ContentType.Disease; break;
-                case "Medication": cType = ContentType.Medication; break;
-            }
-
-            return cType;
-        }
-
+        
 
         #endregion
 
-        private void lvAnnotation_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-
-            //Annotation selAnnotation = ((sender as ListBox).SelectedItem) as Annotation;
-            //if (selAnnotation == null)
-            //    return;
-
-            //// Suggest information/reason for code in CCC framework
-            //if (this.getContentType(selAnnotation) == ContentType.Diagnostic)
-            //    tbReasonDiagnosis.Text = this.getText(selAnnotation);
-            //else
-
-            //    if (this.getContentType(selAnnotation) == ContentType.Interventional)
-            //    tbReasonIntervention.Text = this.getText(selAnnotation);
-
-
-        }
-
-        /// <summary>
-        /// Convert the first character to uppercase
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        private string firstCharToUpper(string content)
-        {
-            string firstChar = content.Substring(0, 1).ToUpperInvariant();
-            return content.Remove(0, 1).Insert(0, firstChar);
-        }
-
-
-        private void btnAcquireDiagnosticInformation_Click(object sender, RoutedEventArgs e)
-        {
-            Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
-            if (selAnnotation == null)
-            {
-                MessageBox.Show("No aquired diagnostic information selected, try selecting a diagnostic statement", "No acquired diagnostic information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            if (getContentType(selAnnotation) == ContentType.Diagnostic)
-                tbReasonDiagnosis.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
-
-            else
-                MessageBox.Show("Please select diagnostic information", "Select diagnostic information", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void btnAcquireInterventionalInformation_Click(object sender, RoutedEventArgs e)
-        {
-            Annotation selAnnotation = lvAnnotation.SelectedItem as Annotation;
-            if (selAnnotation == null)
-            {
-                MessageBox.Show("No aquired interventional or medicational information selected", "No acquired interventional or medicational information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            ContentType contentType = getContentType(selAnnotation);
-            if (contentType == ContentType.Interventional || contentType == ContentType.Medication)
-                tbReasonIntervention.Text += firstCharToUpper(getAnnotationContent(selAnnotation));
-            else
-                MessageBox.Show("Please select interventional or medicational information", "Select interventional or medicational information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        }
-
+       
+        
 
         // Info from https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2574377&SiteID=1
         void hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -1648,7 +1371,6 @@ namespace eNursePHR.userInterfaceLayer
 
         #region Explorer
 
-        private string FilterSearch;
 
 
         #region Language handling
@@ -1668,7 +1390,7 @@ namespace eNursePHR.userInterfaceLayer
                 winMultiLangIntegrity.ShowDialog();
                 
                 App.s_cccFrameWork.loadFrameworkLanguageAnalysis();
-                refreshFrameworkLanguageAnalysis();
+                CCCTaxonomyControl.refreshFrameworkLanguageAnalysis();
             }
             catch (Exception exception)
             {
@@ -1676,668 +1398,12 @@ namespace eNursePHR.userInterfaceLayer
             }
         }
 
-        private void pickDefaultCareComponent()
-        {
-            lbCareComponent.SelectedIndex = 1; 
+       
+       
         
-        }
-
-        public void refreshCareComponentAndPattern()
-        {
-
-             lbCareComponent.ItemsSource = App.s_cccFrameWork.cvComponents; // Master
-             ccCareComponent.Content = App.s_cccFrameWork.cvComponents;     // Detail
-
-             pickDefaultCareComponent();
-        }
-
-        public void refreshFrameworkLanguageAnalysis()
-        {
-            // Load language analysis information
-            App.s_cccFrameWork.loadFrameworkLanguageAnalysis();
-            // Bind to UI
-            cbLanguage.ItemsSource = App.s_cccFrameWork.ActualLanguageAnalysisResult;
-            
-            if (App.s_cccFrameWork.ActualLanguageAnalysisResult != null)
-                cbLanguage.ToolTip = "Last language integrity check was run on " +
-                    App.s_cccFrameWork.ActualLanguageAnalysisResult[0].Date.ToString();
-
-            // Choose last saved setting language as the selected language
-            for (int i = 0; i < App.s_cccFrameWork.ActualLanguageAnalysisResult.Count; i++)
-            {
-                if (App.s_cccFrameWork.ActualLanguageAnalysisResult[i].Language_Name == 
-                    eNursePHR.userInterfaceLayer.Properties.Settings.Default.LanguageName)
-                {
-                    cbLanguage.SelectedItem = App.s_cccFrameWork.ActualLanguageAnalysisResult[i];
-                    break;
-                }
-            }
-
-           
-           
-        }
-
-        /// <summary>
-        /// Handles new selection of language and loads CCC framework based on the new selection
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cbLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FrameworkActual selItem = (FrameworkActual)(sender as ComboBox).SelectedItem;
-            
-            if (selItem == null)
-                return;
-
-            if (selItem.Language_Name == Properties.Settings.Default.LanguageName)
-                return;
-
-            if (App.s_cccFrameWork.LogoURL == null)
-                imgLogo.Visibility = Visibility.Collapsed;
-            else
-                imgLogo.Visibility = Visibility.Visible;
-
-            // Save the new langaugename in properties
-            Properties.Settings.Default.LanguageName = selItem.Language_Name.Trim();
-            Properties.Settings.Default.Save();
-
-            // Recreates new CCC framework for given language name and version
-            loadCCCFramework();
-            
-            refreshLanguageTranslationForItemTags();
-
-            buildTagsOverview(App.s_carePlan.ActiveCarePlan);
-     
-
-            
-        }
-
         #endregion
 
-        #region Explorer search
-
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-
-            if (App.s_cccFrameWork == null)
-            {
-                MessageBox.Show("Cannot search in the clinical care classification, because database is not loaded", "Cannot search", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                return;
-            }
-
-            FilterSearch = tb.Text;
-            if (FilterSearch == "")
-            {
-                lblNoMatchCareComponent.Visibility = Visibility.Collapsed;
-                lblNoMatchNursingDiagnoses.Visibility = Visibility.Collapsed;
-                lblNoMatchNursingInterventions.Visibility = Visibility.Collapsed;
-
-                spCareComponent.Visibility = Visibility.Visible;
-                App.s_cccFrameWork.cvComponents.Filter = null;
-
-                lbCareComponent.SelectedIndex = 1;
-                return;
-            }
-
-            //   spCareComponent.Visibility = Visibility.Collapsed;
-
-
-            filterCareComponents();
-
-            filterDiagnoses();
-
-            filterInterventions();
-        }
-
-        /// <summary>
-        /// Filters the interventions
-        /// </summary>
-        private void filterInterventions()
-        {
-            App.s_cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventionsSearch);
-            App.s_cccFrameWork.cvInterventions.Refresh();
-
-            if (App.s_cccFrameWork.cvInterventions.Count == 0)
-            {
-                lblNoMatchNursingInterventions.Visibility = Visibility.Visible;
-                spNursingInterventions.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                lblNoMatchNursingInterventions.Visibility = Visibility.Collapsed;
-                spNursingInterventions.Visibility = Visibility.Visible;
-            }
-
-            lbNursingInterventions.ItemsSource = App.s_cccFrameWork.cvInterventions;
-            lbNursingInterventions.SelectedIndex = 0;
-
-        }
-
-        /// <summary>
-        /// Filters diagnoses
-        /// </summary>
-        private void filterDiagnoses()
-        {
-            App.s_cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnosesSearch);
-            App.s_cccFrameWork.cvDiagnoses.Refresh();
-
-            if (App.s_cccFrameWork.cvDiagnoses.Count == 0)
-            {
-                lblNoMatchNursingDiagnoses.Visibility = Visibility.Visible;
-                spNursingDiagnoses.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                lblNoMatchNursingDiagnoses.Visibility = Visibility.Collapsed;
-                spNursingDiagnoses.Visibility = Visibility.Visible;
-            }
-
-            lbNursingDiagnosis.ItemsSource = App.s_cccFrameWork.cvDiagnoses;
-            lbNursingDiagnosis.SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// Filters care components
-        /// </summary>
-        private void filterCareComponents()
-        {
-            App.s_cccFrameWork.cvComponents.Filter = new Predicate<object>(FilterOutComponentsSearch);
-            App.s_cccFrameWork.cvComponents.Refresh();
-            if (App.s_cccFrameWork.cvComponents.Count == 0)
-            {
-                lblNoMatchCareComponent.Visibility = Visibility.Visible;
-                spCareComponent.Visibility = Visibility.Hidden;
-
-            }
-            else
-            {
-                lblNoMatchCareComponent.Visibility = Visibility.Collapsed;
-                spCareComponent.Visibility = Visibility.Visible;
-            }
-        }
-
-        private bool FilterOutDiagnosesSearch(object item)
-        { // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-            Nursing_Diagnosis nd = item as Nursing_Diagnosis;
-
-            if (nd == null)
-                return false;
-
-            if (nd.Concept.ToLower().Contains(FilterSearch.ToLower()) || nd.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                return true;
-            else
-                return false;
-
-
-
-        }
-
-        private bool FilterOutInterventionsSearch(object item)
-        {// Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-            Nursing_Intervention nd = item as Nursing_Intervention;
-
-            if (nd == null)
-                return false;
-
-            if (nd.Concept.ToLower().Contains(FilterSearch.ToLower()) || nd.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                return true;
-            else
-                return false;
-
-
-
-        }
-
-        private bool FilterOutComponentsSearch(object item)
-        {// Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-            Care_component cc = item as Care_component;
-
-            if (cc == null)
-                return false;
-
-            if (cc.Component.ToLower().Contains(FilterSearch.ToLower()) || cc.Definition.ToLower().Contains(FilterSearch.ToLower()))
-                return true;
-            else
-                return false;
-
-
-
-        }
-
-
-        private bool FilterOutDiagnoses(object item)
-        { // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-            Nursing_Diagnosis nd = item as Nursing_Diagnosis;
-
-
-            if (nd == null)
-                return false;
-
-
-            int result = nd.ComponentCode.CompareTo(getFilterCareComponentCode(lbCareComponent).ToString());
-
-            if (result == 0) return true;
-
-            return false;
-
-
-        }
-
-        private bool FilterOutInterventions(object item)
-        {
-            // Based on example from Beatrize Costa blog, accessed 25 november 2007
-
-            Nursing_Intervention nd = item as Nursing_Intervention;
-
-
-            if (nd == null)
-                return false;
-
-            int result = nd.ComponentCode.CompareTo(getFilterCareComponentCode(lbCareComponent).ToString());
-
-            if (result == 0) return true;
-
-            return false;
-
-        }
-
-
-        #endregion
-
-        #region Care component handling
-
-
-        private void ccCareComponent_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ContentControl ccFrom = sender as ContentControl;
-            Care_component selectedCareComponent = (Care_component)((ListCollectionView)ccFrom.Content).CurrentItem;
-
-            if (selectedCareComponent != null)
-            {
-                DataObject transfer = new DataObject();
-
-                transfer.SetData("CCC/CareComponent", selectedCareComponent);
-                string pretty = "(" + selectedCareComponent.Code + ") " + selectedCareComponent.Component + "\n" + selectedCareComponent.Definition + "\n";
-                transfer.SetData(DataFormats.UnicodeText, pretty);
-                DragDrop.DoDragDrop(ccFrom, transfer, DragDropEffects.Copy);
-            }
-
-
-        }
-
-
-
-        private char getFilterCareComponentCode(ListBox lbCareComponent)
-        {
-            Care_component cc = lbCareComponent.SelectedItem as Care_component;
-            return cc.Code.ToCharArray()[0];
-        }
-
-        private void activateNursingDiagnosisFilter()
-        {
-            App.s_cccFrameWork.cvDiagnoses.Filter = new Predicate<object>(FilterOutDiagnoses);
-            App.s_cccFrameWork.cvDiagnoses.Refresh();
-            // Master
-            lbNursingDiagnosis.ItemsSource = App.s_cccFrameWork.cvDiagnoses;
-
-            // Detail
-
-            ccNursingDiagnosis.Content = App.s_cccFrameWork.cvDiagnoses.CurrentItem;
-
-        }
-
-        private void activateNursingInterventionFilter()
-        {
-            App.s_cccFrameWork.cvInterventions.Filter = new Predicate<object>(FilterOutInterventions);
-            App.s_cccFrameWork.cvInterventions.Refresh();
-            lbNursingInterventions.ItemsSource = App.s_cccFrameWork.cvInterventions;
-
-            // Detail
-
-           // ccNursingDiagnosis.Content = App.cccFrameWork.cvDiagnoses.CurrentItem;
-           
-        }
-
-        private void lbCareComponent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (tbSearch.Text != "")
-                return; // Make sure were not filtering diagnoses while search is active
-
-            ListBox lb = sender as ListBox;
-
-            if (lb.SelectedIndex == -1) // Tom selected item-liste
-                return;
-
-
-            activateNursingDiagnosisFilter();
-
-            activateNursingInterventionFilter();
-
-        }
-
-
-        #endregion
-
-        #region Nursing Diagnosis handling
-
-        private void lbNursingDiagnosis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            ListBox lb = sender as ListBox;
-            Nursing_Diagnosis nd = lb.SelectedItem as Nursing_Diagnosis;
-
-            ccNursingDiagnosis.Content = nd; // Update detail view
-
-            tbReasonDiagnosis.Text = String.Empty;
-
-            if (nd != null)
-                nd.Comment = String.Empty;
-        }
-
-        private void lbNursingDiagnosis_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //FrameworkDiagnosis frameworkDiagnosis = (sender as ListBox).SelectedItem as FrameworkDiagnosis;
-            //CarePlanDiagnosis diag = new CarePlanDiagnosis();
-
-            //// Copy from framework diagnosis to careplan diagnosis
-
-            ////Ediag.CarePlan.Id = 1; // Må endres etterhvert !!!!
-
-            //diag.CarePlan = App.carePlan.DB.CarePlan.First(c => c.Id == 1);
-
-            //diag.Concept = frameworkDiagnosis.Concept; //Persistence Ignorance = PI
-            //diag.Title = diag.Concept; // Default title is the same as the concept
-            //diag.ComponentName = frameworkDiagnosis.Care_component.Component; // PI
-            //diag.ComponentCode = frameworkDiagnosis.ComponentCode;
-            //diag.MajorCode = (short)frameworkDiagnosis.MajorCode;
-            //diag.MinorCode = frameworkDiagnosis.MinorCode;
-            //diag.Version = (string)App.Current.Properties["Version"];
-
-            //diag.CreationDate = DateTime.Now;
-            //diag.CreationDateString = diag.CreationDate.Value.ToLongDateString(); // PI
-            //diag.Definition = frameworkDiagnosis.Definition; //PI
-
-            //App.carePlan.InsertDiagnosis(diag);
-
-            //App.carePlan.cvDiagnoses.Refresh();
-
-
-            ////+reasondiagnosis!!
-
-            ////        myNursingDiagnosis my = new myNursingDiagnosis(nursingDiagnosis.Care_component.Component,
-            ////        nursingDiagnosis.Concept, cccFrameWork.Outcomes);
-
-            ////carePlan.Diagnoses.Add(diag);
-
-
-            //lbCarePlanDiagnoses.ItemsSource = App.carePlan.cvDiagnoses;
-            //lbCarePlanDiagnoses.Visibility = Visibility.Visible;
-
-            //App.carePlan.PrettyCarePlan_Update(lcoll);
-        }
-
-        private void ccNursingDiagnosis_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            string txtDiagnosis;
-            string txtCode;
-
-            bool hasOutcomeAttached = (bool)cbAttachToDiagnosis.IsChecked;
-            bool hasMinorDiagnosis;
-
-            Nursing_Diagnosis selectedNursingDiagnosis = (Nursing_Diagnosis)ccNursingDiagnosis.Content;
-            OutcomeType selectedOutcomeType = (OutcomeType)lbOutcomeType.SelectedItem;
-
-            if (selectedNursingDiagnosis != null)
-            {
-
-                if (selectedNursingDiagnosis.MinorCode == null)
-                    hasMinorDiagnosis = false;
-                else
-                    hasMinorDiagnosis = true;
-
-                DataObject transfer = new DataObject();
-
-                if (hasOutcomeAttached)
-                    transfer.SetData("CCC/OutcomeType", selectedOutcomeType);
-
-                transfer.SetData("CCC/NursingDiagnosis", selectedNursingDiagnosis);
-
-                // Code
-                txtCode = "Diagnosis :\n";
-                txtCode += "(" + selectedNursingDiagnosis.ComponentCode + "." + selectedNursingDiagnosis.MajorCode.ToString("00") + ".";
-                if (hasMinorDiagnosis)
-                    txtCode += selectedNursingDiagnosis.MinorCode;
-                else
-                    txtCode += "0";
-
-                if (hasOutcomeAttached)
-                    txtCode += "." + selectedOutcomeType.Code.ToString();
-
-                // Diagnosis
-
-                txtDiagnosis = txtCode + ") " + selectedNursingDiagnosis.Concept + "\n" + selectedNursingDiagnosis.Definition + "\n";
-
-                if (hasOutcomeAttached)
-                    txtDiagnosis += "Outcome :\n" + "(" + selectedOutcomeType.Code + ") " + selectedOutcomeType.Concept + "\n" + selectedOutcomeType.Definition;
-
-                transfer.SetData(DataFormats.UnicodeText, txtDiagnosis);
-
-                // Let's do a drag n drop
-
-                DragDrop.DoDragDrop(sender as Border, transfer, DragDropEffects.Copy);
-            }
-
-        }
-
-
-        #endregion
-
-        #region Nursing Intervention handling
-
-        private void ccNursingIntervention_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Border dragSource = sender as Border;
-            string txtIntervention;
-
-            bool hasActionTypeAttached = (bool)cbAttachToIntervention.IsChecked;
-
-
-            Nursing_Intervention selectedNursingIntervention = (Nursing_Intervention)lbNursingInterventions.SelectedItem;
-            ActionType selectedActionType = (ActionType)lbActionType.SelectedItem;
-
-            if (selectedNursingIntervention != null)
-            {
-                DataObject transfer = new DataObject();
-                transfer.SetData("CCC/NursingIntervention", selectedNursingIntervention);
-
-                if (hasActionTypeAttached)
-                {
-                    selectedActionType.SingleConcept = tbConceptActionType.Text;
-                    transfer.SetData("CCC/ActionType", selectedActionType);
-                }
-
-                // Build text data drop
-
-                if (selectedNursingIntervention.MinorCode != null)
-                    txtIntervention = "(" + selectedNursingIntervention.ComponentCode + "." + selectedNursingIntervention.MajorCode.ToString("00") +
-                     "." + selectedNursingIntervention.MinorCode.ToString() +
-                     ") " + selectedNursingIntervention.Concept + "\n" + selectedNursingIntervention.Definition + "\n";
-                else
-                    txtIntervention = "(" + selectedNursingIntervention.ComponentCode + "." + selectedNursingIntervention.MajorCode.ToString("00") +
-
-                                        ") " + selectedNursingIntervention.Concept + "\n" + selectedNursingIntervention.Definition + "\n";
-
-
-                transfer.SetData(DataFormats.UnicodeText, txtIntervention);
-
-
-                DragDrop.DoDragDrop(dragSource, transfer, DragDropEffects.Copy);
-            }
-
-        }
-
-
-
-
-
-        private void lbNursingInterventions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListBox lb = sender as ListBox;
-            Nursing_Intervention nursingIntervention = lb.SelectedItem as Nursing_Intervention;
-            /*
-                        if (lbCarePlanDiagnoses.SelectedIndex == -1) // User has not selected diagnose to add intervention to
-                            return;
-
-                        myNursingIntervention my = new myNursingIntervention(nursingIntervention.Care_component.Component,
-                            nursingIntervention.Concept);
-
-                        ((myNursingDiagnosis)lbCarePlanDiagnoses.SelectedItem).Intervention.Add(my);
-
-                        carePlan.Interventions.Add(my);
-                        cvcarePlanInterventions.Refresh();
-
-
-                        lbCarePlanInterventions.ItemsSource = cvcarePlanInterventions;
-                        lbCarePlanInterventions.Visibility = Visibility.Visible;
-
-                        PrettyCarePlan_Update();
-                        */
-        }
-
-
-        #endregion
-
-        /// <summary>
-        /// Updates UI when a new intervention is selected
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void lbNursingInterventions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListBox lb = sender as ListBox;
-
-            // Get the nursing intervention that is selected
-            Nursing_Intervention fi = (Nursing_Intervention)lb.SelectedItem;
-            if (fi == null)
-                return;
-
-            if ((bool)cbAttachToIntervention.IsChecked)
-            {
-                // Update action modifier 
-                tbNursingInterventionActionModifier.Text = tbConceptActionType.Text;
-                tbNursingInterventionConcept.Text = fi.Concept;
-            }
-            else
-            {
-                tbNursingInterventionConcept.Text = fi.Concept;
-                tbNursingInterventionActionModifier.Text = null;
-            }
-
-            tbNursingInterventionConcept.ToolTip = fi.Definition;
-
-            tbReasonIntervention.Text = String.Empty;
-        }
-
-        #region Border color change for framework care component, diagnosis and interventions
-
-        private void ccFrameworkElement_MouseEnter(object sender, MouseEventArgs e)
-        {
-            (sender as Border).BorderBrush = (Brush)this.TryFindResource("FrameworkElementBorderSelected");
-            (sender as Border).Cursor = Cursors.Hand;
-        }
-
-        private void ccFrameworkElement_MouseLeave(object sender, MouseEventArgs e)
-        {
-            (sender as Border).BorderBrush = (Brush)this.TryFindResource("FrameworkElementBorder");
-            (sender as Border).Cursor = null;
-        }
-        #endregion
-
-        private void ccOutcomeType_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // Drag handling
-        }
-
-        private void ccActionType_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // Drag handling
-        }
-
-
-        private void cbAttachToDiagnosis_Checked(object sender, RoutedEventArgs e)
-        {
-
-            spShowOutcome.Visibility = Visibility.Visible;
-            //tbShowOutcomeConcept.DataContext = lbOutcomeType.SelectedItem as FrameworkOutcomeType;
-
-        }
-
-        private void cbAttachToDiagnosis_UnChecked(object sender, RoutedEventArgs e)
-        {
-            spShowOutcome.Visibility = Visibility.Collapsed;
-        }
-
-        private void lbOutcomeType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            OutcomeType selOutcomeType = (OutcomeType)lbOutcomeType.SelectedItem;
-
-
-            string imgFileName = null;
-
-            if (selOutcomeType == null)
-                return;
-
-            switch (selOutcomeType.Code)
-            {
-                case 1: imgFileName = "Outcome Types\\Improved.png"; break;
-                case 2: imgFileName = "Outcome Types\\Stabilized.png"; break;
-                case 3: imgFileName = "Outcome Types\\Worsened.png"; break;
-            }
-
-            if (imgFileName == null)
-                return;
-
-            // Load image
-            imgOutcomeType.BeginInit();
-            imgOutcomeType.Source = new BitmapImage(new Uri(imgFileName, UriKind.Relative));
-            imgOutcomeType.EndInit();
-
-            tbShowOutcomeConcept.DataContext = selOutcomeType;
-
-
-        }
-
-        private void lbActionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ActionType selActionType = lbActionType.SelectedItem as ActionType;
-            // char [] delemiter = {'/'};
-            string[] actionTypeSeparate = selActionType.Concept.Split('/');
-            if (actionTypeSeparate != null)
-            {
-                tbConceptActionType.Text = selActionType.Concept;
-                tbDefinitionActionType.Text = selActionType.Definition;
-                cbActionType.ItemsSource = actionTypeSeparate;
-                cbActionType.SelectedIndex = 0;
-            }
-
-        }
-
-
-        private void cbAttachToIntervention_Checked(object sender, RoutedEventArgs e)
-        {
-            gcActionType.Width = new GridLength(75);
-            tbNursingInterventionActionModifier.Visibility = Visibility.Visible;
-            tbConceptActionType.Text = cbActionType.Text;
-            tbNursingInterventionActionModifier.Text = cbActionType.Text;
-            tbNursingInterventionConcept.Text = ((Nursing_Intervention)(lbNursingInterventions.SelectedItem)).Concept;
-        }
-
+        
         //private TextBlock getActionTypeCP()
         //{
         //    // Based on info: http://joshsmithonwpf.wordpress.com/2007/06/28/how-to-use-findname-with-a-contentcontrol/
@@ -2351,217 +1417,9 @@ namespace eNursePHR.userInterfaceLayer
         //    return tb;
         //}
 
-        private void cbAttachToIntervention_UnChecked(object sender, RoutedEventArgs e)
-        {
-            gcActionType.Width = new GridLength(0);
-            tbNursingInterventionActionModifier.Visibility = Visibility.Collapsed;
-            tbConceptActionType.Text = ((ActionType)(lbActionType.SelectedItem)).Concept;
-            tbNursingInterventionActionModifier.Text = null;
-            tbNursingInterventionConcept.Text = ((Nursing_Intervention)lbNursingInterventions.SelectedItem).Concept;
-        }
-
-
-        private void cbActionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if ((bool)cbAttachToIntervention.IsChecked)
-                if (cbActionType.SelectedValue != null)
-                {
-                    tbConceptActionType.Text = cbActionType.SelectedValue.ToString();
-                    tbNursingInterventionActionModifier.Text = tbConceptActionType.Text;
-                    tbNursingInterventionConcept.Text = ((Nursing_Intervention)(lbNursingInterventions.SelectedItem)).Concept;
-                }
-
-        }
-
-
-
+        
         #endregion
 
-
-        #region Blood pressure UI
-        private void showChart(BloodPressureChart bpChart, Image img)
-        {
-            // Request image from the google chart API
-
-            BitmapImage bimg = new BitmapImage(new Uri(bpChart.getChartURI("s:")));
-            loadImage(bpChart, img, bimg);
-
-        }
-
-        private void loadImage(GoogleChart chart, Image img, BitmapImage bImg)
-        {
-            img.Height = chart.Height;
-            img.Width = chart.Width;
-            img.BeginInit();
-            img.Source = bImg;
-            img.EndInit();
-
-        }
-
-
-        private void showChart(AverageChart avgChart, Image img)
-        {
-            // Request image from the google chart API
-            BitmapImage bimg;
-            try
-            {
-                bimg = new BitmapImage(new Uri(avgChart.getChartURI("t:")));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not load image from google chart", "Google chart load fail", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            loadImage(avgChart, img, bimg);
-
-        }
-
-
-        private void sliderDiastolic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (sliderSystolic == null)
-                return;
-
-            // Limit diastolic below systolic pressure
-            if (!sliderSystolic.IsEnabled)
-                return;
-
-            if (e.NewValue > sliderSystolic.Value)
-            {
-
-                sliderDiastolic.Value = sliderSystolic.Value;
-                MessageBox.Show("Diastolic pressure cannot exceed systolic pressure", "Limit reached diastolic pressure", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        private void sliderSystolic_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (sliderDiastolic == null)
-                return;
-
-            // Limit systolic pressure over diastolic pressure
-            if (!sliderDiastolic.IsEnabled)
-                return;
-
-            if (e.NewValue < sliderDiastolic.Value)
-            {
-
-                sliderDiastolic.Value = sliderSystolic.Value;
-                MessageBox.Show("Systolic pressure cannot be below diastolic pressure", "Limit reached systolic pressure", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        private void btnAddBPReading_Click(object sender, RoutedEventArgs e)
-        {
-            if (bwSave.IsBusy)
-            {
-                MessageBox.Show("Waiting for BP data to be saved", "Waiting", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            tbStatusBP.Text = null;
-
-
-
-            if (!(bool)cbSystolicBP.IsChecked)
-                systolicBP = null;
-            else
-                systolicBP = Convert.ToInt32(Math.Round(sliderSystolic.Value));
-
-
-            if (!(bool)cbDiastolicBP.IsChecked)
-                diastolicBP = null;
-            else
-                diastolicBP = Convert.ToInt32(Math.Round(sliderDiastolic.Value));
-
-
-            if (!(bool)cbPulseHR.IsChecked)
-                heartRate = null;
-            else
-                heartRate = Convert.ToInt32(Math.Round(sliderPulseHR.Value));
-
-
-            if (!dpDate.Value.HasValue)
-            {
-                MessageBox.Show("You have not entered a valid date, please specify a date", "Invalid date", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            DateTime datePicker = dpDate.Value.Value;
-            time = new DateTime(datePicker.Year, datePicker.Month, datePicker.Day, tpTime.SelectedHour, tpTime.SelectedMinute, tpTime.SelectedSecond);
-            int result = time.CompareTo(DateTime.Now);
-
-            if (result == 1)
-            {
-                MessageBox.Show("You have entered a time in the future, please define a new time", "Future time", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-
-            if (tbComment.Text.Length == 0)
-                comment = null;
-            else
-                comment = tbComment.Text;
-
-            if (systolicBP == null && diastolicBP == null && heartRate == null && comment == null)
-            {
-                MessageBox.Show("There is no valid data to save, please enter a reading", "No valid data", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            bwSave.RunWorkerAsync();
-
-
-        }
-
-        void bwSave_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-            updDB = chartBloodPressure.newBPdata(cpGuid, systolicBP, diastolicBP, heartRate, comment, time);
-
-        }
-
-        void bwSave_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (updDB.upd > 0)
-            {
-
-                tbStatusBP.Text = "Saved";
-                // Remove status text after 0.5 sec.
-                BackgroundWorker bw = new BackgroundWorker();
-                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-                bw.DoWork += new DoWorkEventHandler(bw_DoWork);
-                bw.RunWorkerAsync();
-            }
-            else if (updDB.upd == -1)
-            {
-                tbStatusBP.Text = "Failed to save";
-                tbStatusBP.ToolTip = updDB.updMsg;
-
-            }
-
-
-
-        }
-
-        void bw_DoWork(object sender, DoWorkEventArgs e)
-        {
-            Thread.Sleep(500);
-        }
-
-        void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            tbStatusBP.Text = null;
-        }
-
-        private void cbDisplayOptionsChanged_Click(object sender, RoutedEventArgs e)
-        {
-            chartBloodPressure.generateChart();
-            showChart(chartBloodPressure, img);
-        }
-
-
-        #endregion
 
         private void btnTextNote_Click(object sender, RoutedEventArgs e)
         {

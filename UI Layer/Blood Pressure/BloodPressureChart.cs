@@ -180,11 +180,11 @@ namespace eNursePHR.userInterfaceLayer
         {
 
             // Colors
-            colorSystolicHex = GoogleChart.removeAlphaColor(((Brush)App.Current.MainWindow.TryFindResource("colorSystolic")).ToString()); 
-            colorDiastolicHex = GoogleChart.removeAlphaColor(((Brush)App.Current.MainWindow.TryFindResource("colorDiastolic")).ToString());
-            colorPulseHex = GoogleChart.removeAlphaColor(((Brush)App.Current.MainWindow.TryFindResource("colorPulse")).ToString());
-            colorHighSBPHex = GoogleChart.removeAlphaColor(((Brush)App.Current.MainWindow.TryFindResource("colorHighSBP")).ToString());
-            colorHighDBPHex = GoogleChart.removeAlphaColor(((Brush)App.Current.MainWindow.TryFindResource("colorHighDBP")).ToString());
+            colorSystolicHex = GoogleChart.removeAlphaColor(((Brush)(App.Current.MainWindow as WindowMain).BloodPressureControl.TryFindResource("colorSystolic")).ToString()); 
+            colorDiastolicHex = GoogleChart.removeAlphaColor(((Brush)(App.Current.MainWindow as WindowMain).BloodPressureControl.TryFindResource("colorDiastolic")).ToString());
+            colorPulseHex = GoogleChart.removeAlphaColor(((Brush)(App.Current.MainWindow as WindowMain).BloodPressureControl.TryFindResource("colorPulse")).ToString());
+            colorHighSBPHex = GoogleChart.removeAlphaColor(((Brush)(App.Current.MainWindow as WindowMain).BloodPressureControl.TryFindResource("colorHighSBP")).ToString());
+            colorHighDBPHex = GoogleChart.removeAlphaColor(((Brush)(App.Current.MainWindow as WindowMain).BloodPressureControl.TryFindResource("colorHighDBP")).ToString());
 
            // this.ChartColors = colorSystolicHex+ "," + colorDiastolicHex+","+colorPulseHex;
       

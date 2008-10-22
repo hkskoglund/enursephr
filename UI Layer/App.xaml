@@ -4,8 +4,37 @@
     StartupUri="WindowMain.xaml" 
     SessionEnding="Application_SessionEnding">
     <Application.Resources>
-    
-    <!-- Annotation START -->
+
+        <!-- Based on http://adoguy.com/2007/04/17/Changing_the_Selected_Style_of_ListBox_s_in_XAML.aspx, accessed 20 march 08-->
+        <Style x:Key="GreenItemContainer"  TargetType="{x:Type ListViewItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border 
+                    CornerRadius="8"
+                    BorderThickness="1"
+                    Background="White"
+                    x:Name="IconBorder"
+                    Margin="8,4,8,4"
+                    Padding="5" >
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="IconBorder" Property="BitmapEffect">
+                                    <Setter.Value>
+                                        <OuterGlowBitmapEffect GlowColor="Green"  GlowSize="8" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Annotation START -->
 		<SolidColorBrush x:Key="DiseaseHighlightColor" Color="#54FF0000" />
 		<SolidColorBrush x:Key="DiagnosisHighlightColor" Color="#54008000"/>
 		<SolidColorBrush x:Key="InterventionHighlightColor" Color="#540000FF" />
