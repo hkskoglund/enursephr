@@ -1,0 +1,206 @@
+﻿<UserControl x:Class="eNursePHR.userInterfaceLayer.TagOverviewControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+    <UserControl.Resources>
+        
+        <DataTemplate x:Key="TagDisplay">
+
+
+            <!--<Grid>
+                     <Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+                     </Grid.ColumnDefinitions>-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition  />
+                    <RowDefinition  />
+
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0"  >
+
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="spActionTypeModifier" Orientation="Horizontal" Visibility="Collapsed">
+                            <TextBlock Text="{Binding Path=ActionT.SingleConcept}" Foreground="{StaticResource InterventionColor}" Margin="0,0,5,0" VerticalAlignment="Center" />
+                            <!--<TextBlock x:Name="tbDelimiter" Text=" - " Foreground="Blue"/>-->
+                        </StackPanel>
+                        <TextBlock  x:Name="tbTagConcept"
+												  Text="{Binding Path=Concept}" 
+												  ToolTip="{Binding Path=Definition}"
+												  FontWeight="UltraBold" 
+												  Width="200"
+												  TextWrapping="Wrap"
+												 />
+                    </StackPanel>
+
+                    <StackPanel x:Name="spOutcomeQualifier" Orientation="Horizontal" >
+                        <TextBlock Text="will " />
+                        <TextBlock x:Name="tbLatestOutcomeModifier" 
+									      Text="{Binding Path=LatestOutcomeModifier, Converter={StaticResource RemoveParentesisOutcomeConceptConverter}}" 
+									      Foreground="{StaticResource DiagnosisColor}" Margin="0,0,5,0" 
+									      />
+                        <Image  x:Name="imgLatestOutcome" Height="15" />
+                    </StackPanel>
+
+                </StackPanel>
+
+                <TextBox Grid.Row="1" 
+					  x:Name="tbTagComment" 
+					  Text="{Binding Path=Comment, UpdateSourceTrigger=PropertyChanged}" 
+                                  
+                                  FontStyle="Italic"
+                                  TextWrapping="Wrap" 
+                                  HorizontalAlignment="Left"
+                                  TextChanged="tbTagComment_TextChanged"
+                                  Width="220"
+                                    />
+
+
+            </Grid>
+            <!--</Grid>-->
+
+
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=LatestOutcome}" Value="1">
+                    <Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Improved.png" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=LatestOutcome}" Value="2">
+                    <Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Stabilized.png" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=LatestOutcome}" Value="3">
+                    <Setter TargetName="imgLatestOutcome" Property="Source" Value="Outcome Types\Worsened.png" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=TaxonomyType}" Value="CCC/NursingDiagnosis">
+                    <Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource DiagnosisColor}" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=TaxonomyType}" Value="CCC/NursingIntervention">
+                    <Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource InterventionColor}" />
+                    <Setter Property="Visibility" TargetName="spActionTypeModifier" Value="Visible" />
+                </DataTrigger>
+
+                <!--<DataTrigger Binding="{dat:Binding Path=ActionT.SingleConcept}" Value="{x:Null}">
+							<Setter Property="Visibility" TargetName="tbDelimiter" Value="Collapsed" />
+                       </DataTrigger>-->
+
+                <DataTrigger Binding="{Binding Path=LatestOutcomeModifier}" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="spOutcomeQualifier" Value="Collapsed" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=TaxonomyType}" Value="CCC/CareComponent">
+                    <Setter Property="Foreground" TargetName="tbTagConcept" Value="{StaticResource CareComponentColor}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+
+        </DataTemplate>
+    </UserControl.Resources>
+
+        <Expander x:Name="exTaxonomy" IsExpanded="False" 
+          Background="{StaticResource BlueTheme}"
+          Padding="5" >
+        <Expander.Header>
+            <TextBlock Text="Tags overview" FontSize="13" FontWeight="UltraBold" />
+
+        </Expander.Header>
+        <ListView x:Name="lbTaxonomy" MaxHeight="600" 
+                SelectionChanged="lbTaxonomy_SelectionChanged"
+                ItemTemplate="{StaticResource TagDisplay}"
+                ItemContainerStyle="{StaticResource GreenItemContainer}"
+                Background="{StaticResource CarePlanTagsBackground}" 
+                Style="{DynamicResource ListViewStyleCarePlan}"
+                 >
+            <ListView.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource CareComponentHeader}" />
+            </ListView.GroupStyle>
+            <ListView.Resources>
+
+                <!-- Based on http://msdn2.microsoft.com/en-us/library/ms752068.aspx, accessed 12 march 2008 -->
+
+                <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBoxBase}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="MinWidth" Value="120"/>
+                    <Setter Property="MinHeight" Value="20"/>
+                    <Setter Property="AllowDrop" Value="false"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                                <!--<Border 
+          Name="Border"
+          CornerRadius="2" 
+          Padding="2"
+          Background="{StaticResource WindowBackgroundBrush}"
+          BorderBrush="{StaticResource SolidBorderBrush}"
+          BorderThickness="1" >-->
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                                <!--</Border>-->
+                                <!--<ControlTemplate.Triggers>
+          <Trigger Property="IsEnabled" Value="False">
+            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+          </Trigger>
+        </ControlTemplate.Triggers>-->
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Below style generated by expression blend 2.5 march preview 2008, 6 april 2008 -->
+                <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
+                <Style x:Key="ListViewStyleCarePlan" TargetType="{x:Type ListView}">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListView}">
+                                <StackPanel>
+                                    <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" 
+							BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1">
+                                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false">
+                                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                    <TextBlock Text="No information has been tagged yet" x:Name="tbEmpty" Visibility="Collapsed" ToolTip="Drag some tags (diagnoses and interventions) to the tag drop area" />
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Items.Count,
+
+            RelativeSource={RelativeSource Self}}" Value="0">
+
+                                        <Setter TargetName="tbEmpty" Property="Visibility" 
+
+              Value="Visible" />
+                                        <Setter TargetName="Bd" Property="Visibility" Value="Collapsed" />
+
+                                    </DataTrigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsGrouping" Value="true">
+                                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+
+        </ListView>
+    </Expander>
+
+</UserControl>

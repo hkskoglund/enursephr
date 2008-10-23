@@ -163,7 +163,7 @@ namespace eNursePHR.userInterfaceLayer
                         sbInformation.Text = "Item saved.";
                         itemSaved = true;
                         if (!UpdateItem)
-                           newItem.Tag.AssociationChanged += new CollectionChangeEventHandler(((WindowMain)App.Current.MainWindow).Tag_AssociationChanged);
+                           newItem.Tag.AssociationChanged += new CollectionChangeEventHandler(((WindowMain)App.Current.MainWindow).TagControl.Tag_AssociationChanged);
                         wndMain.Item_AssociationChanged(this, null); // Manually refresh item-collection      
                 }
            }

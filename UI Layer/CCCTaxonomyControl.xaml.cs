@@ -813,9 +813,9 @@ namespace eNursePHR.userInterfaceLayer
             loadCCCFramework();
 
             
-            (App.Current.MainWindow as  WindowMain).refreshLanguageTranslationForItemTags();
+            (App.Current.MainWindow as  WindowMain).TagControl.refreshLanguageTranslationForItemTags();
 
-            (App.Current.MainWindow  as WindowMain).buildTagsOverview(App.s_carePlan.ActiveCarePlan);
+            (App.Current.MainWindow  as WindowMain).TagOverviewControl.buildTagsOverview(App.s_carePlan.ActiveCarePlan);
      
 
             

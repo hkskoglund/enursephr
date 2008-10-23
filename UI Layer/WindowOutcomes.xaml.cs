@@ -29,11 +29,13 @@ namespace eNursePHR.userInterfaceLayer
            
         }
 
+        TagLangageConverter tagConverter = new TagLangageConverter();
+
         private void btnNewOutcome_Click(object sender, RoutedEventArgs e)
         {
             Tag selTag = this.DataContext as Tag;
             // Default to outcome 1, user must change it
-            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, ((WindowMain)App.Current.MainWindow).tagConverter.getTaxonomyGuidOutcomeType(1, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version));
+            Outcome newOutcome = Outcome.CreateOutcome(Guid.NewGuid(), 1, (tagConverter.getTaxonomyGuidOutcomeType(1, eNursePHR.userInterfaceLayer.Properties.Settings.Default.Version)));
             newOutcome.Tag = selTag;
             History newHistory = History.CreateHistory(Guid.NewGuid(), DateTime.Now, System.Environment.UserName);
             newOutcome.History = newHistory;

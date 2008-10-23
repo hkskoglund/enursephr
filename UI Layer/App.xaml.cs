@@ -22,7 +22,8 @@ namespace eNursePHR.userInterfaceLayer
 
       
        public static WindowMain mainWindow;
-     
+
+       
       
         void AppStartup(object sender, StartupEventArgs args)
         {

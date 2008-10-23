@@ -389,7 +389,7 @@ namespace eNursePHR.userInterfaceLayer
                 tagHandler.translateTag(App.s_cccFrameWork.DB, tag, Properties.Settings.Default.LanguageName, 
                     Properties.Settings.Default.Version);
 
-                ((WindowMain)App.Current.MainWindow).refreshOutcomes(tag);
+                ((WindowMain)App.Current.MainWindow).TagControl.refreshOutcomes(tag);
 
                 // Generate care component textblock an add it to the paragraph
                 TextBlock tbCareComponent = generateCareComponent(ref prevCareComponent, tag, ref pTags); // Refactored 12 september 08
