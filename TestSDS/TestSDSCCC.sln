@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSDS", "TestSDS\TestSDS.csproj", "{EFA6D9C8-F480-46CD-AF60-1DED275C12D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCCSoapAPI", "CCCSDSSOAPAPI\CCCSoapAPI.csproj", "{9D4563C1-5C90-47CC-8E47-80EA7DEA010E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCCBrowser", "ClassLibrary1\CCCBrowser.csproj", "{6F5A773C-B62D-4D5E-BD63-29D9803B2D89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCCBrowserSupport", "CCCBrowserSupport\CCCBrowserSupport.csproj", "{ED48BA61-9CF5-4195-9F93-420E8088B883}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA6D9C8-F480-46CD-AF60-1DED275C12D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA6D9C8-F480-46CD-AF60-1DED275C12D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA6D9C8-F480-46CD-AF60-1DED275C12D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA6D9C8-F480-46CD-AF60-1DED275C12D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D4563C1-5C90-47CC-8E47-80EA7DEA010E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D4563C1-5C90-47CC-8E47-80EA7DEA010E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D4563C1-5C90-47CC-8E47-80EA7DEA010E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4563C1-5C90-47CC-8E47-80EA7DEA010E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5A773C-B62D-4D5E-BD63-29D9803B2D89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5A773C-B62D-4D5E-BD63-29D9803B2D89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5A773C-B62D-4D5E-BD63-29D9803B2D89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5A773C-B62D-4D5E-BD63-29D9803B2D89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED48BA61-9CF5-4195-9F93-420E8088B883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED48BA61-9CF5-4195-9F93-420E8088B883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED48BA61-9CF5-4195-9F93-420E8088B883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED48BA61-9CF5-4195-9F93-420E8088B883}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

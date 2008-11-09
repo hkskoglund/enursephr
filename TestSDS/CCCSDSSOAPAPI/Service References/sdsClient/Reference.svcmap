@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="32aaeff8-9d6e-47b8-aa54-0c4cd607c1c7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://database.windows.net/soap/v1/" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="schemas.xsd" MetadataType="Schema" ID="6a2d9af4-6f04-4de3-8b15-8434a33a0dc9" SourceId="1" SourceUrl="https://database.windows.net/soap/v1/schemas.microsoft.com.2003.10.Serialization.xsd" />
+    <MetadataFile FileName="schemas.wsdl" MetadataType="Wsdl" ID="c21f7c90-f33b-418a-88c2-f8ea34f468e7" SourceId="1" SourceUrl="https://database.windows.net/soap/v1/schemas.microsoft.com.sitka.2008.03.wsdl" />
+    <MetadataFile FileName="schemas1.xsd" MetadataType="Schema" ID="607556c0-ef1a-4338-9fed-463ed090a008" SourceId="1" SourceUrl="https://database.windows.net/soap/v1/schemas.microsoft.com.sitka.2008.03.xsd" />
+    <MetadataFile FileName="SitkaSoapService.wsdl" MetadataType="Wsdl" ID="da5d9f2b-a0b2-4f31-a3e5-60a07025a50e" SourceId="1" SourceUrl="http://database.windows.net/soap/v1/service.wsdl" />
+    <MetadataFile FileName="schemas2.xsd" MetadataType="Schema" ID="bcabf2ff-0eda-4c35-ba16-ac12036ef7aa" SourceId="1" SourceUrl="https://database.windows.net/soap/v1/schemas.microsoft.com.2003.10.Serialization.Arrays.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
