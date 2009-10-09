@@ -139,7 +139,7 @@ namespace eNursePHR.userInterfaceLayer
             string spack = OurKey.GetValue("DesktopRuntimeServicePackLevel").ToString();
 
             // require latest v 3.5 Sp 1
-            if (this._SQLCompactVersion == "3.5.5692.0" && spack == "1")
+            if (this._SQLCompactVersion.StartsWith("3.5.") && spack == "1")
                 return true;
             else
                 return false;

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data.SqlServerCe;
 using eNursePHR.BusinessLayer;
 using eNursePHR.BusinessLayer.PHR;
+using eNursePHR.BusinessLayer.EF_models;
 
 
 namespace eNursePHR.userInterfaceLayer
