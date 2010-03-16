@@ -141,6 +141,9 @@ namespace eNursePHR.userInterfaceLayer
             // require latest v 3.5 Sp 1
             if (this._SQLCompactVersion.StartsWith("3.5.") && spack == "1")
                 return true;
+            // add support for v 3.5 Sp 2
+            else if (this._SQLCompactVersion.StartsWith("3.5.") && spack == "2")
+                return true;
             else
                 return false;
 
