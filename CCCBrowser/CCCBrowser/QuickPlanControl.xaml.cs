@@ -17,7 +17,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
-using Microsoft.Windows.Controls.DataVisualization.Charting;
+using System.Windows.Controls.DataVisualization.Charting;
 using DrWPF.Windows.Data; // Thanks for this Dr. WPF, removed serialization
 using System.Collections.Specialized;
 

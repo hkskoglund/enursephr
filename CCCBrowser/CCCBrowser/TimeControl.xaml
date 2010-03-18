@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="CCCBrowser.TimeControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:input="clr-namespace:Microsoft.Windows.Controls;assembly=Microsoft.Windows.Controls.Input"
+    xmlns:input="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     Loaded="UserControl_Loaded"
     >
     <StackPanel Orientation="Horizontal">
