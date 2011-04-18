@@ -218,7 +218,7 @@ private void checkSQLServerCompactDB(DatabaseHealth DBHealth, string conn, strin
                     DBHealth.OK = false;
                     healthDB.Add(DBKey, false);
                     DBHealth.Message = "Checksum failed on database, recovering will be tried";
-                    sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverCorruptedRows);
+                    sqlEngine.Repair(sqlEngine.LocalConnectionString, RepairOption.RecoverAllPossibleRows);
                     // To DO: Add new verification and repair with new RepairOptions DeleteCorruptedRows if thats oK with user
                 }
                 sqlEngine.Dispose();

@@ -400,6 +400,7 @@
     <Resource Include="Flags\tr-TR.gif" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Flags\es-EC.gif" />
     <Content Include="J832\J832.Common.dll" />
     <Content Include="J832\J832.Wpf.BagOTricksLib.dll" />
   </ItemGroup>

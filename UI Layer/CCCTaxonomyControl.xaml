@@ -76,8 +76,13 @@ Background="{DynamicResource BlueTheme}"
                                     </DataTrigger>
 
                                     <!-- Turkish -->
-                                    <DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="tr-TR">
-                                        <Setter Property="Source" Value="Flags/tr-TR.gif" TargetName="imgFlagCombo" />
+                                <DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="tr-TR">
+                                    <Setter Property="Source" Value="Flags/tr-TR.gif" TargetName="imgFlagCombo" />
+                                </DataTrigger>
+                                    
+                                <!-- Spanish -->
+                                    <DataTrigger Binding="{dat:Binding Path=Language_Name}" Value="es-EC">
+                                        <Setter Property="Source" Value="Flags/es-EC.gif" TargetName="imgFlagCombo" />
 
                                     </DataTrigger>
 

@@ -73,9 +73,8 @@
             </FlowDocument.Resources>
 
             <Paragraph  Style="{StaticResource Title}">
-                eNurse Personal Health Record
-                    <LineBreak />
-                Prototype
+                Personal Health Record
+                    
                     
                 <Floater 
             Margin="5"  
@@ -90,9 +89,8 @@
 
 
             <Paragraph Style="{StaticResource BodyText}">
-                This application is a prototype personal health record that makes it possible to search and tag health information by using
-                the <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>. Currently it is intended for use in research of ideas
-                in the health/ICT arena and education of the CCC classification.
+                Search and tag health information by using
+                the <Italic>Clinical Care Classification 2.0 (© Sabacare Inc.)</Italic>. 
                 <LineBreak />
                 <LineBreak />
                 <!--
@@ -105,11 +103,10 @@
                             <MediaElement x:Name="video2" Source="C:\Documents and Settings\hks\Skrivebord\Siv.ing. Henning Skoglund.wmv" LoadedBehavior="Play" Width ="2cm"/>
                         </BlockUIContainer>
                     </Figure>
-                    -->
-                Project initiated by M.Sc. IT and Nurse Henning Knut Skoglund in november 2007,
+                    -->Started by M.Sc. IT and Nurse Henning Knut Skoglund in november 2007,
                     available as open source on
-                <Hyperlink x:Name="hyperCodeplex" ToolTip="http://www.codeplex.com/nursingcareplanner"
-                    NavigateUri = "http://www.codeplex.com/nursingcareplanner" RequestNavigate="hyperCodeplex_RequestNavigate" >CodePlex</Hyperlink> from january 2008 .
+                <Hyperlink x:Name="hyperCodeplex" ToolTip="http://enursephr.codeplex.com"
+                    NavigateUri = "http://enursephr.codeplex.com" RequestNavigate="hyperCodeplex_RequestNavigate" >CodePlex</Hyperlink> from january 2008 .
             </Paragraph>
 
             <!--<Paragraph Style="{StaticResource BodyText}">
@@ -153,7 +150,7 @@
             
                 
                 <Viewbox> 
-                    <TextBlock  x:Name="tbLoading" Foreground="Black" TextWrapping="Wrap" Text="Initializing user interface..." VerticalAlignment="Center"
+                    <TextBlock  x:Name="tbLoading" Foreground="Black" TextWrapping="Wrap" Text="Loading..." VerticalAlignment="Center"
                       />
                   </Viewbox> 
            

@@ -122,6 +122,10 @@
                                             <Setter Property="Source" Value="Flags/tr-TR.gif" TargetName="imgFlag" />
                                         </DataTrigger>
 
+                                        <DataTrigger Binding="{Binding Path=LanguageName}" Value="es-EC">
+                                            <Setter Property="Source" Value="Flags/es-EC.gif" TargetName="imgFlag" />
+                                        </DataTrigger>
+
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

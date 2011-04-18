@@ -212,6 +212,8 @@ namespace eNursePHR.userInterfaceLayer
 
                 MessageBox.Show(arg.Message, "Argument exception", MessageBoxButton.OK);
             }
+
+            stream.Dispose();
         }
 
         #region Item grayline-outside mouse enter/leave handling
